@@ -76,6 +76,7 @@ BOOL MVC_View::Draw(void)
 
 
 	m_theModel->theCamera.Update(Vector3D(m_theModel->x,m_theModel->y, m_theModel->z));
+	//m_theModel->theCamera.Update();
 	//m_theModel->theCamera.SetDirection(m_theModel->x, m_theModel->y, m_theModel->z);
 	//m_theModel->theCamera.SetPosition(m_theModel->x, m_theModel->y, m_theModel->z);
 

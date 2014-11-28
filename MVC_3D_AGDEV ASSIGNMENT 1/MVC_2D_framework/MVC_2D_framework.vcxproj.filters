@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Model Classes">
       <UniqueIdentifier>{e5ed7ba3-5154-448f-8c74-f1e188f61d77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scene Graph">
+      <UniqueIdentifier>{0476dd7b-4cf7-4230-be11-88edfda970dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Graph">
+      <UniqueIdentifier>{2c16bcee-ffc4-479a-8214-219561da79a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,6 +72,21 @@
     <ClCompile Include="HUD.cpp">
       <Filter>Source Files\Model Classes</Filter>
     </ClCompile>
+    <ClCompile Include="SceneGraph\Matrix4x4.cpp">
+      <Filter>Source Files\Scene Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGraph\Model.cpp">
+      <Filter>Source Files\Scene Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGraph\Node.cpp">
+      <Filter>Source Files\Scene Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGraph\SceneNode.cpp">
+      <Filter>Source Files\Scene Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGraph\Transform.cpp">
+      <Filter>Source Files\Scene Graph</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -103,6 +124,21 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>Header Files\Model Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGraph\Matrix4x4.h">
+      <Filter>Header Files\Scene Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGraph\Model.h">
+      <Filter>Header Files\Scene Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGraph\Node.h">
+      <Filter>Header Files\Scene Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGraph\SceneNode.h">
+      <Filter>Header Files\Scene Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGraph\Transform.h">
+      <Filter>Header Files\Scene Graph</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

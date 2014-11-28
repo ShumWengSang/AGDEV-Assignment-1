@@ -35,7 +35,9 @@ public:
 	// Get the direction of the camera
 	Vector3D GetDirection(void);
 	void SetPosition(GLfloat x, GLfloat y, GLfloat z);
+	void SetPosition(Vector3D theNewPos);
 	void SetDirection(GLfloat x, GLfloat y, GLfloat z);
+	void SetDirection(Vector3D theNewDir);
 	void calculations(float diffX, float diffY);
 
 	void Pitch(GLfloat theta);

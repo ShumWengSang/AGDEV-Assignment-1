@@ -25,6 +25,8 @@ Camera::Camera(CAM_TYPE ct)
 	SetCameraType(ct);
 	Reset();
 	angle = 0;
+	SetPosition(0.0, 2.0, -5.0);
+	SetDirection(0.0, 0.0, 1.0);
 	u = 0; v = 0; u1 = 0; v1 = 0;
 	fov = 50;
 	onground = true;
@@ -61,10 +63,26 @@ void Camera::Update() {
 }
 
 void Camera::Update(Vector3D theTarget) {
+	static Vector3D theOldPosition(0,0,0);
+
+	if (theOldPosition != theTarget)
+	{
+
+		//Do the third person camera calculations
+		Vector3D theNewPos = CalculateDistance(theTarget);
+		SetPosition(theNewPos.m_x, theNewPos.m_y, theNewPos.m_z);
+
+		theOldPosition = theTarget;
+	}
 
 	gluLookAt(Position.m_x, Position.m_y, Position.m_z,
-		theTarget.m_x, theTarget.m_y, theTarget.m_z ,
+		Position.m_x + Forward.m_x, Position.m_y + Forward.m_y, Position.m_z + Forward.m_z,
 		0.0f, 1.0f, 0.0f);
+}
+
+void Camera::SetPosition(Vector3D theNewPos)
+{
+	this->Position.Set(theNewPos);
 }
 
 Vector3D Camera::GetPosition() {
@@ -82,6 +100,11 @@ void Camera::SetPosition(GLfloat x, GLfloat y, GLfloat z)
 void Camera::SetDirection(GLfloat x, GLfloat y, GLfloat z)
 {
 	this->Forward.Set(x, y, z);
+}
+
+void Camera::SetDirection(Vector3D theNewDir)
+{
+	this->Forward.Set(theNewDir);
 }
 
 void Camera::Pitch(GLfloat theta)
@@ -284,9 +307,19 @@ void Camera::crouch()
 
 Vector3D Camera::CalculateDistance(Vector3D theFirstPosition)
 {
-	Vector3D theSecondPosition;
+	//First position if position of the object
 
-	theSecondPosition = Forward * Distance;
+	//The idea here is to find the direction of the target
+	//Than put your camera right behind him.
 
-	return theSecondPosition;
+	//Returns the vector of the position of the camera.
+
+	//First get the direction and than scale it by the distance;
+	//This will be where you need to be from the object.
+	Vector3D Temp(theFirstPosition);
+	Temp -= Forward.NormalizedVector3D() * Distance;
+
+	
+
+	return Temp;
 }

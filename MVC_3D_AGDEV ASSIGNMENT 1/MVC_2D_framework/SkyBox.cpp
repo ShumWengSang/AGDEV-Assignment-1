@@ -12,12 +12,12 @@ SkyBox::~SkyBox()
 
 void SkyBox::Init()
 {
-	Top = 10;
-	Bottom = -10;
-	Left = 10;
-	Right = -10;
-	Near = -10;
-	Far = 10;
+	Top = 100;
+	Bottom = -100;
+	Left = 100;
+	Right = -100;
+	Near = -100;
+	Far = 100;
 }
 
 void SkyBox::Draw()
@@ -37,56 +37,56 @@ void SkyBox::Draw()
 	// Render the front quad
 	glBindTexture(GL_TEXTURE_2D, textureID[0]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex3f(10.0f, -10.0f, Near);
-	glTexCoord2f(1, 0); glVertex3f(-10.0f, -10.0f, Near);
-	glTexCoord2f(1, 1); glVertex3f(-10.0f, 10.0f, Near);
-	glTexCoord2f(0, 1); glVertex3f(10.0f, 10.0f, Near);
+	glTexCoord2f(0, 0); glVertex3f(Left,Bottom, Near);
+	glTexCoord2f(1, 0); glVertex3f(Right, Bottom, Near);
+	glTexCoord2f(1, 1); glVertex3f(Right, Top, Near);
+	glTexCoord2f(0, 1); glVertex3f(Left, Top, Near);
 	glEnd();
 
 	// Render the back quad
 	glBindTexture(GL_TEXTURE_2D, textureID[1]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex3f(-10.0f, -10.0f, Far);
-	glTexCoord2f(1, 0); glVertex3f(10.0f, -10.0f, Far);
-	glTexCoord2f(1, 1); glVertex3f(10.0f, 10.0f, Far);
-	glTexCoord2f(0, 1); glVertex3f(-10.0f, 10.0f, Far);
+	glTexCoord2f(0, 0); glVertex3f(Right, Bottom, Far);
+	glTexCoord2f(1, 0); glVertex3f(Left, Bottom, Far);
+	glTexCoord2f(1, 1); glVertex3f(Left, Top, Far);
+	glTexCoord2f(0, 1); glVertex3f(Right, Top, Far);
 
 	glEnd();
 
 	// Render the left quad
 	glBindTexture(GL_TEXTURE_2D, textureID[2]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex3f(Left, -10.0f, 10.0f);
-	glTexCoord2f(1, 0); glVertex3f(Left, -10.0f, -10.0f);
-	glTexCoord2f(1, 1); glVertex3f(Left, 10.0f, -10.0f);
-	glTexCoord2f(0, 1); glVertex3f(Left, 10.0f, 10.0f);
+	glTexCoord2f(0, 0); glVertex3f(Left, Bottom, Far);
+	glTexCoord2f(1, 0); glVertex3f(Left, Bottom, Near);
+	glTexCoord2f(1, 1); glVertex3f(Left, Top, Near);
+	glTexCoord2f(0, 1); glVertex3f(Left, Top, Far);
 	glEnd();
 
 	// Render the right quad
 	glBindTexture(GL_TEXTURE_2D, textureID[3]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex3f(Right, -10.0f, -10.0f);
-	glTexCoord2f(1, 0); glVertex3f(Right, -10.0f, 10.0f);
-	glTexCoord2f(1, 1); glVertex3f(Right, 10.0f, 10.0f);
-	glTexCoord2f(0, 1); glVertex3f(Right, 10.0f, -10.0f);
+	glTexCoord2f(0, 0); glVertex3f(Right, Bottom, Near);
+	glTexCoord2f(1, 0); glVertex3f(Right, Bottom, Far);
+	glTexCoord2f(1, 1); glVertex3f(Right, Top, Far);
+	glTexCoord2f(0, 1); glVertex3f(Right, Top, Near);
 	glEnd();
 
 	// Render the top quad
 	glBindTexture(GL_TEXTURE_2D, textureID[4]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 1); glVertex3f(-10.0f, Top, -10.0f);
-	glTexCoord2f(0, 0); glVertex3f(-10.0f, Top, 10.0f);
-	glTexCoord2f(1, 0); glVertex3f(10.0f, Top, 10.0f);
-	glTexCoord2f(1, 1); glVertex3f(10.0f, Top, -10.0f);
+	glTexCoord2f(0, 1); glVertex3f(Right, Top, Near);
+	glTexCoord2f(0, 0); glVertex3f(Right, Top, Far);
+	glTexCoord2f(1, 0); glVertex3f(Left, Top, Far);
+	glTexCoord2f(1, 1); glVertex3f(Left, Top, Near);
 	glEnd();
 
 	// Render the bottom quad
 	glBindTexture(GL_TEXTURE_2D, textureID[5]);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex3f(-10.0f, Bottom, -10.0f);
-	glTexCoord2f(0, 1); glVertex3f(-10.0f, Bottom, 10.0f);
-	glTexCoord2f(1, 1); glVertex3f(10.0f, Bottom, 10.0f);
-	glTexCoord2f(1, 0); glVertex3f(10.0f, Bottom, -10.0f);
+	glTexCoord2f(0, 0); glVertex3f(Right, Bottom, Near);
+	glTexCoord2f(0, 1); glVertex3f(Right, Bottom, Far);
+	glTexCoord2f(1, 1); glVertex3f(Left, Bottom, Far);
+	glTexCoord2f(1, 0); glVertex3f(Left, Bottom, Near);
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);

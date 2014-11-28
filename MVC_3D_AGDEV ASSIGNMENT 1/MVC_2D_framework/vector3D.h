@@ -6,6 +6,9 @@
 #define __MATH_H__
 #endif
 
+#ifndef __MATRIX4X4_H__
+#include "SceneGraph\Matrix4x4.h"
+#endif
 
 class Vector3D
 {
@@ -89,6 +92,40 @@ public:
 		return *this;
 	}
 
+	bool operator !=(const Vector3D &vec) const
+	{
+		if (this->m_x != vec.m_x)
+		{
+			return true;
+		}
+		if (this->m_y != vec.m_y)
+		{
+			return true;
+		}				
+		if (this->m_z != vec.m_z)
+		{
+			return true;
+		}
+		else
+			return false;
+
+	}
+
+	bool operator ==(const Vector3D &vec) const
+	{
+		if (this->m_x == vec.m_x)
+		{
+			if (this->m_y == vec.m_y)
+			{
+				if (this->m_z == vec.m_z)
+				{
+					return true;
+				}
+			}
+		}
+		else
+			return false;
+	}
 	//normalize this vector
 	void NormalizeVector3D()
 	{
@@ -119,6 +156,13 @@ public:
 		return Vector3D(m_y * vec.m_z - m_z * vec.m_y,
 				m_z * vec.m_x - m_x * vec.m_z,
 				m_x * vec.m_y - m_y * vec.m_x);
+	}
+
+	Vector3D operator*(const Matrix4x4 &m) const
+	{
+		return Vector3D(m_x*m.matrix[0] + m_y*m.matrix[4] + m_z*m.matrix[8] + 1 * m.matrix[12],
+			m_x*m.matrix[1] + m_y*m.matrix[5] + m_z*m.matrix[9] + 1 * m.matrix[13],
+			m_x*m.matrix[2] + m_y*m.matrix[6] + m_z*m.matrix[10] + 1 * m.matrix[14]);
 	}
 };
 

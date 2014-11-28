@@ -193,13 +193,13 @@ void MVC_Controller::ProcKeyboard()
 	{
 		//m_theModel->theCamera.moveMeSideway(true, theTimer->GetDelta());
 
-		m_theModel->x+=5;
+		m_theModel->x+=1;
 		temp[ProcKeys('d')] = false;
 	}
 	else if(temp[ProcKeys('a')])
 	{
 		//m_theModel->theCamera.moveMeSideway(false, theTimer->GetDelta());
-		m_theModel->x-=5;
+		m_theModel->x-=1;
 		temp[ProcKeys('a')] = false;
 	}
 	else
@@ -209,18 +209,28 @@ void MVC_Controller::ProcKeyboard()
 	if(temp[ProcKeys('w')])
 	{
 		//m_theModel->theCamera.moveMeForward(true, theTimer->GetDelta());
-		m_theModel->z-=5;
+		m_theModel->z-=1;
 		temp[ProcKeys('w')] = false;
 	}
 	else if(temp[ProcKeys('s')])
 	{
 		//m_theModel->theCamera.moveMeForward(false, theTimer->GetDelta());
-		m_theModel->z+=5;
+		m_theModel->z+=1;
 		temp[ProcKeys('s')] = false;
 	}
 	else
 	{
-		m_theModel->theCamera.deceleratestraight(theTimer->GetDelta());
+		//m_theModel->theCamera.deceleratestraight(theTimer->GetDelta());
+	}
+
+	//DEBUG
+	if (temp[VK_NUMPAD8])
+	{
+		m_theModel->y += 1;
+	}
+	if (temp[VK_NUMPAD2])
+	{
+		m_theModel->y -= 1;
 	}
 
 }

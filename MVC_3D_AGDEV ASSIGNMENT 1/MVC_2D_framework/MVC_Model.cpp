@@ -62,20 +62,18 @@ bool MVC_Model::InitPhase2(void)
 	//if (!LoadTGA(&SkyBoxTextures[5], "SkyBox/red_down.tga"))				// Load The Font Texture
 	//	return false;										// If Loading Failed, Return False
 
-	if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/sky.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/bleached_front.tga"))				// Load The Font Texture
 		return false;	// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[1], "SkyBox/sky.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[1], "SkyBox/bleached_back.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[2], "SkyBox/sky.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[2], "SkyBox/bleached_left.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[3], "SkyBox/sky.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[3], "SkyBox/bleached_right.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[4], "SkyBox/sky.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[4], "SkyBox/bleached_top.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[5], "SkyBox/sky.tga"))				// Load The Font Texture
-		return false;	
-	if (!LoadTGA(&theHUD.theMinimap, "SkyBox/sky.tga"))				// Load The Font Texture
-		return false;	
+	if (!LoadTGA(&SkyBoxTextures[5], "SkyBox/red_down.tga"))				// Load The Font Texture
+		return false;										// If Loading Failed, Return False
 
 
 	glDisable(GL_TEXTURE_2D);								// Disable Texture Mapping ( NEW )
@@ -91,6 +89,8 @@ bool MVC_Model::InitPhase2(void)
 // Update the model
 void MVC_Model::Update(void)
 {
+	//theCamera.calculations(diffX, diffY);
+
 	m_timer->UpdateTime();
 	if(m_timer->TestFramerate())
 	{
