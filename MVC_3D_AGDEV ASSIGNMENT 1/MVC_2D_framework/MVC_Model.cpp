@@ -18,13 +18,14 @@
 //extern bool LoadTGA(TextureImage *texture, char *filename);
 
 MVC_Model::MVC_Model(void) : theCamera(),
-	Camera2(),
-	theFrustum(NULL)
+thirdpersoncamera(),
+theFrustum(NULL)
 {
 	m_timer=MVCTime::GetInstance();
 	x = 0; y = 0; z = 0;
 	distance = 10;
 	theFrustum = new CFrustum();
+	thirdpersoncamera = new ThirdPersonCamera();
 }
 
 MVC_Model::~MVC_Model(void)
@@ -93,6 +94,7 @@ void MVC_Model::Update(void)
 	//theCamera.calculations(diffX, diffY);
 
 	m_timer->UpdateTime();
+	thirdpersoncamera->Update();
 	if(m_timer->TestFramerate())
 	{
 		m_testX+=m_moveX*m_timer->GetDelta();

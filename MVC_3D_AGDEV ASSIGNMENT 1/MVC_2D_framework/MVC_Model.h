@@ -29,7 +29,7 @@
 #include "HUD.h"
 #endif
 
-#include "QuarternionCamera.h"
+#include "ThirdPersonCamera.h"
 
 class MVCTime;
 
@@ -55,10 +55,12 @@ public:
 
 	MVCTime* m_timer;
 	CFrustum* theFrustum;
+	ThirdPersonCamera* thirdpersoncamera;
 
 	HUD theHUD;
 	SkyBox theBox;
 	Camera theCamera;
+
 
 	//DISTANCE FROM OBJECT TO CAMERA
 	int distance;
@@ -66,7 +68,6 @@ public:
 	//TESTING CODES
 	float x, y, z;
 
-	QuarternionCamera * Camera2;
 private: 
 };
 

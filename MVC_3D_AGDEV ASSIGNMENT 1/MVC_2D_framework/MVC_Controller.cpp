@@ -43,7 +43,7 @@ bool MVC_Controller::Init(void)
 {
 
 
-	if(!m_theModel->Init(30))
+	if(!m_theModel->Init(60))
 		return false;
 
 	return true;
@@ -151,10 +151,26 @@ void MVC_Controller::ProcMouse()
 	m_theView->GetSize(&w,&h);
 	if(m_theView->m_MouseInfo.m_LButtonDown)
 	{
-		m_theView->m_MouseInfo.m_LButtonDown=false;
+		if (m_theView->m_MouseInfo.Record)
+		{
+			m_theView->m_MouseInfo.m_Tempx = m_theView->m_MouseInfo.GetDiff_X();
+			m_theView->m_MouseInfo.Record = false;
+		}
+
+		m_theView->m_MouseInfo.m_Tempx2 = m_theView->m_MouseInfo.GetDiff_X();
+		float Diff = m_theView->m_MouseInfo.m_Tempx - m_theView->m_MouseInfo.m_Tempx2;
+		cout << "Diff : " << Diff << endl;
+		Diff *= theTimer->GetDelta();
+
+		//Adjusting the value so it won't be too fast
+		Diff /= 300;
+
+		m_theModel->thirdpersoncamera->RotateAroundPoint(m_theModel->thirdpersoncamera->m_vView, Diff, 0, 1, 0);
+
 	}
 	else if(m_theView->m_MouseInfo.m_LButtonUp)
 	{
+		m_theView->m_MouseInfo.Record = true;
 		m_theView->m_MouseInfo.m_LButtonUp=false;
 	}
 
@@ -191,46 +207,39 @@ void MVC_Controller::ProcKeyboard()
 	}
 	if (temp[ProcKeys('d')])
 	{
-		//m_theModel->theCamera.moveMeSideway(true, theTimer->GetDelta());
-
-		m_theModel->x+=1;
-		temp[ProcKeys('d')] = false;
+		m_theModel->thirdpersoncamera->StrafeCamera(1);
 	}
 	else if(temp[ProcKeys('a')])
 	{
-		//m_theModel->theCamera.moveMeSideway(false, theTimer->GetDelta());
-		m_theModel->x-=1;
-		temp[ProcKeys('a')] = false;
+		m_theModel->thirdpersoncamera->StrafeCamera(-1);
 	}
-	else
-	{
-		//m_theModel->theCamera.deceleratesideways(theTimer->GetDelta());
-	}
+
 	if(temp[ProcKeys('w')])
 	{
-		//m_theModel->theCamera.moveMeForward(true, theTimer->GetDelta());
-		m_theModel->z-=1;
-		temp[ProcKeys('w')] = false;
+		m_theModel->thirdpersoncamera->MoveCamera(1);
 	}
-	else if(temp[ProcKeys('s')])
+	if(temp[ProcKeys('s')])
 	{
-		//m_theModel->theCamera.moveMeForward(false, theTimer->GetDelta());
-		m_theModel->z+=1;
-		temp[ProcKeys('s')] = false;
+		m_theModel->thirdpersoncamera->MoveCamera(-1);
 	}
-	else
-	{
-		//m_theModel->theCamera.deceleratestraight(theTimer->GetDelta());
-	}
+
 
 	//DEBUG
 	if (temp[VK_NUMPAD8])
 	{
-		m_theModel->y += 1;
+		m_theModel->thirdpersoncamera->MoveCamera(1);
 	}
 	if (temp[VK_NUMPAD2])
 	{
-		m_theModel->y -= 1;
+		m_theModel->thirdpersoncamera->MoveCamera(-1);
+	}
+	if (temp[VK_NUMPAD4])
+	{
+		m_theModel->thirdpersoncamera->RotateAroundPoint(m_theModel->thirdpersoncamera->m_vView,0.05,0,1,0);
+	}
+	if (temp[VK_NUMPAD6])
+	{
+		m_theModel->thirdpersoncamera->RotateAroundPoint(m_theModel->thirdpersoncamera->m_vView, -0.05, 0, 1, 0);
 	}
 
 }

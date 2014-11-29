@@ -368,6 +368,7 @@ LRESULT CALLBACK MVC_View::MsgProc( HWND hWnd, // Handle For This Window
 			m_MouseInfo.m_last_x = diffX;
 			m_MouseInfo.m_last_y = diffY;
 
+
 			RECT WindowRect;
 			GetWindowRect(hWnd, &WindowRect);
 			ClipCursor(&WindowRect);

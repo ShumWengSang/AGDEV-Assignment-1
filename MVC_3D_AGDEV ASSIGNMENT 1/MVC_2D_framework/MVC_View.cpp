@@ -69,18 +69,19 @@ BOOL MVC_View::Draw(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear Screen And Depth Buffer
 	glLoadIdentity(); // ReSet The Current Modelview Matrix
-
 	glColor3f(1,1,1);
-	Printw(5,30,"FPS: %.2f",MVCTime::GetInstance()->GetFPS());
 
-	m_theModel->Camera2->Update(DrawObject, DrawScene,this);
 
+	m_theModel->thirdpersoncamera->UpdateLookAt();
 	//m_theModel->theCamera.Update(Vector3D(m_theModel->x,m_theModel->y, m_theModel->z));
 
+	DrawScene();
+	Draw3DSGrid();
+	glTranslatef(m_theModel->thirdpersoncamera->m_vView.m_x, -1, m_theModel->thirdpersoncamera->m_vView.m_z);
+	DrawObject();
 
-
-
-
+	Printw(30,10,"FPS: %.2f",MVCTime::GetInstance()->GetFPS());
+	//std::cout << "FPS: " << MVCTime::GetInstance()->GetFPS() << std::endl;
 
 
 
@@ -107,7 +108,6 @@ int MVC_View::InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 void MVC_View::DrawObject()
 {
 	glPushMatrix();
-	glTranslatef(m_theModel->x,m_theModel->y, m_theModel->z); // Move Left 1.5 Units And Into The Screen 6.0
 //	glRotatef(rtri, 0.0f, 1.0f, 0.0f); // Rotate The Triangle On The Y axis ( NEW )
 	glBegin(GL_TRIANGLES); // Start Drawing A Triangle
 	glColor3f(1.0f, 0.0f, 0.0f); // Set Top Point Of Triangle To Red
@@ -122,6 +122,7 @@ void MVC_View::DrawObject()
 
 void MVC_View::DrawScene()
 {
+	glPushMatrix();
 	m_theModel->theBox.Draw();
 //	m_theModel->theFrustum->Draw();
 	
@@ -130,4 +131,33 @@ void MVC_View::DrawScene()
 	m_theModel->theCamera.SetHUD(true);
 	m_theModel->theHUD.Draw();
 	m_theModel->theCamera.SetHUD(false);
+	glPopMatrix();
+}
+
+void MVC_View::Draw3DSGrid()
+{
+	// This function was added to give a better feeling of moving around.
+	// A black background just doesn't give it to ya :)  We just draw 100
+	// green lines vertical and horizontal along the X and Z axis.
+
+	// Turn the lines GREEN
+	glColor3ub(0, 255, 0);
+
+	// Draw a 1x1 grid along the X and Z axis'
+	for (float i = -50; i <= 50; i += 1)
+	{
+		// Start drawing some lines
+		glBegin(GL_LINES);
+
+		// Do the horizontal lines (along the X)
+		glVertex3f(-50, 0, i);
+		glVertex3f(50, 0, i);
+
+		// Do the vertical lines (along the Z)
+		glVertex3f(i, 0, -50);
+		glVertex3f(i, 0, 50);
+
+		// Stop drawing lines
+		glEnd();
+	}
 }

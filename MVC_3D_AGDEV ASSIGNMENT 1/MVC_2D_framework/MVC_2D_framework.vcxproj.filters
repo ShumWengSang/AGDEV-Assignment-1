@@ -87,11 +87,8 @@
     <ClCompile Include="SceneGraph\Transform.cpp">
       <Filter>Source Files\Scene Graph</Filter>
     </ClCompile>
-    <ClCompile Include="QuarternionCamera.cpp">
+    <ClCompile Include="ThirdPersonCamera.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Quarternion.cpp">
-      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,11 +143,8 @@
     <ClInclude Include="SceneGraph\Transform.h">
       <Filter>Header Files\Scene Graph</Filter>
     </ClInclude>
-    <ClInclude Include="QuarternionCamera.h">
+    <ClInclude Include="ThirdPersonCamera.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Quarternion.h">
-      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
