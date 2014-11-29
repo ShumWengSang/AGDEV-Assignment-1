@@ -76,7 +76,6 @@ BOOL MVC_View::Draw(void)
 	//m_theModel->theCamera.Update(Vector3D(m_theModel->x,m_theModel->y, m_theModel->z));
 
 	DrawScene();
-	Draw3DSGrid();
 	glTranslatef(m_theModel->thirdpersoncamera->m_vView.m_x, -1, m_theModel->thirdpersoncamera->m_vView.m_z);
 	DrawObject();
 
@@ -125,7 +124,7 @@ void MVC_View::DrawScene()
 	glPushMatrix();
 	m_theModel->theBox.Draw();
 //	m_theModel->theFrustum->Draw();
-	
+	Draw3DSGrid();
 
 
 	m_theModel->theCamera.SetHUD(true);
