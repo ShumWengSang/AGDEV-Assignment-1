@@ -8,8 +8,10 @@ Camera::Camera(void)
 	SetCameraType(LAND_CAM);
 	Reset();
 	angle = 0;
+	Downangle = 30;
+	float rad = Downangle * (1 / (180 / PI));
 	SetPosition(0.0, 2.0, -5.0);
-	SetDirection(0.0, 0.0, 1.0);
+	SetDirection(0.0, -sin(rad), -cos(rad));
 	u = 0; v = 0; u1 = 0; v1 = 0;
 	fov = 50;
 	onground = true;
@@ -17,6 +19,7 @@ Camera::Camera(void)
 	jump = 0;
 	gravity = -0.5;
 	Distance = 10;
+
 }
 
 Camera::Camera(CAM_TYPE ct)
@@ -25,8 +28,11 @@ Camera::Camera(CAM_TYPE ct)
 	SetCameraType(ct);
 	Reset();
 	angle = 0;
+	Downangle = 30;
 	SetPosition(0.0, 2.0, -5.0);
-	SetDirection(0.0, 0.0, 1.0);
+	float rad = Downangle * (1 / (180 / PI));
+	SetPosition(0.0, 2.0, -5.0);
+	SetDirection(0.0, -sin(rad), -cos(rad));
 	u = 0; v = 0; u1 = 0; v1 = 0;
 	fov = 50;
 	onground = true;
@@ -34,6 +40,7 @@ Camera::Camera(CAM_TYPE ct)
 	jump = 0;
 	gravity = -0.5;
 	Distance = 10;
+
 }
 
 Camera::~Camera(void)
@@ -48,8 +55,8 @@ void Camera::Reset(void)
 {
 	Position = Vector3D(0.0, 0.0, 0.0);
 	Along = Vector3D(1.0, 0.0, 0.0);
-	Up = Vector3D(0.0, 1.0, 0.0);
-	Forward = Vector3D(0.0, 0.0, -1.0);
+	Up = Vector3D(0.0, 1, 0.0);
+	Forward = Vector3D(0.0, 0 , 1);
 	//	Update();
 
 	MAXSPEED_MOVE = 1.0f;
@@ -63,14 +70,21 @@ void Camera::Update() {
 }
 
 void Camera::Update(Vector3D theTarget) {
-	static Vector3D theOldPosition(0,0,0);
+	static Vector3D theOldPosition(10,10,10);
 
 	if (theOldPosition != theTarget)
 	{
 
-		//Do the third person camera calculations
+		//Do the third person camera calculations to get camera behind object.
 		Vector3D theNewPos = CalculateDistance(theTarget);
-		SetPosition(theNewPos.m_x, theNewPos.m_y, theNewPos.m_z);
+//
+		float rad = Downangle * (1 / (180 / PI));
+		float theUpPosition = sin(rad) * Distance;
+		//Look down towards object
+		//SetDirection((theTarget -Position).NormalizedVector3D());
+
+
+		SetPosition(theNewPos.m_x, theNewPos.m_y + theUpPosition, theNewPos.m_z);
 
 		theOldPosition = theTarget;
 	}
@@ -307,7 +321,7 @@ void Camera::crouch()
 
 Vector3D Camera::CalculateDistance(Vector3D theFirstPosition)
 {
-	//First position if position of the object
+	//First position is position of the object
 
 	//The idea here is to find the direction of the target
 	//Than put your camera right behind him.

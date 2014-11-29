@@ -72,6 +72,7 @@ private:
 	float u, u1, v, v1;
 
 	float Distance;
+	float Downangle;
 	Vector3D CalculateDistance(Vector3D theFirstPosition);
 	
 };

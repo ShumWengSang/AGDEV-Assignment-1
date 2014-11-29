@@ -17,8 +17,9 @@
 
 //extern bool LoadTGA(TextureImage *texture, char *filename);
 
-MVC_Model::MVC_Model(void) : theCamera()
-	, theFrustum(NULL)
+MVC_Model::MVC_Model(void) : theCamera(),
+	Camera2(),
+	theFrustum(NULL)
 {
 	m_timer=MVCTime::GetInstance();
 	x = 0; y = 0; z = 0;

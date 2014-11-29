@@ -29,6 +29,8 @@
 #include "HUD.h"
 #endif
 
+#include "QuarternionCamera.h"
+
 class MVCTime;
 
 class MVC_Model
@@ -63,6 +65,8 @@ public:
 
 	//TESTING CODES
 	float x, y, z;
+
+	QuarternionCamera * Camera2;
 private: 
 };
 

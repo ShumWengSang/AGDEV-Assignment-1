@@ -73,34 +73,14 @@ BOOL MVC_View::Draw(void)
 	glColor3f(1,1,1);
 	Printw(5,30,"FPS: %.2f",MVCTime::GetInstance()->GetFPS());
 
+	m_theModel->Camera2->Update(DrawObject, DrawScene,this);
+
+	//m_theModel->theCamera.Update(Vector3D(m_theModel->x,m_theModel->y, m_theModel->z));
 
 
-	m_theModel->theCamera.Update(Vector3D(m_theModel->x,m_theModel->y, m_theModel->z));
-	//m_theModel->theCamera.Update();
-	//m_theModel->theCamera.SetDirection(m_theModel->x, m_theModel->y, m_theModel->z);
-	//m_theModel->theCamera.SetPosition(m_theModel->x, m_theModel->y, m_theModel->z);
-
-	glPushMatrix();
-	glTranslatef(m_theModel->x,m_theModel->y, m_theModel->z); // Move Left 1.5 Units And Into The Screen 6.0
-//	glRotatef(rtri, 0.0f, 1.0f, 0.0f); // Rotate The Triangle On The Y axis ( NEW )
-	glBegin(GL_TRIANGLES); // Start Drawing A Triangle
-	glColor3f(1.0f, 0.0f, 0.0f); // Set Top Point Of Triangle To Red
-	glVertex3f(0.0f, 1.0f, 0.0f); // First Point Of The Triangle
-	glColor3f(0.0f, 1.0f, 0.0f); // Set Left Point Of Triangle To Green
-	glVertex3f(-1.0f, -1.0f, 0.0f); // Second Point Of The Triangle
-	glColor3f(0.0f, 0.0f, 1.0f); // Set Right Point Of Triangle To Blue
-	glVertex3f(1.0f, -1.0f, 0.0f); // Third Point Of The Triangle
-	glEnd(); // Done Drawing The Triangle
-	glPopMatrix();
-
-	m_theModel->theBox.Draw();
-//	m_theModel->theFrustum->Draw();
-	
 
 
-	m_theModel->theCamera.SetHUD(true);
-	m_theModel->theHUD.Draw();
-	m_theModel->theCamera.SetHUD(false);
+
 
 
 
@@ -124,3 +104,30 @@ int MVC_View::InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	return TRUE; // Initialization Went OK
 }
 
+void MVC_View::DrawObject()
+{
+	glPushMatrix();
+	glTranslatef(m_theModel->x,m_theModel->y, m_theModel->z); // Move Left 1.5 Units And Into The Screen 6.0
+//	glRotatef(rtri, 0.0f, 1.0f, 0.0f); // Rotate The Triangle On The Y axis ( NEW )
+	glBegin(GL_TRIANGLES); // Start Drawing A Triangle
+	glColor3f(1.0f, 0.0f, 0.0f); // Set Top Point Of Triangle To Red
+	glVertex3f(0.0f, 1.0f, 0.0f); // First Point Of The Triangle
+	glColor3f(0.0f, 1.0f, 0.0f); // Set Left Point Of Triangle To Green
+	glVertex3f(-1.0f, -1.0f, 0.0f); // Second Point Of The Triangle
+	glColor3f(0.0f, 0.0f, 1.0f); // Set Right Point Of Triangle To Blue
+	glVertex3f(1.0f, -1.0f, 0.0f); // Third Point Of The Triangle
+	glEnd(); // Done Drawing The Triangle
+	glPopMatrix();
+}
+
+void MVC_View::DrawScene()
+{
+	m_theModel->theBox.Draw();
+//	m_theModel->theFrustum->Draw();
+	
+
+
+	m_theModel->theCamera.SetHUD(true);
+	m_theModel->theHUD.Draw();
+	m_theModel->theCamera.SetHUD(false);
+}

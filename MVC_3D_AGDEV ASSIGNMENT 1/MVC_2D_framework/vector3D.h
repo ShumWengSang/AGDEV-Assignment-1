@@ -10,6 +10,8 @@
 #include "SceneGraph\Matrix4x4.h"
 #endif
 
+#define PI 3.14156
+
 class Vector3D
 {
 public:

@@ -88,6 +88,8 @@
     <ClCompile Include="MVC_Model.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MVCtime.cpp" />
+    <ClCompile Include="Quarternion.cpp" />
+    <ClCompile Include="QuarternionCamera.cpp" />
     <ClCompile Include="SceneGraph\Matrix4x4.cpp" />
     <ClCompile Include="SceneGraph\Model.cpp" />
     <ClCompile Include="SceneGraph\Node.cpp" />
@@ -107,6 +109,8 @@
     <ClInclude Include="MVC_Model.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MVCtime.h" />
+    <ClInclude Include="Quarternion.h" />
+    <ClInclude Include="QuarternionCamera.h" />
     <ClInclude Include="SceneGraph\Matrix4x4.h" />
     <ClInclude Include="SceneGraph\Model.h" />
     <ClInclude Include="SceneGraph\Node.h" />
