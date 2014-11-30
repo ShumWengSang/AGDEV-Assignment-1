@@ -13,6 +13,16 @@ CModel::CModel(void)
 	red = 128;
 	green = 255;
 	blue = 0;
+
+	NearTopLeft.Set(1, 1, 1);
+	NearTopRight.Set(-1, 1, 1);
+	NearBottomLeft.Set(1, -1, 1);
+	NearBottomRight.Set(-1, -1, 1);
+
+	FarTopLeft.Set(1, 1, -1);
+	FarTopRight.Set(-1, 1, -1);
+	FarBottomLeft.Set(1, -1, -1);
+	FarBottomRight.Set(-1, -1, -1);
 }
 
 CModel::~CModel(void)
@@ -81,7 +91,7 @@ void CModel::Draw(void)
 	glEnd();
 	glPopMatrix();
 
-		// Draw the lines of the Frustum
+		// Draw the lines of the BOXES
 		glColor3f(1.0f, 1.0f, 1.0f);
 		glLineWidth(5);
 		glBegin( GL_LINES );

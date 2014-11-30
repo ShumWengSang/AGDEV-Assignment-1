@@ -235,11 +235,11 @@ void MVC_Controller::ProcKeyboard()
 	}
 	if (temp[VK_NUMPAD4])
 	{
-		m_theModel->thirdpersoncamera->RotateAroundPoint(m_theModel->thirdpersoncamera->m_vView,0.05,0,1,0);
+		m_theModel->theRoot->ApplyTranslate( 0.01f, 0.0f, 0.0f );
 	}
 	if (temp[VK_NUMPAD6])
 	{
-		m_theModel->thirdpersoncamera->RotateAroundPoint(m_theModel->thirdpersoncamera->m_vView, -0.05, 0, 1, 0);
+		m_theModel->theRoot->ApplyTranslate(-0.01f, 0.0f, 0.0f);
 	}
 
 }

@@ -123,9 +123,10 @@ void MVC_View::DrawScene()
 {
 	glPushMatrix();
 	m_theModel->theBox.Draw();
-//	m_theModel->theFrustum->Draw();
-	Draw3DSGrid();
 
+	Draw3DSGrid();
+	m_theModel->theRoot->Draw();
+	m_theModel->theFrustum->Draw();
 
 	m_theModel->theCamera.SetHUD(true);
 	m_theModel->theHUD.Draw();

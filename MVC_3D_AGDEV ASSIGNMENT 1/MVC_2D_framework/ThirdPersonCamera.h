@@ -1,5 +1,10 @@
 #pragma once
+
+#ifndef __THIRDPERSONCAMERA_H__
+#define __THIRDPERSONCAMERA_H__
+#ifndef __VECTOR3D_H__
 #include "vector3D.h"
+#endif
 //
 //REDOING THE ENTIRE CAMERA FROM GROND UP WITH A
 //THIRD PERSON CAMERA IN MIND
@@ -42,3 +47,4 @@ public:
 	void Update();
 };
 
+#endif

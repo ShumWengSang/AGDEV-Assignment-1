@@ -88,7 +88,10 @@
       <Filter>Source Files\Scene Graph</Filter>
     </ClCompile>
     <ClCompile Include="ThirdPersonCamera.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Model Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Mis_ModelVectorCallers.cpp">
+      <Filter>Source Files\Scene Graph</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,7 +147,7 @@
       <Filter>Header Files\Scene Graph</Filter>
     </ClInclude>
     <ClInclude Include="ThirdPersonCamera.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Model Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

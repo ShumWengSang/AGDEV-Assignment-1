@@ -29,7 +29,11 @@
 #include "HUD.h"
 #endif
 
+#ifndef __THIRDPERSONCAMERA_H__
 #include "ThirdPersonCamera.h"
+#endif
+
+#include "SceneGraph\\SceneNode.h"
 
 class MVCTime;
 
@@ -56,11 +60,13 @@ public:
 	MVCTime* m_timer;
 	CFrustum* theFrustum;
 	ThirdPersonCamera* thirdpersoncamera;
+	CSceneNode *theRoot;
 
+	Camera theCamera;
 	HUD theHUD;
 	SkyBox theBox;
-	Camera theCamera;
 
+	void FrustumChecking();
 
 	//DISTANCE FROM OBJECT TO CAMERA
 	int distance;

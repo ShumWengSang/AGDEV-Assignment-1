@@ -83,6 +83,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Mis_ModelVectorCallers.cpp" />
     <ClCompile Include="MVC_Controller.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MVC_Model.cpp" />

@@ -23,6 +23,8 @@ class CModel
 {
 private:
 	Vector3D vTopLeft, vBottomRight;
+
+
 	float red, green, blue;
 public:
 	CModel(void);
@@ -31,6 +33,9 @@ public:
 	void DrawSphere(void);
 	void Draw(void);
 	void SetColor(const float red, const float green, const float blue);
+
+	Vector3D NearTopLeft, NearTopRight, NearBottomLeft, NearBottomRight;
+	Vector3D FarTopLeft, FarTopRight, FarBottomLeft, FarBottomRight;
 
 	// Get the top left of the bounding box of the instance
 	Vector3D GetTopLeft(void);
