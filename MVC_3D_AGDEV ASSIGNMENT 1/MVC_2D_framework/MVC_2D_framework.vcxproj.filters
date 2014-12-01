@@ -93,6 +93,9 @@
     <ClCompile Include="Mis_ModelVectorCallers.cpp">
       <Filter>Source Files\Scene Graph</Filter>
     </ClCompile>
+    <ClCompile Include="CodeDump.cpp">
+      <Filter>Source Files\Scene Graph</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">

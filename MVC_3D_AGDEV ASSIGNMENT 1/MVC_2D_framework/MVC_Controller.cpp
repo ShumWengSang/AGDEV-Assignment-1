@@ -207,20 +207,20 @@ void MVC_Controller::ProcKeyboard()
 	}
 	if (temp[ProcKeys('d')])
 	{
-		m_theModel->thirdpersoncamera->StrafeCamera(1);
+		m_theModel->thirdpersoncamera->StrafeCamera(1 * theTimer->GetDelta());
 	}
 	else if(temp[ProcKeys('a')])
 	{
-		m_theModel->thirdpersoncamera->StrafeCamera(-1);
+		m_theModel->thirdpersoncamera->StrafeCamera(-1 * theTimer->GetDelta());
 	}
 
 	if(temp[ProcKeys('w')])
 	{
-		m_theModel->thirdpersoncamera->MoveCamera(1);
+		m_theModel->thirdpersoncamera->MoveCamera(1 * theTimer->GetDelta());
 	}
 	if(temp[ProcKeys('s')])
 	{
-		m_theModel->thirdpersoncamera->MoveCamera(-1);
+		m_theModel->thirdpersoncamera->MoveCamera(-1 * theTimer->GetDelta());
 	}
 
 
@@ -233,11 +233,11 @@ void MVC_Controller::ProcKeyboard()
 	{
 		m_theModel->thirdpersoncamera->MoveCamera(-1);
 	}
-	if (temp[VK_NUMPAD4])
+	if (temp[VK_F3])
 	{
 		m_theModel->theRoot->ApplyTranslate( 0.01f, 0.0f, 0.0f );
 	}
-	if (temp[VK_NUMPAD6])
+	if (temp[VK_F4])
 	{
 		m_theModel->theRoot->ApplyTranslate(-0.01f, 0.0f, 0.0f);
 	}

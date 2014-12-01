@@ -126,16 +126,13 @@ void MVC_Model::Update(void)
 
 		if (theRoot)
 		{
-			theRoot->ApplyRotate(0.5f, 0, 1, 0);
+			theRoot->ApplyRotate(0.5f * m_timer->GetDelta(), 0, 1, 0);
 		}
 	}
 }
 
 void MVC_Model::FrustumChecking()
 {
-	bool m_bContainmentCheck_TopLeft = theFrustum->ContainmentCheck(theRoot->GetTopLeft());
-	bool m_bContainmentCheck_BottomRight = theFrustum->ContainmentCheck(theRoot->GetBottomRight());
-
 	bool m_bContainmentCheck_NearTopLeft = theFrustum->ContainmentCheck(theRoot->GetNearTopLeft());
 	bool m_bContainmentCheck_NearBottomRight = theFrustum->ContainmentCheck(theRoot->GetNearTopRight());
 	bool m_bContainmentCheck_NearTopRight = theFrustum->ContainmentCheck(theRoot->GetNearBottomLeft());
@@ -173,64 +170,71 @@ void MVC_Model::FrustumChecking()
 		}
 		for (int i = 0; i < theRoot->GetNumOfChild(); i++)
 		{
-			Vector3D NearTopLeft, NearTopRight, NearBottomLeft, NearBottomRight;
-			Vector3D FarTopLeft, FarTopRight, FarBottomLeft, FarBottomRight;
-			const int childID = theRoot->GetSceneNodeID() * 10 + i + 1;
-			if (
-				(theRoot->GetNearTopLeft(childID, NearTopLeft))
-				&& (theRoot->GetNearTopRight(childID, NearTopRight))
-				&& (theRoot->GetNearBottomLeft(childID, NearBottomLeft))
-				&& (theRoot->GetNearBottomRight(childID, NearBottomRight))
+			const int ID = theRoot->GetSceneNodeID() * 10 + i + 1;
+			FrustumChecking(theRoot->GetNode(ID), ID);
+		}
+	}
+}
 
-				&& (theRoot->GetFarTopLeft(childID, FarTopLeft))
-				&& (theRoot->GetFarTopRight(childID, FarTopRight))
-				&& (theRoot->GetFarBottomLeft(childID, FarBottomLeft))
-				&& (theRoot->GetFarBottomRight(childID, FarBottomRight))
-				)
+//Not a fully soft-coded and recursive method. Will change if got time.
+
+void MVC_Model::FrustumChecking(CSceneNode * theParent, const int thisID)
+{
+	Vector3D NearTopLeft, NearTopRight, NearBottomLeft, NearBottomRight;
+	Vector3D FarTopLeft, FarTopRight, FarBottomLeft, FarBottomRight;
+
+	if (
+		(theRoot->GetNearTopLeft(thisID, NearTopLeft))
+		&& (theRoot->GetNearTopRight(thisID, NearTopRight))
+		&& (theRoot->GetNearBottomLeft(thisID, NearBottomLeft))
+		&& (theRoot->GetNearBottomRight(thisID, NearBottomRight))
+
+		&& (theRoot->GetFarTopLeft(thisID, FarTopLeft))
+		&& (theRoot->GetFarTopRight(thisID, FarTopRight))
+		&& (theRoot->GetFarBottomLeft(thisID, FarBottomLeft))
+		&& (theRoot->GetFarBottomRight(thisID, FarBottomRight))
+		)
+	{
+
+		bool m_bCheckNearTopLeft = theFrustum->ContainmentCheck(NearTopLeft);
+		bool m_bCheckNearTopRight = theFrustum->ContainmentCheck(NearTopRight);
+		bool m_bCheckNearBottomLeft = theFrustum->ContainmentCheck(NearBottomLeft);
+		bool m_bCheckNearBottomRight = theFrustum->ContainmentCheck(NearBottomRight);
+
+		bool m_bCheckFarTopLeft = theFrustum->ContainmentCheck(FarTopLeft);
+		bool m_bCheckFarTopRight = theFrustum->ContainmentCheck(FarTopRight);
+		bool m_bCheckFarBottomLeft = theFrustum->ContainmentCheck(FarBottomLeft);
+		bool m_bCheckFarBottomRight = theFrustum->ContainmentCheck(FarBottomRight);
+
+		if (m_bCheckNearTopLeft && m_bCheckNearTopRight
+			&& m_bCheckNearBottomLeft && m_bCheckNearBottomRight
+			&& m_bCheckFarTopLeft && m_bCheckFarTopRight
+			&& m_bCheckFarBottomLeft && m_bCheckFarBottomRight)
+		{
+			// The scene graph is inside the frustum!
+			theParent->SetColor(1.0f, 1.0f, 1.0f);
+		}
+		else
+		{
+			if (!(m_bCheckNearTopLeft || m_bCheckNearTopRight
+				|| m_bCheckNearBottomLeft || m_bCheckNearBottomRight
+				|| m_bCheckFarTopLeft || m_bCheckFarTopRight
+				|| m_bCheckFarBottomLeft || m_bCheckFarBottomRight))
 			{
-				bool m_bCheckNearTopLeft = theFrustum->ContainmentCheck(NearTopLeft);
-				bool m_bCheckNearTopRight = theFrustum->ContainmentCheck(NearTopRight);
-				bool m_bCheckNearBottomLeft = theFrustum->ContainmentCheck(NearBottomLeft);
-				bool m_bCheckNearBottomRight = theFrustum->ContainmentCheck(NearBottomRight);
+				//The scene graph is not inside the frustum
+				theParent->SetColor(0, 0, 0);
 
-				bool m_bCheckFarTopLeft = theFrustum->ContainmentCheck(FarTopLeft);
-				bool m_bCheckFarTopRight = theFrustum->ContainmentCheck(FarTopRight);
-				bool m_bCheckFarBottomLeft = theFrustum->ContainmentCheck(FarBottomLeft);
-				bool m_bCheckFarBottomRight = theFrustum->ContainmentCheck(FarBottomRight);
+			}
 
-				if ((m_bCheckNearTopLeft) &&
-					(m_bCheckNearTopRight) &&
-					(m_bCheckNearBottomLeft) &&
-					(m_bCheckNearBottomRight) &&
-
-					(m_bCheckFarTopLeft) &&
-					(m_bCheckFarTopRight) &&
-					(m_bCheckFarBottomLeft) &&
-					(m_bCheckFarBottomRight)
-					)
-				{
-					// The child is INSIDE THE FRUSTUM
-					theRoot->SetColorForChild(childID, 1, 1.0f, 1);
-				}
-				else if (!
-					((m_bCheckNearTopLeft) ||
-					(m_bCheckNearTopRight) ||
-					(m_bCheckNearBottomLeft) ||
-					(m_bCheckNearBottomRight) ||
-
-					(m_bCheckFarTopLeft) ||
-					(m_bCheckFarTopRight) ||
-					(m_bCheckFarBottomLeft) ||
-					(m_bCheckFarBottomRight)
-					))
-				{
-					// The child is OUTSIDE of the frustum!
-					theRoot->SetColorForChild(childID, 0, 0, 0);
-				}
-				else
-				{
-					theRoot->SetColorForChild(childID, 1, 0, 0.0f);
-				}
+			else
+			{
+				theParent->SetColor(1, 0, 0);
+				//Scene graph halfway in.
+			}
+			for (int i = 0; i < theParent->GetNumOfChild(); i++)
+			{
+				const int ID = theParent->GetSceneNodeID() * 10 + i + 1;
+				FrustumChecking(theParent->GetNode(ID),ID);
 			}
 		}
 	}

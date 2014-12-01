@@ -67,6 +67,7 @@ public:
 	SkyBox theBox;
 
 	void FrustumChecking();
+	void FrustumChecking(CSceneNode* theParent, const int thisID);
 
 	//DISTANCE FROM OBJECT TO CAMERA
 	int distance;

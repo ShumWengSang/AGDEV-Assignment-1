@@ -81,6 +81,7 @@
   <ItemGroup>
     <ClCompile Include="basicShape.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="CodeDump.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Mis_ModelVectorCallers.cpp" />
