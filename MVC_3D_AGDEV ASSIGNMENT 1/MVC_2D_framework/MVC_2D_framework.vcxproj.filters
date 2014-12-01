@@ -96,6 +96,9 @@
     <ClCompile Include="CodeDump.cpp">
       <Filter>Source Files\Scene Graph</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -151,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="ThirdPersonCamera.h">
       <Filter>Header Files\Model Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

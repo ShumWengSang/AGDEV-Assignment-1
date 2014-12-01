@@ -82,6 +82,7 @@
     <ClCompile Include="basicShape.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="CodeDump.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Mis_ModelVectorCallers.cpp" />
@@ -104,6 +105,7 @@
   <ItemGroup>
     <ClInclude Include="basicShape.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="MVC_Controller.h" />

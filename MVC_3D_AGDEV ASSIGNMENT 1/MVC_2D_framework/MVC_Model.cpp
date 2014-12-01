@@ -110,8 +110,6 @@ bool MVC_Model::InitPhase2(void)
 // Update the model
 void MVC_Model::Update(void)
 {
-	//theCamera.calculations(diffX, diffY);
-
 	m_timer->UpdateTime();
 	thirdpersoncamera->Update();
 	if (m_timer->TestFramerate())
