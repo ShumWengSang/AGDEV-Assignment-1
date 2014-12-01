@@ -241,5 +241,4 @@ void MVC_Controller::ProcKeyboard()
 	{
 		m_theModel->theRoot->ApplyTranslate(-0.01f, 0.0f, 0.0f);
 	}
-
 }

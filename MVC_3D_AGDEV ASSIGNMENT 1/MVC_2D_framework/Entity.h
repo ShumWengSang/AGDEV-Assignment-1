@@ -3,7 +3,7 @@
 #include <vector>
 
 enum EEntity{
-	HEALTH = 0,
+	BALL = 0,
 
 };
 
