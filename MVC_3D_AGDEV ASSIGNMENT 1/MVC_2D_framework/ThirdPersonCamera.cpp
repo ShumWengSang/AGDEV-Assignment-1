@@ -136,6 +136,17 @@ void ThirdPersonCamera::MoveCamera(float speed)
 	m_vView.m_z += vVector.m_z * speed;			// Add our acceleration to our view's Z
 }
 
+///////////////////////////////// MOVE CAMERA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+/////
+/////	This will move the camera upward or downward depending on the speed
+/////
+///////////////////////////////// MOVE CAMERA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
+void ThirdPersonCamera::MoveUpCamera(float speed)
+{
+	Vector3D vVector = m_vView - m_vPosition;
+}
+
 ///////////////////////////////// LOOK AT \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
 /////	This updates the lookat when you call on it every frame.
@@ -144,8 +155,8 @@ void ThirdPersonCamera::MoveCamera(float speed)
 
 void ThirdPersonCamera::UpdateLookAt()
 {
-	gluLookAt(m_vPosition.m_x, m_vPosition.m_y, m_vPosition.m_z,
-		m_vView.m_x, m_vView.m_y, m_vView.m_z,
+	gluLookAt(m_vPosition.m_x , m_vPosition.m_y, m_vPosition.m_z,
+		m_vView.m_x , m_vView.m_y, m_vView.m_z,
 		m_vUpVector.m_x, m_vUpVector.m_y, m_vUpVector.m_z);
 }
 

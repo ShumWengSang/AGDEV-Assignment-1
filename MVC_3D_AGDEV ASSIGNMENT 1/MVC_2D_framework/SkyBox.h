@@ -22,6 +22,7 @@ public:
 	int textureID[6];
 	void Draw();
 
+	float Height, Width;
 	float GetTop();
 	float GetBottom();
 	float GetLeft();

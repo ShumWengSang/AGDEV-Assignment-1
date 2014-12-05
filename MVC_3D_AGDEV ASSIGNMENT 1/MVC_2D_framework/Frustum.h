@@ -46,5 +46,6 @@ public:
 	void Draw(void);
 	// Perform containment check for a position with respect to the Frustum
 	bool ContainmentCheck(const Vector3D position);
+	int ContainmentCheckSpheres(Vector3D position, float radius);
 };
 #endif;

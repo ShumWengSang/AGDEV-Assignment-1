@@ -33,6 +33,8 @@
 #include "ThirdPersonCamera.h"
 #endif
 
+#include "MazeGenerator.h"
+
 #include "SceneGraph\\SceneNode.h"
 
 class MVCTime;
@@ -46,6 +48,7 @@ public:
 	void Update(void);
 	bool Init(float fpsLimit);
 	bool InitPhase2(void);//init after view's init e.g Textures,stuff requiring screen size
+	float Rotate;
 	
 	float m_worldSizeX;
 	float m_worldSizeY;
@@ -67,7 +70,7 @@ public:
 	SkyBox theBox;
 
 	void FrustumChecking();
-	void FrustumChecking(CSceneNode* theParent, const int thisID);
+	void FrustumChecking(CSceneNode* thisNode, const int ParentID, const int thisID);
 
 	//DISTANCE FROM OBJECT TO CAMERA
 	int distance;
@@ -75,6 +78,9 @@ public:
 	//TESTING CODES
 	float x, y, z;
 
+	//MAZE
+	MazeGenerator theMaze;
+	TextureImage theImageDebugger;
 private: 
 };
 

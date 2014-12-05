@@ -10,6 +10,7 @@ public:
 	int m_x, m_y;
 	int m_last_x, m_last_y;
 	int m_Tempx, m_Tempx2;
+	float m_FinalTemp;
 	bool m_LButtonDown,m_RButtonDown,m_MButtonDown;
 	bool m_LButtonUp,m_RButtonUp,m_MButtonUp;
 	bool m_LButtonHold,m_RButtonHold,m_MButtonHold;
@@ -29,6 +30,7 @@ public:
 		m_Tempx = 0;
 		m_Tempx2 = 0;
 		Record = true;
+		m_FinalTemp = 0;
 	};
 
 	void SetMousePos( const int new_x, const int new_y )

@@ -85,12 +85,14 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="MazeGenerator.cpp" />
     <ClCompile Include="Mis_ModelVectorCallers.cpp" />
     <ClCompile Include="MVC_Controller.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MVC_Model.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MVCtime.cpp" />
+    <ClCompile Include="Obj.cpp" />
     <ClCompile Include="SceneGraph\Matrix4x4.cpp" />
     <ClCompile Include="SceneGraph\Model.cpp" />
     <ClCompile Include="SceneGraph\Node.cpp" />
@@ -108,10 +110,12 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="MazeGenerator.h" />
     <ClInclude Include="MVC_Controller.h" />
     <ClInclude Include="MVC_Model.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MVCtime.h" />
+    <ClInclude Include="Obj.h" />
     <ClInclude Include="SceneGraph\Matrix4x4.h" />
     <ClInclude Include="SceneGraph\Model.h" />
     <ClInclude Include="SceneGraph\Node.h" />

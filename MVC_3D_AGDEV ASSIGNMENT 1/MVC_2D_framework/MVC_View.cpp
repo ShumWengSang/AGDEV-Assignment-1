@@ -71,12 +71,11 @@ BOOL MVC_View::Draw(void)
 	glLoadIdentity(); // ReSet The Current Modelview Matrix
 	glColor3f(1,1,1);
 
+	m_theModel->theCamera.Update();
 
-	m_theModel->thirdpersoncamera->UpdateLookAt();
-	//m_theModel->theCamera.Update(Vector3D(m_theModel->x,m_theModel->y, m_theModel->z));
-
+	//m_theModel->thirdpersoncamera->UpdateLookAt();
 	DrawScene();
-	glTranslatef(m_theModel->thirdpersoncamera->m_vView.m_x, -1, m_theModel->thirdpersoncamera->m_vView.m_z);
+	glTranslatef(m_theModel->thirdpersoncamera->m_vView.m_x , -2, m_theModel->thirdpersoncamera->m_vView.m_z);
 	DrawObject();
 
 	Printw(30,10,"FPS: %.2f",MVCTime::GetInstance()->GetFPS());
@@ -122,11 +121,11 @@ void MVC_View::DrawObject()
 void MVC_View::DrawScene()
 {
 	glPushMatrix();
-	m_theModel->theBox.Draw();
+	//m_theModel->theBox.Draw();
 
 	Draw3DSGrid();
 	m_theModel->theRoot->Draw();
-	m_theModel->theFrustum->Draw();
+	//m_theModel->theFrustum->Draw();
 
 	m_theModel->theCamera.SetHUD(true);
 	m_theModel->theHUD.Draw();

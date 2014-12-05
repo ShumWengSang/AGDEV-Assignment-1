@@ -23,6 +23,10 @@
 #include "Matrix4x4.h"
 #endif
 
+#ifndef __VECTOR_H__
+#include "..\\vector3D.h"
+#endif
+
 class CSceneNode;
 
 class CTransform :
@@ -34,6 +38,7 @@ private:
 public:
 	CTransform(void);
 	CTransform( const float dx, const float dy, const float dz  );
+	CTransform(Vector3D Translate, Vector3D Scale);
 	~CTransform(void);
 
 	void PreRendering();

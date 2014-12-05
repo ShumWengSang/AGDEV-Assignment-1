@@ -39,6 +39,8 @@ public:
 	// This will move the camera forward or backward depending on the speed
 	void MoveCamera(float speed);
 
+	void MoveUpCamera(float speed);
+
 	//This is to call the lookat.
 	void UpdateLookAt();
 

@@ -96,8 +96,14 @@
     <ClCompile Include="CodeDump.cpp">
       <Filter>Source Files\Scene Graph</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
+    <ClCompile Include="MazeGenerator.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Obj.cpp">
+      <Filter>Source Files\Model Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Model Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,8 +161,14 @@
     <ClInclude Include="ThirdPersonCamera.h">
       <Filter>Header Files\Model Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="MazeGenerator.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Model Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Obj.h">
+      <Filter>Header Files\Model Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

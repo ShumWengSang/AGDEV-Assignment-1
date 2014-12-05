@@ -14,6 +14,13 @@ CTransform::CTransform( const float dx, const float dy, const float dz )
 	Mtx.Translatef( dx, dy, dz );
 }
 
+CTransform::CTransform(Vector3D Translate, Vector3D Scale)
+{
+	Mtx.Translatef(Translate.m_x, Translate.m_y, Translate.m_z);
+	Mtx.Scalef(Scale.m_x, Scale.m_y, Scale.m_z);
+}
+
+
 CTransform::~CTransform(void)
 {
 }

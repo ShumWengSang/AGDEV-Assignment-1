@@ -267,3 +267,23 @@ bool CFrustum::ContainmentCheck(const Vector3D position)
 	}
 	return true;
 }
+
+int CFrustum::ContainmentCheckSpheres(Vector3D position, float radius)
+{
+#define INSIDE 0
+#define OUTSIDE 1
+#define INTERSECT 3
+
+	float distance;
+	int result = INSIDE;
+
+	for (int i = 0; i < 6; i++) {
+		//distance = pl[i].distance(p);
+		if (distance < -radius)
+			return OUTSIDE;
+		else if (distance < radius)
+			result = INTERSECT;
+	}
+	return(result);
+
+}

@@ -11,7 +11,7 @@ Camera::Camera(void)
 	Downangle = 30;
 	float rad = Downangle * (1 / (180 / PI));
 	SetPosition(0.0, 2.0, -5.0);
-	SetDirection(0.0, -sin(rad), -cos(rad));
+	SetDirection(0.0,0, -1);
 	u = 0; v = 0; u1 = 0; v1 = 0;
 	fov = 50;
 	onground = true;
@@ -19,6 +19,8 @@ Camera::Camera(void)
 	jump = 0;
 	gravity = -0.5;
 	Distance = 10;
+
+	Reset();
 
 }
 
@@ -32,7 +34,7 @@ Camera::Camera(CAM_TYPE ct)
 	SetPosition(0.0, 2.0, -5.0);
 	float rad = Downangle * (1 / (180 / PI));
 	SetPosition(0.0, 2.0, -5.0);
-	SetDirection(0.0, -sin(rad), -cos(rad));
+	SetDirection(0.0, 0, -1);
 	u = 0; v = 0; u1 = 0; v1 = 0;
 	fov = 50;
 	onground = true;
@@ -41,6 +43,7 @@ Camera::Camera(CAM_TYPE ct)
 	gravity = -0.5;
 	Distance = 10;
 
+	Reset();
 }
 
 Camera::~Camera(void)
@@ -147,7 +150,7 @@ void Camera::Walk(GLfloat delta, bool mode)
 		if (delta < -MAXSPEED_MOVE)
 			delta = -MAXSPEED_MOVE;
 	}
-	Position.Set(Position.m_x + Forward.m_x * delta, Position.m_y, Position.m_z + Forward.m_z * delta);
+	Position.Set(Position.m_x + Forward.m_x * delta, Position.m_y + Forward.m_y * delta, Position.m_z + Forward.m_z * delta);
 }
 void Camera::Strafe(GLfloat delta, bool mode)
 {

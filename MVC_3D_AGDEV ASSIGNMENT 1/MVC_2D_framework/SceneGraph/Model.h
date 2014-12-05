@@ -19,6 +19,16 @@
 #pragma comment(lib, "opengl32.lib")
 #endif
 
+#ifndef __OBJ_H__
+#include "..\Obj.h"
+#endif
+enum WhatToDraw
+{
+	Model,
+	Cube,
+	Nothing
+};
+
 class CModel
 {
 private:
@@ -31,8 +41,11 @@ public:
 	~CModel(void);
 
 	void DrawSphere(void);
+	void DrawCube();
 	void Draw(void);
 	void SetColor(const float red, const float green, const float blue);
+
+
 
 	Vector3D NearTopLeft, NearTopRight, NearBottomLeft, NearBottomRight;
 	Vector3D FarTopLeft, FarTopRight, FarBottomLeft, FarBottomRight;
@@ -41,5 +54,12 @@ public:
 	Vector3D GetTopLeft(void);
 	// Get the bottomright of the bounding box of the instance
 	Vector3D GetBottomRight(void);
+
+	//Class pointer to the Obj.
+	//Use this to render the mesh.
+	Obj * theObj;
+
+	void InitObj();
+	WhatToDraw states;
 };
 #endif
