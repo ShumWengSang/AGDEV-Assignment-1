@@ -91,9 +91,12 @@ void CTransform::SetRotate( const float angle, const float rx, const float ry, c
 //	Mtx = Mtx * MtxBackToPosition;
 //}
 
-void CTransform::SetScale( const float sx, const float sy, const float sz  )
+void CTransform::SetScale( const float sx, const float sy, const float sz , bool Inherited )
 {
-	Mtx.Scalef( sx, sy, sz );
+	if (Inherited)
+		Mtx.InheritedScalef(sx, sy, sz);
+	else
+		Mtx.Scalef( sx, sy, sz );
 }
 
 void CTransform::ApplyTransform( Matrix4x4 newMTX )

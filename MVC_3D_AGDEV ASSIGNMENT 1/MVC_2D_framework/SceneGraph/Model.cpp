@@ -225,9 +225,10 @@ void CModel::DrawCube(void)
 	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	// Just in case we set all vertices to white.
-	glColor4f(1, 1, 1, 1);
+	glColor3f(red, green, blue);
 
 	// Render the front quad
+	if (theObj)
 	glBindTexture(GL_TEXTURE_2D, theObj->theTexture.texID);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex3f(vTopLeft.m_x, vTopLeft.m_y, vTopLeft.m_z);
@@ -237,6 +238,7 @@ void CModel::DrawCube(void)
 	glEnd();
 
 	// Render the back quad
+	if (theObj)
 	glBindTexture(GL_TEXTURE_2D, theObj->theTexture.texID);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex3f(vTopLeft.m_x, vTopLeft.m_y, vBottomRight.m_z);
@@ -247,6 +249,7 @@ void CModel::DrawCube(void)
 	glEnd();
 
 	// Render the left quad
+	if (theObj)
 	glBindTexture(GL_TEXTURE_2D, theObj->theTexture.texID);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex3f(vBottomRight.m_x, vTopLeft.m_y, vTopLeft.m_z);
@@ -256,6 +259,7 @@ void CModel::DrawCube(void)
 	glEnd();
 
 	// Render the right quad
+	if (theObj)
 	glBindTexture(GL_TEXTURE_2D, theObj->theTexture.texID);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex3f(vTopLeft.m_x, vTopLeft.m_y, vTopLeft.m_z);
@@ -265,6 +269,7 @@ void CModel::DrawCube(void)
 	glEnd();
 
 	// Render the top quad
+	if (theObj)
 	glBindTexture(GL_TEXTURE_2D, theObj->theTexture.texID);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 1); glVertex3f(vTopLeft.m_x, vTopLeft.m_y, vTopLeft.m_z);
@@ -274,6 +279,7 @@ void CModel::DrawCube(void)
 	glEnd();
 
 	// Render the bottom quad
+	if (theObj)
 	glBindTexture(GL_TEXTURE_2D, theObj->theTexture.texID);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex3f(vTopLeft.m_x, vBottomRight.m_y, vTopLeft.m_z);

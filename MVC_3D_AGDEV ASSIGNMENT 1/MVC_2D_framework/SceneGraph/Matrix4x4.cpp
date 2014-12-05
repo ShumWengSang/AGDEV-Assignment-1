@@ -53,6 +53,13 @@ void Matrix4x4::Scalef(float x,float y,float z)
 	matrix[INDEX4(2,2)] = z;
 }
 
+void Matrix4x4::InheritedScalef(float xScale, float yScale, float zScale)
+{
+	matrix[INDEX4(0, 0)] *= xScale;
+	matrix[INDEX4(1, 1)] *= yScale;
+	matrix[INDEX4(2, 2)] *= zScale;
+}
+
 void Matrix4x4::Rotatef(float angle, float x, float y, float z)
 {
 	angle *= (float) (3.141592f / 180.0f);

@@ -49,7 +49,7 @@ public:
 	void SetRotate( const float angle, const float rx, const float ry, const float rz  );
 	void SetRotate2( const float angle, const float rx, const float ry, const float rz, 
 					 const float offset_x, const float offset_y, const float offset_z );
-	void SetScale( const float sx, const float sy, const float sz  );
+	void SetScale( const float sx, const float sy, const float sz , bool );
 	void ApplyTransform( Matrix4x4 newMTX );
 	void GetOffset( float& x, float& y, float& z );
 	// Get the transformation matrix

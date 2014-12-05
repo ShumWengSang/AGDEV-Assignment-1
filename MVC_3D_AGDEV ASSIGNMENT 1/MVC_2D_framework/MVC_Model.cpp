@@ -72,21 +72,21 @@ bool MVC_Model::InitPhase2(void)
 	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping ( NEW )
 	
 
-	if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/bleached_front.tga"))				// Load The Font Texture
-		return false;	// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[1], "SkyBox/bleached_back.tga"))				// Load The Font Texture
-		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[2], "SkyBox/bleached_left.tga"))				// Load The Font Texture
-		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[3], "SkyBox/bleached_right.tga"))				// Load The Font Texture
-		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[4], "SkyBox/bleached_top.tga"))				// Load The Font Texture
-		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[5], "SkyBox/red_down.tga"))				// Load The Font Texture
-		return false;										// If Loading Failed, Return False
+	//if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/bleached_front.tga"))				// Load The Font Texture
+	//	return false;	// If Loading Failed, Return False
+	//if (!LoadTGA(&SkyBoxTextures[1], "SkyBox/bleached_back.tga"))				// Load The Font Texture
+	//	return false;										// If Loading Failed, Return False
+	//if (!LoadTGA(&SkyBoxTextures[2], "SkyBox/bleached_left.tga"))				// Load The Font Texture
+	//	return false;										// If Loading Failed, Return False
+	//if (!LoadTGA(&SkyBoxTextures[3], "SkyBox/bleached_right.tga"))				// Load The Font Texture
+	//	return false;										// If Loading Failed, Return False
+	//if (!LoadTGA(&SkyBoxTextures[4], "SkyBox/bleached_top.tga"))				// Load The Font Texture
+	//	return false;										// If Loading Failed, Return False
+	//if (!LoadTGA(&SkyBoxTextures[5], "SkyBox/red_down.tga"))				// Load The Font Texture
+	//	return false;										// If Loading Failed, Return False
 
-	if (!LoadTGA(&theImageDebugger, "button.tga"))				// Load The Font Texture
-		return false;										// If Loading Failed, Return False
+	//if (!LoadTGA(&theImageDebugger, "button.tga"))				// Load The Font Texture
+	//	return false;										// If Loading Failed, Return False
 
 
 	glDisable(GL_TEXTURE_2D);								// Disable Texture Mapping ( NEW )
@@ -123,25 +123,46 @@ bool MVC_Model::InitPhase2(void)
 			}
 			else if (theMaze.theMaze[MazeWidth][MazeHeight] == 1)
 			{
-				//This is the wall, so draw a cube here.
 				newModel = new CModel();
 				newModel->InitObj();
 				newModel->SetColor(1.0, 1.0, 0.0);
 				newModel->theObj->theTexture = theImageDebugger;
-				std::cout << theRoot->AddChild(new CTransform((float)(MazeWidth - WIDTH/2) * ratiox, 0, (float)(MazeHeight - HEIGHT/2 )* ratioy), newModel) << endl;
+
+				CTransform * theTransform = new CTransform((float)(MazeWidth - WIDTH / 2) * ratiox, 0, (float)(MazeHeight - HEIGHT / 2)* ratioy);
+				if (theMaze.theMaze[MazeWidth + 1][MazeHeight] == 1)
+				{
+					theTransform->SetScale(2.5, 1, 1,true);
+				}
+				if (theMaze.theMaze[MazeWidth - 1][MazeHeight] == 1)
+				{
+					theTransform->SetScale(-2.5, 1, 1, true);
+				}
+				if (theMaze.theMaze[MazeWidth][MazeHeight + 1])
+				{
+					theTransform->SetScale(1, 1, 2.5, true);
+				}
+				if (theMaze.theMaze[MazeWidth][MazeHeight - 1] == 1)
+				{
+					theTransform->SetScale(1, 1, -2.5, true);
+				}
+				//This is the wall, so draw a cube here.
+
+
+				std::cout << theRoot->AddChild(theTransform, newModel) << endl;
 				
 
-				//newModel = new CModel();
-				//newModel->SetColor(1.0, 0.0, 1.0);
-				//std::cout << theRoot->GetNode(10 + 1 * counter)->AddChild(new CTransform(0, 2, 0), newModel) << endl;
+				newModel = new CModel();
+				newModel->SetColor(1.0, 0.0, 1.0);
+				std::cout << theRoot->GetNode(10 + 1 * counter)->AddChild(new CTransform(0, 2, 0), newModel) << endl;
 
-				//newModel = new CModel();
-				//newModel->SetColor(0.0, 1.0, 1.0);
-				//std::cout << theRoot->GetNode(100 + 1 + 10 * counter )->AddChild(new CTransform(0, 2, 0), newModel) << endl;
+				newModel = new CModel();
+				newModel->SetColor(0.0, 1.0, 1.0);
+				std::cout << theRoot->GetNode(100 + 1 + 10 * counter )->AddChild(new CTransform(0, 2, 0), newModel) << endl;
 				counter++;
 			}
 		}
 	}
+	return true;
 }
 
 // Update the model
@@ -163,8 +184,9 @@ void MVC_Model::Update(void)
 		if (theRoot)
 		{
 			//theRoot->ApplyRotate((5.f + Rotate)* m_timer->GetDelta(), 0, 1, 0);
-			//theRoot->GetNode(111)->ApplyRotate(5.f, 0, 1, 0);
-
+			theRoot->GetNode(111)->ApplyRotate(5.f, 0, 1, 0);
+			theRoot->GetNode(111)->SetColor(1, 1, 0);
+			theRoot->GetNode(11)->SetColor(0, 1, 0);
 		}
 	}
 }

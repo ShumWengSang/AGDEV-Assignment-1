@@ -40,6 +40,7 @@ public:
 	void Translatef(float x,float y,float z);
 	void Rotatef(float angle,float x,float y,float z);
 	void Scalef(float xScale,float yScale,float zScale);
+	void InheritedScalef(float xScale, float yScale, float zScale);
 	void Finish();
 	void Clear();
 	void coutM();
