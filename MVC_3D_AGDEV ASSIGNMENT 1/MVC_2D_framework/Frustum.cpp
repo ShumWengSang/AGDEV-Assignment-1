@@ -7,7 +7,7 @@ CFrustum::CFrustum(void)
 	up.m_z = 0.0f;
 	angle = 0;
 
-	farDist = 15;
+	farDist = 100;
 	nearDist = 0.1f;
 
 	fPosition = Vector3D(0,0,-5);

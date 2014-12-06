@@ -97,7 +97,7 @@ int MVC_View::InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glEnable(GL_DEPTH_TEST); // Enables Depth Testing
 	glDepthFunc(GL_LEQUAL); // The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
-
+	glEnable(GL_CULL_FACE);
 	BuildFont();
 	
 	return TRUE; // Initialization Went OK
@@ -121,11 +121,21 @@ void MVC_View::DrawObject()
 void MVC_View::DrawScene()
 {
 	glPushMatrix();
-	//m_theModel->theBox.Draw();
+	m_theModel->theBox.Draw();
 
 	Draw3DSGrid();
-	m_theModel->theRoot->Draw();
-	//m_theModel->theFrustum->Draw();
+
+
+	if (m_theModel->ToggleFrustum)
+	{
+
+		m_theModel->FrustumChecking();
+		m_theModel->theFrustum->Draw();
+	}
+	else
+	{
+		m_theModel->theRoot->Draw();
+	}
 
 	m_theModel->theCamera.SetHUD(true);
 	m_theModel->theHUD.Draw();

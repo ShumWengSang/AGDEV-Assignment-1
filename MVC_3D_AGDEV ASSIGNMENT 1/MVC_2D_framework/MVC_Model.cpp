@@ -27,6 +27,7 @@ theFrustum(NULL)
 	distance = 10;
 	theFrustum = new CFrustum();
 	thirdpersoncamera = new ThirdPersonCamera();
+	ToggleFrustum = false;
 }
 
 MVC_Model::~MVC_Model(void)
@@ -35,6 +36,11 @@ MVC_Model::~MVC_Model(void)
 	{
 		delete theFrustum;
 		theFrustum = NULL;
+	}
+	if (thirdpersoncamera != NULL)
+	{
+		delete thirdpersoncamera;
+		thirdpersoncamera = NULL;
 	}
 }
 
@@ -72,21 +78,21 @@ bool MVC_Model::InitPhase2(void)
 	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping ( NEW )
 	
 
-	//if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/bleached_front.tga"))				// Load The Font Texture
-	//	return false;	// If Loading Failed, Return False
-	//if (!LoadTGA(&SkyBoxTextures[1], "SkyBox/bleached_back.tga"))				// Load The Font Texture
-	//	return false;										// If Loading Failed, Return False
-	//if (!LoadTGA(&SkyBoxTextures[2], "SkyBox/bleached_left.tga"))				// Load The Font Texture
-	//	return false;										// If Loading Failed, Return False
-	//if (!LoadTGA(&SkyBoxTextures[3], "SkyBox/bleached_right.tga"))				// Load The Font Texture
-	//	return false;										// If Loading Failed, Return False
-	//if (!LoadTGA(&SkyBoxTextures[4], "SkyBox/bleached_top.tga"))				// Load The Font Texture
-	//	return false;										// If Loading Failed, Return False
-	//if (!LoadTGA(&SkyBoxTextures[5], "SkyBox/red_down.tga"))				// Load The Font Texture
-	//	return false;										// If Loading Failed, Return False
+	if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/bleached_front.tga"))				// Load The Font Texture
+		return false;	// If Loading Failed, Return False
+	if (!LoadTGA(&SkyBoxTextures[1], "SkyBox/bleached_back.tga"))				// Load The Font Texture
+		return false;										// If Loading Failed, Return False
+	if (!LoadTGA(&SkyBoxTextures[2], "SkyBox/bleached_left.tga"))				// Load The Font Texture
+		return false;										// If Loading Failed, Return False
+	if (!LoadTGA(&SkyBoxTextures[3], "SkyBox/bleached_right.tga"))				// Load The Font Texture
+		return false;										// If Loading Failed, Return False
+	if (!LoadTGA(&SkyBoxTextures[4], "SkyBox/bleached_top.tga"))				// Load The Font Texture
+		return false;										// If Loading Failed, Return False
+	if (!LoadTGA(&SkyBoxTextures[5], "SkyBox/red_down.tga"))				// Load The Font Texture
+		return false;										// If Loading Failed, Return False
 
-	//if (!LoadTGA(&theImageDebugger, "button.tga"))				// Load The Font Texture
-	//	return false;										// If Loading Failed, Return False
+	if (!LoadTGA(&theImageDebugger, "button.tga"))				// Load The Font Texture
+		return false;										// If Loading Failed, Return False
 
 
 	glDisable(GL_TEXTURE_2D);								// Disable Texture Mapping ( NEW )
@@ -108,8 +114,8 @@ bool MVC_Model::InitPhase2(void)
 
 	//Find the ratio between skybox width and height and maze width and height.
 	//We need this to fully fill our skybox with the maze.
-	int ratiox = theBox.Width / WIDTH;
-	int ratioy = theBox.Height / HEIGHT;
+	float ratiox = theBox.Width / WIDTH;
+	float ratioy = theBox.Height / HEIGHT;
 
 	int counter = 1;
 	for (int MazeWidth = -0; MazeWidth < WIDTH; MazeWidth++)
@@ -129,21 +135,22 @@ bool MVC_Model::InitPhase2(void)
 				newModel->theObj->theTexture = theImageDebugger;
 
 				CTransform * theTransform = new CTransform((float)(MazeWidth - WIDTH / 2) * ratiox, 0, (float)(MazeHeight - HEIGHT / 2)* ratioy);
+
 				if (theMaze.theMaze[MazeWidth + 1][MazeHeight] == 1)
 				{
-					theTransform->SetScale(2.5, 1, 1,true);
+					theTransform->SetScale(ratiox/2, 1, 1, true);
 				}
-				if (theMaze.theMaze[MazeWidth - 1][MazeHeight] == 1)
+				else if (theMaze.theMaze[MazeWidth - 1][MazeHeight] == 1)
 				{
-					theTransform->SetScale(-2.5, 1, 1, true);
+					theTransform->SetScale(ratiox/2, 1, 1, true);
 				}
 				if (theMaze.theMaze[MazeWidth][MazeHeight + 1])
 				{
-					theTransform->SetScale(1, 1, 2.5, true);
+					theTransform->SetScale(1, 1, ratioy/2, true);
 				}
-				if (theMaze.theMaze[MazeWidth][MazeHeight - 1] == 1)
+				else if (theMaze.theMaze[MazeWidth][MazeHeight - 1] == 1)
 				{
-					theTransform->SetScale(1, 1, -2.5, true);
+					theTransform->SetScale(1, 1, ratioy/2, true);
 				}
 				//This is the wall, so draw a cube here.
 
@@ -157,7 +164,7 @@ bool MVC_Model::InitPhase2(void)
 
 				newModel = new CModel();
 				newModel->SetColor(0.0, 1.0, 1.0);
-				std::cout << theRoot->GetNode(100 + 1 + 10 * counter )->AddChild(new CTransform(0, 2, 0), newModel) << endl;
+				ArrayofIDs.push_back(theRoot->GetNode(100 + 1 + 10 * counter)->AddChild(new CTransform(0, 2, 0), newModel));
 				counter++;
 			}
 		}
@@ -176,21 +183,22 @@ void MVC_Model::Update(void)
 		m_testX += m_moveX*m_timer->GetDelta();
 		m_testY += m_moveY*m_timer->GetDelta();
 	}
-	if (theFrustum)
+
+	if (ToggleFrustum)
 	{
 		theFrustum->Update();
-		FrustumChecking();
+	}
 
-		if (theRoot)
+	if (theRoot)
+	{
+		for (int i = 0; i < ArrayofIDs.size(); i++)
 		{
-			//theRoot->ApplyRotate((5.f + Rotate)* m_timer->GetDelta(), 0, 1, 0);
-			theRoot->GetNode(111)->ApplyRotate(5.f, 0, 1, 0);
-			theRoot->GetNode(111)->SetColor(1, 1, 0);
-			theRoot->GetNode(11)->SetColor(0, 1, 0);
+			theRoot->GetNode(ArrayofIDs[i])->ApplyRotate(100 * m_timer->GetDelta(), 0, 1, 0);
 		}
 	}
 }
 
+//Checking specific to the root.
 void MVC_Model::FrustumChecking()
 {
 	bool m_bContainmentCheck_NearTopLeft = theFrustum->ContainmentCheck(theRoot->GetNearTopLeft());
@@ -272,7 +280,8 @@ void MVC_Model::FrustumChecking(CSceneNode * thisNode, const int ParentID, const
 			|| m_bCheckFarBottomLeft || m_bCheckFarBottomRight))
 		{
 			//The scene graph is not inside the frustum
-			thisNode->SetColor(0, 0, 0);
+			//thisNode->SetColor(0, 0, 0);
+			thisNode->Draw();
 		}
 
 		else
@@ -283,12 +292,12 @@ void MVC_Model::FrustumChecking(CSceneNode * thisNode, const int ParentID, const
 				&& m_bCheckFarBottomLeft && m_bCheckFarBottomRight)
 			{
 				// The scene graph is inside the frustum!
-				thisNode->SetColor(1.0f, 1.0f, 1.0f);
+				//thisNode->SetColor(1.0f, 1.0f, 1.0f);
 			}
 
 			else
 			{
-				thisNode->SetColor(1, 0, 0);
+				//thisNode->SetColor(1, 0, 0);
 				//Scene graph halfway in.
 			}
 			for (int i = 0; i < thisNode->GetNumOfChild(); i++)

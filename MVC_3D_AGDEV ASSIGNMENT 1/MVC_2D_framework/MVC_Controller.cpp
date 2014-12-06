@@ -205,11 +205,6 @@ int MVC_Controller::ProcKeys(int key)
 void MVC_Controller::ProcKeyboard()
 {
 	bool* temp = m_theView->GetKeyBuffer();
-	if(temp[VK_SPACE])
-	{
-		m_theModel->m_moveX=0;
-		m_theModel->m_moveY=0;
-	}
 	//if (temp[ProcKeys('d')])
 	//{
 	//	m_theModel->thirdpersoncamera->StrafeCamera(10 * theTimer->GetDelta());
@@ -279,5 +274,10 @@ void MVC_Controller::ProcKeyboard()
 	if (temp[VK_SUBTRACT])
 	{
 		m_theModel->Rotate -= 2;
+	}
+	if (temp[VK_SPACE])
+	{
+		m_theModel->ToggleFrustum = !m_theModel->ToggleFrustum;
+		temp[VK_SPACE] = false;
 	}
 }

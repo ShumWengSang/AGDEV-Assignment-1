@@ -3,8 +3,8 @@
 #include <vector>
 
 enum EEntity{
-	BALL = 0,
-
+	EXIT = 0,
+	PLAYER
 };
 
 class Entity
@@ -34,9 +34,9 @@ public:
 
 	virtual void update(float dt);
 
-	virtual void CollisionEvent(Entity &other, std::vector<Entity*> & theArray);
+	virtual void CollisionEvent(Entity &other);
 	
-
+	virtual void Draw();
 	EEntity ID;
 };
 

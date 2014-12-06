@@ -66,7 +66,7 @@ void Entity::update(float dt)
 
 }
 
-void Entity::CollisionEvent(Entity &other, std::vector<Entity*>& theArray)
+void Entity::CollisionEvent(Entity &other)
 {
 
 }
@@ -74,4 +74,9 @@ void Entity::CollisionEvent(Entity &other, std::vector<Entity*>& theArray)
 void Entity::SetDestruction(bool ToDestroy)
 {
 	Destroy = ToDestroy;
+}
+
+void Entity::Draw()
+{
+
 }

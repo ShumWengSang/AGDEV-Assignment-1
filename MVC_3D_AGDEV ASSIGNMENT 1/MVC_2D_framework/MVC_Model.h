@@ -72,6 +72,12 @@ public:
 	void FrustumChecking();
 	void FrustumChecking(CSceneNode* thisNode, const int ParentID, const int thisID);
 
+	//A vector to hold the IDs of the parts to rotate.
+	std::vector<int> ArrayofIDs;
+
+	//Used to toggle whether you see with frustum or not
+	bool ToggleFrustum;
+
 	//DISTANCE FROM OBJECT TO CAMERA
 	int distance;
 
