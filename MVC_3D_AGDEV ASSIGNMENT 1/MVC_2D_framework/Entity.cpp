@@ -18,7 +18,7 @@ void Entity::SetPos(Vector3D theNewPos)
 	m_Position = theNewPos;
 }
 
-void Entity::SetPos(int x, int y, int z)
+void Entity::SetPos(float x, float y, float z)
 {
 	m_Position.m_x = x;
 	m_Position.m_y = y;
@@ -35,7 +35,7 @@ void Entity::SetDir(Vector3D theNewDir)
 	m_Direction = theNewDir;
 }
 
-void Entity::SetDir(int x, int y, int z)
+void Entity::SetDir(float x, float y, float z)
 {
 	m_Direction.m_x = x;
 	m_Direction.m_y = y;

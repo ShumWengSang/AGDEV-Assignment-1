@@ -155,13 +155,16 @@ void MVC_Controller::ProcMouse()
 	m_theView->GetSize(&w,&h);
 	if(m_theView->m_MouseInfo.m_LButtonDown)
 	{
-		
+		//ROTATE THE CAMERA
 		m_theModel->ObjectAngle += 10 * theTimer->GetDelta();
 		Vector3D oldDir = m_theModel->theCamera.GetDirection();
 		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
 		Vector3D newDir(cosf(Angle),0,(sinf(Angle)));
-		//newDir += oldDir;
-		m_theModel->theCamera.SetDirection(newDir);
+		m_theModel->theCamera.SetDirection(-newDir.m_x, newDir.m_y, -newDir.m_z);
+
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(-10 * theTimer->GetDelta(),0, 1, 0);
+		m_theModel->thePlayerData.SetDir(newDir.m_x,newDir.m_y,-newDir.m_z);
+		//m_theModel->thePlayerData.SetDir(newDir);
 	}
 	else if(m_theView->m_MouseInfo.m_LButtonUp)
 	{

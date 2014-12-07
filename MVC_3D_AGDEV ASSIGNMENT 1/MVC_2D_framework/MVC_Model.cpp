@@ -28,7 +28,7 @@ theFrustum(NULL)
 	theFrustum = new CFrustum();
 	thirdpersoncamera = new ThirdPersonCamera();
 	ToggleFrustum = false;
-	ObjectAngle = 0;
+	ObjectAngle = 90;
 	PlayerID = 0;
 }
 

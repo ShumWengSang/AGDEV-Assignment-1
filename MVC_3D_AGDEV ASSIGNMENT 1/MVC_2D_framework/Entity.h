@@ -19,11 +19,11 @@ public:
 	~Entity(void);
 
 	void SetPos(Vector3D theNewPos);
-	void SetPos(int x, int y, int z);
+	void SetPos(float x, float y, float z);
 	Vector3D GetPos();
 
 	void SetDir(Vector3D theNewDir);
-	void SetDir(int x, int y, int z);
+	void SetDir(float x, float y, float z);
 	Vector3D GetDir();
 
 	void SetVelo(Vector3D theNewVelo);
