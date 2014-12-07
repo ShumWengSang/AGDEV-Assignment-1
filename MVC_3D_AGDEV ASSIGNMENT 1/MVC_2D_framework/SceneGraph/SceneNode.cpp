@@ -96,6 +96,14 @@ int CSceneNode::AddChild(CTransform* aNewTransform, CModel* aNewModel)
 	return aNewNode->GetSceneNodeID();
 }
 
+int CSceneNode::AddChild(CSceneNode * aNewNode)
+{
+	aNewNode->SetSceneNodeID(sceneNodeID * 10 + (theChildren.size() + 1));
+	theChildren.push_back(aNewNode);
+
+	return aNewNode->GetSceneNodeID();
+}
+
 int CSceneNode::AddChild(const int sceneNodeID, CTransform* aNewTransform, CModel* aNewModel)
 {
 	CSceneNode* aNewNode = new CSceneNode( sceneNodeID );

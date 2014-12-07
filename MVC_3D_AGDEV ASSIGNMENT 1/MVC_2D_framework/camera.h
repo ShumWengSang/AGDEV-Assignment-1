@@ -19,7 +19,7 @@ private:
 	Vector3D Along;
 	Vector3D Up;
 	Vector3D Forward;
-	float angle;
+	float Angle;
 	
 
 public:
@@ -30,7 +30,7 @@ public:
 	void SetCameraType(CAM_TYPE ct);
 	void Reset(void);
 	void Update();
-	void Update(Vector3D theTarget);
+	void Update(Vector3D theTarget, Vector3D, float angle);
 	Vector3D GetPosition();
 	// Get the direction of the camera
 	Vector3D GetDirection(void);
@@ -62,6 +62,8 @@ public:
 	void recoil( float y_recoil, float x_recoil );
 	void crouch();
 
+	void RotateAroundPoint(Vector3D vCenter, float angle, float x, float y, float z);
+
 	bool onground;
 	float yvel, jump, gravity;
 private:
@@ -72,7 +74,6 @@ private:
 	float u, u1, v, v1;
 
 	float Distance;
-	float Downangle;
 	Vector3D CalculateDistance(Vector3D theFirstPosition);
 	
 };

@@ -7,9 +7,7 @@ Camera::Camera(void)
 {
 	SetCameraType(LAND_CAM);
 	Reset();
-	angle = 0;
-	Downangle = 30;
-	float rad = Downangle * (1 / (180 / PI));
+	Angle = 0;
 	SetPosition(0.0, 2.0, -5.0);
 	SetDirection(0.0,0, -1);
 	u = 0; v = 0; u1 = 0; v1 = 0;
@@ -18,7 +16,7 @@ Camera::Camera(void)
 	yvel = 0;
 	jump = 0;
 	gravity = -0.5;
-	Distance = 10;
+	Distance = 6;
 
 	Reset();
 
@@ -29,10 +27,8 @@ Camera::Camera(CAM_TYPE ct)
 {
 	SetCameraType(ct);
 	Reset();
-	angle = 0;
-	Downangle = 30;
 	SetPosition(0.0, 2.0, -5.0);
-	float rad = Downangle * (1 / (180 / PI));
+	Angle = 0;
 	SetPosition(0.0, 2.0, -5.0);
 	SetDirection(0.0, 0, -1);
 	u = 0; v = 0; u1 = 0; v1 = 0;
@@ -41,7 +37,7 @@ Camera::Camera(CAM_TYPE ct)
 	yvel = 0;
 	jump = 0;
 	gravity = -0.5;
-	Distance = 10;
+	Distance = 6;
 
 	Reset();
 }
@@ -72,29 +68,19 @@ void Camera::Update() {
 		0.0f, 1.0f, 0.0f);
 }
 
-void Camera::Update(Vector3D theTarget) {
-	static Vector3D theOldPosition(10,10,10);
+void Camera::Update(Vector3D theTarget, Vector3D theTargetDir, float angle) {
 
-	if (theOldPosition != theTarget)
-	{
-
-		//Do the third person camera calculations to get camera behind object.
-		Vector3D theNewPos = CalculateDistance(theTarget);
-//
-		float rad = Downangle * (1 / (180 / PI));
-		float theUpPosition = sin(rad) * Distance;
-		//Look down towards object
-		//SetDirection((theTarget -Position).NormalizedVector3D());
+	Vector3D Temp1, Temp2;
 
 
-		SetPosition(theNewPos.m_x, theNewPos.m_y + theUpPosition, theNewPos.m_z);
+	Temp1 = theTarget - (Forward.NormalizedVector3D() * Distance) + Up.NormalizedVector3D() * 2 + Along * 1;
+	SetPosition(Temp1);
 
-		theOldPosition = theTarget;
-	}
+	Temp2 = theTarget + (Forward.NormalizedVector3D() * Distance) + Up.NormalizedVector3D() * 2 + Along * 1;
 
 	gluLookAt(Position.m_x, Position.m_y, Position.m_z,
-		Position.m_x + Forward.m_x, Position.m_y + Forward.m_y, Position.m_z + Forward.m_z,
-		0.0f, 1.0f, 0.0f);
+		Temp2.m_x, Temp2.m_y, Temp2.m_z,
+		0, 1, 0);
 }
 
 void Camera::SetPosition(Vector3D theNewPos)
@@ -246,13 +232,13 @@ void Camera::calculations(float diffX, float diffY)
 {
 	Pitch(diffY * 3.142f / 180.0f);
 
-	angle += (float)diffX * 3.142f / 180.0f;
-	if (angle > 6.284f)
-		angle -= 6.284f;
-	else if (angle < -6.284f)
-		angle += 6.284f;
+	Angle += (float)diffX * 3.142f / 180.0f;
+	if (Angle > 6.284f)
+		Angle -= 6.284f;
+	else if (Angle < -6.284f)
+		Angle += 6.284f;
 
-	Yaw(-angle);
+	Yaw(-Angle);
 }
 
 void Camera::deceleratestraight(float timeDiff)
@@ -334,9 +320,49 @@ Vector3D Camera::CalculateDistance(Vector3D theFirstPosition)
 	//First get the direction and than scale it by the distance;
 	//This will be where you need to be from the object.
 	Vector3D Temp(theFirstPosition);
-	Temp -= Forward.NormalizedVector3D() * Distance;
 
+	Temp = Temp  - (Forward.NormalizedVector3D() * Distance) + Up * 5/* + Along * 1*/;
+	//Forward = (theFirstPosition - Temp);
 	
 
 	return Temp;
+}
+
+void Camera::RotateAroundPoint(Vector3D vCenter, float angle, float x, float y, float z)
+{
+	Vector3D vNewPosition;
+
+	// To rotate our position around a point, what we need to do is find
+	// a vector from our position to the center point we will be rotating around.
+	// Once we get this vector, then we rotate it along the specified axis with
+	// the specified degree.  Finally the new vector is added center point that we
+	// rotated around (vCenter) to become our new position. Why so much math?
+
+	// Get the vVector from our position to the center we are rotating around
+	Vector3D vPos = Position - vCenter;
+
+	// Calculate the sine and cosine of the angle once
+	float cosTheta = (float)cos(angle);
+	float sinTheta = (float)sin(angle);
+
+	// Find the new x position for the new rotated point
+	vNewPosition.m_x = (cosTheta + (1 - cosTheta) * x * x)		* vPos.m_x;
+	vNewPosition.m_x += ((1 - cosTheta) * x * y - z * sinTheta)	* vPos.m_y;
+	vNewPosition.m_x += ((1 - cosTheta) * x * z + y * sinTheta)	* vPos.m_z;
+
+	// Find the new y position for the new rotated point
+	vNewPosition.m_y = ((1 - cosTheta) * x * y + z * sinTheta)	* vPos.m_x;
+	vNewPosition.m_y += (cosTheta + (1 - cosTheta) * y * y)		* vPos.m_y;
+	vNewPosition.m_y += ((1 - cosTheta) * y * z - x * sinTheta)	* vPos.m_z;
+
+	// Find the new z position for the new rotated point
+	vNewPosition.m_z = ((1 - cosTheta) * x * z - y * sinTheta)	* vPos.m_x;
+	vNewPosition.m_z += ((1 - cosTheta) * y * z + x * sinTheta)	* vPos.m_y;
+	vNewPosition.m_z += (cosTheta + (1 - cosTheta) * z * z)		* vPos.m_z;
+
+	// Now we just add the newly rotated vector to our position to set
+	// our new rotated position of our camera.
+	Position = vCenter + vNewPosition;
+
+	//Forward.Set(( vCenter - Position).NormalizedVector3D());
 }

@@ -37,6 +37,8 @@
 
 #include "SceneGraph\\SceneNode.h"
 
+#include "Math.h"
+
 class MVCTime;
 
 class MVC_Model
@@ -65,6 +67,11 @@ public:
 	ThirdPersonCamera* thirdpersoncamera;
 	CSceneNode *theRoot;
 
+	CSceneNode * thePlayer;
+	int PlayerID;
+
+	Player thePlayerData;
+
 	Camera theCamera;
 	HUD theHUD;
 	SkyBox theBox;
@@ -87,6 +94,9 @@ public:
 	//MAZE
 	MazeGenerator theMaze;
 	TextureImage theImageDebugger;
+
+	//Rotate the object
+	float ObjectAngle;
 private: 
 };
 

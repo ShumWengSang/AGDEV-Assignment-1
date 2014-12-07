@@ -9,7 +9,7 @@ enum EEntity{
 
 class Entity
 {
-private:
+protected:
 	Vector3D m_Position;
 	Vector3D m_Direction;
 	Vector3D m_Velocity;

@@ -21,6 +21,8 @@
 
 #include <cstdlib>
 #include <vector>
+#include "../Player.h"
+
 using namespace std;
 
 class CSceneNode :
@@ -31,6 +33,8 @@ private:
 
 	CModel* theModel;
 	CTransform* theTransform;
+	//Entity* theEntity;
+
 	int sceneNodeID;
 
 public:
@@ -48,6 +52,7 @@ public:
 
 	int AddChild(CTransform* aNewTransform, CModel* aNewModel);
 	int AddChild(const int sceneNodeID, CTransform* aNewTransform, CModel* aNewModel);
+	int AddChild(CSceneNode*);
 
 	// Get methods
 	int GetSceneNodeID(void);

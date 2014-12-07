@@ -28,6 +28,8 @@ theFrustum(NULL)
 	theFrustum = new CFrustum();
 	thirdpersoncamera = new ThirdPersonCamera();
 	ToggleFrustum = false;
+	ObjectAngle = 0;
+	PlayerID = 0;
 }
 
 MVC_Model::~MVC_Model(void)
@@ -50,22 +52,6 @@ bool MVC_Model::Init(float fpsLimit)
 	m_moveX=m_moveY=0;
 
 	theMaze.Draw();
-
-/*
-	newModel = new CModel();
-	newModel->SetColor(1.0, 1.0, 0.0);
-	cout << theRoot->AddChild(new CTransform(0, 2, -2), newModel) << endl;
-
-	newModel = new CModel();
-	newModel->SetColor(1.0, 0.0, 1.0);
-	cout << theRoot->GetNode(11)->AddChild(new CTransform(0, 2, 0), newModel) << endl;
-
-	newModel = new CModel();
-	newModel->SetColor(0.0, 1.0, 1.0);
-	cout << theRoot->GetNode(111)->AddChild(new CTransform(0, 2, 0), newModel) << endl;
-*/
-
-
 
 	return true;
 }
@@ -169,6 +155,19 @@ bool MVC_Model::InitPhase2(void)
 			}
 		}
 	}
+
+	//Set up the Player
+	thePlayer = new CSceneNode();
+	newModel = new CModel();
+	thePlayerData.SetPos((theMaze.x - WIDTH / 2) * ratiox, 2, (theMaze.z - HEIGHT / 2)* ratioy);
+	CTransform * theTransform = new CTransform(thePlayerData.GetPos(), Vector3D(1, 1, 1));
+	thePlayer->SetNode(theTransform, newModel);
+	thePlayer->SetColor(1, 0, 1);
+
+	PlayerID = theRoot->AddChild(thePlayer);
+
+
+
 	return true;
 }
 

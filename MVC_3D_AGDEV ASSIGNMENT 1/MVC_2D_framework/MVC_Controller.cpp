@@ -155,22 +155,13 @@ void MVC_Controller::ProcMouse()
 	m_theView->GetSize(&w,&h);
 	if(m_theView->m_MouseInfo.m_LButtonDown)
 	{
-		if (m_theView->m_MouseInfo.Record)
-		{
-			m_theView->m_MouseInfo.m_Tempx = m_theView->m_MouseInfo.GetDiff_X();
-			m_theView->m_MouseInfo.Record = false;
-		}
-
-		m_theView->m_MouseInfo.m_Tempx2 = m_theView->m_MouseInfo.GetDiff_X();
-		m_theView->m_MouseInfo.m_FinalTemp = m_theView->m_MouseInfo.m_Tempx - m_theView->m_MouseInfo.m_Tempx2;
-
-
-		//Adjusting the value so it won't be too fast
-		m_theView->m_MouseInfo.m_FinalTemp *= theTimer->GetDelta();
-		m_theView->m_MouseInfo.m_FinalTemp /= 100;
-
-
-		m_theModel->thirdpersoncamera->RotateAroundPoint(m_theModel->thirdpersoncamera->m_vView, m_theView->m_MouseInfo.m_FinalTemp, 0, 1, 0);
+		
+		m_theModel->ObjectAngle += 10 * theTimer->GetDelta();
+		Vector3D oldDir = m_theModel->theCamera.GetDirection();
+		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
+		Vector3D newDir(cosf(Angle),0,(sinf(Angle)));
+		//newDir += oldDir;
+		m_theModel->theCamera.SetDirection(newDir);
 	}
 	else if(m_theView->m_MouseInfo.m_LButtonUp)
 	{
@@ -205,50 +196,96 @@ int MVC_Controller::ProcKeys(int key)
 void MVC_Controller::ProcKeyboard()
 {
 	bool* temp = m_theView->GetKeyBuffer();
-	//if (temp[ProcKeys('d')])
-	//{
-	//	m_theModel->thirdpersoncamera->StrafeCamera(10 * theTimer->GetDelta());
-	//}
-	//if(temp[ProcKeys('a')])
-	//{
-	//	m_theModel->thirdpersoncamera->StrafeCamera(-10 * theTimer->GetDelta());
-	//}
-
-	//if(temp[ProcKeys('w')])
-	//{
-	//	m_theModel->thirdpersoncamera->MoveCamera(5 * theTimer->GetDelta());
-	//}
-	//if(temp[ProcKeys('s')])
-	//{
-	//	m_theModel->thirdpersoncamera->MoveCamera(-5 * theTimer->GetDelta());
-	//}
-
 	if (temp[ProcKeys('d')])
 	{
-		m_theModel->theCamera.moveMeSideway(true, 5 * theTimer->GetDelta());
+		Vector3D temp = m_theModel->thePlayerData.GetPos();
+		m_theModel->thePlayerData.MoveMeSideways(false, theTimer->GetDelta());
+		temp = temp - m_theModel->thePlayerData.GetPos();
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( -temp.m_x, temp.m_y, temp.m_z);
 	}
-	else if (temp[ProcKeys('a')])
+	else if(temp[ProcKeys('a')])
 	{
-		m_theModel->theCamera.moveMeSideway(false, 5 * theTimer->GetDelta());
+		Vector3D temp = m_theModel->thePlayerData.GetPos();
+		m_theModel->thePlayerData.MoveMeSideways(true, theTimer->GetDelta());
+		temp = temp - m_theModel->thePlayerData.GetPos();
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( -temp.m_x, temp.m_y, temp.m_z);
 	}
 	else
 	{
-		m_theModel->theCamera.deceleratesideways(theTimer->GetDelta());
+		Vector3D temp = m_theModel->thePlayerData.GetPos();
+		m_theModel->thePlayerData.deceleratesideways(theTimer->GetDelta());
+		temp = temp - m_theModel->thePlayerData.GetPos();
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( -temp.m_x, temp.m_y, -temp.m_z);
 	}
 
-	if (temp[ProcKeys('w')])
+	if(temp[ProcKeys('w')])
 	{
-		m_theModel->theCamera.moveMeForward(true, 5 * theTimer->GetDelta());
+		Vector3D temp = m_theModel->thePlayerData.GetPos();
+		m_theModel->thePlayerData.MoveMeForward(false, theTimer->GetDelta());
+		temp = temp - m_theModel->thePlayerData.GetPos();
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, -temp.m_z);
 	}
-	else if (temp[ProcKeys('s')])
+	else if(temp[ProcKeys('s')])
 	{
-		m_theModel->theCamera.moveMeForward(false, 5 * theTimer->GetDelta());
+		Vector3D temp = m_theModel->thePlayerData.GetPos();
+		m_theModel->thePlayerData.MoveMeForward(true, theTimer->GetDelta());
+		temp = temp - m_theModel->thePlayerData.GetPos();
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, -temp.m_z);
 	}
 	else
 	{
-		m_theModel->theCamera.deceleratestraight(theTimer->GetDelta());
+		Vector3D temp = m_theModel->thePlayerData.GetPos();
+		m_theModel->thePlayerData.deceleratestraight(theTimer->GetDelta());
+		temp = temp - m_theModel->thePlayerData.GetPos();
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, -temp.m_z);
 	}
 
+	//if (temp[ProcKeys('d')])
+	//{
+	//	m_theModel->theCamera.moveMeSideway(true, 5 * theTimer->GetDelta());
+	//}
+	//else if (temp[ProcKeys('a')])
+	//{
+	//	m_theModel->theCamera.moveMeSideway(false, 5 * theTimer->GetDelta());
+	//}
+	//else
+	//{
+	//	m_theModel->theCamera.deceleratesideways(theTimer->GetDelta());
+	//}
+
+	//if (temp[ProcKeys('w')])
+	//{
+	//	m_theModel->theCamera.moveMeForward(true, 5 * theTimer->GetDelta());
+	//}
+	//else if (temp[ProcKeys('s')])
+	//{
+	//	m_theModel->theCamera.moveMeForward(false, 5 * theTimer->GetDelta());
+	//}
+	//else
+	//{
+	//	m_theModel->theCamera.deceleratestraight(theTimer->GetDelta());
+	//}
+
+	if (temp[38])
+	{
+		m_theModel->z += 1;
+		//up
+	}
+	if (temp[40])
+	{
+		m_theModel->z -= 1;
+		//down
+	}
+	if (temp[39])
+	{
+		m_theModel->ObjectAngle += 1;
+		//right
+	}
+	if (temp[37])
+	{
+		m_theModel->ObjectAngle -= 1;
+		//left
+	}
 
 	//DEBUG
 	if (temp[VK_NUMPAD8])

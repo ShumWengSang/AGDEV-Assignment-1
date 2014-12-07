@@ -3,6 +3,9 @@
 
 Entity::Entity()
 {
+	m_Position.Set(0, 0, 0);
+	m_Direction.Set(0, 0, -1);
+	m_Velocity.Set(0, 0, 0);
 }
 
 
