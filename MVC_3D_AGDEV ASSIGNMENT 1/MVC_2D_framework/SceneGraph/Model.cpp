@@ -288,6 +288,7 @@ void CModel::DrawCube(void)
 	glTexCoord2f(1, 0); glVertex3f(vBottomRight.m_x, vBottomRight.m_y, vTopLeft.m_z);
 	glEnd();
 
+
 	glDisable(GL_TEXTURE_2D);
 
 }

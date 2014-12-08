@@ -75,7 +75,7 @@ BOOL MVC_View::Draw(void)
 	//Vector3D theDir((float)cos(Math::degreesToRadians(m_theModel->ObjectAngle)), 0, (float)sin(Math::degreesToRadians(m_theModel->ObjectAngle)));
 	//m_theModel->theCamera.Update(Vector3D(m_theModel->x, m_theModel->y, m_theModel->z), theDir); 
 	m_theModel->theCamera.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir(), m_theModel->ObjectAngle);
-
+	m_theModel->thePlayerData.DebugDraw();
 	//m_theModel->thirdpersoncamera->UpdateLookAt();
 	DrawScene();
 	//glTranslatef(m_theModel->thirdpersoncamera->m_vView.m_x , -2, m_theModel->thirdpersoncamera->m_vView.m_z);
@@ -165,7 +165,7 @@ void MVC_View::DrawScene()
 	Draw3DSGrid();
 
 
-	if (m_theModel->ToggleFrustum)
+	if (m_theModel->thePlayerData.ToggleFrustum)
 	{
 
 		m_theModel->FrustumChecking();

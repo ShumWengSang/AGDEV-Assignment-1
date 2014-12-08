@@ -57,3 +57,47 @@
 //		theRoot->SetColorForChild(childID, 1, 0, 0.0f);
 //	}
 //}
+
+//void MVC_Model::FrustumChecking()
+//{
+//	bool m_bContainmentCheck_NearTopLeft = theFrustum->ContainmentCheck(theRoot->GetNearTopLeft());
+//	bool m_bContainmentCheck_NearBottomRight = theFrustum->ContainmentCheck(theRoot->GetNearTopRight());
+//	bool m_bContainmentCheck_NearTopRight = theFrustum->ContainmentCheck(theRoot->GetNearBottomLeft());
+//	bool m_bContainmentCheck_NearBottomLeft = theFrustum->ContainmentCheck(theRoot->GetNearBottomRight());
+//
+//	bool m_bContainmentCheck_FarTopLeft = theFrustum->ContainmentCheck(theRoot->GetFarTopLeft());
+//	bool m_bContainmentCheck_FarBottomRight = theFrustum->ContainmentCheck(theRoot->GetFarTopRight());
+//	bool m_bContainmentCheck_FarTopRight = theFrustum->ContainmentCheck(theRoot->GetFarBottomLeft());
+//	bool m_bContainmentCheck_FarBottomLeft = theFrustum->ContainmentCheck(theRoot->GetFarBottomRight());
+//
+//	if (!(m_bContainmentCheck_NearTopLeft || m_bContainmentCheck_NearTopRight
+//		|| m_bContainmentCheck_NearBottomLeft || m_bContainmentCheck_NearBottomRight
+//		|| m_bContainmentCheck_FarTopLeft || m_bContainmentCheck_FarTopRight
+//		|| m_bContainmentCheck_FarBottomLeft || m_bContainmentCheck_FarBottomRight))
+//	{
+//		//The scene graph is not inside the frustum
+//		theRoot->SetColor(0, 0, 0);
+//
+//	}
+//	else
+//	{
+//		if (m_bContainmentCheck_NearTopLeft && m_bContainmentCheck_NearTopRight
+//			&& m_bContainmentCheck_NearBottomLeft && m_bContainmentCheck_NearBottomRight
+//			&& m_bContainmentCheck_FarTopLeft && m_bContainmentCheck_FarTopRight
+//			&& m_bContainmentCheck_FarBottomLeft && m_bContainmentCheck_FarBottomRight)
+//		{
+//			// The scene graph is inside the frustum!
+//			theRoot->SetColor(1.0f, 1.0f, 1.0f);
+//		}
+//		else
+//		{
+//			theRoot->SetColor(1, 0, 0);
+//			//Scene graph halfway in.
+//		}
+//		for (int i = 0; i < theRoot->GetNumOfChild(); i++)
+//		{
+//			const int ID = theRoot->GetSceneNodeID() * 10 + i + 1;
+//			FrustumChecking(theRoot->GetNode(ID), theRoot->GetSceneNodeID(), ID);
+//		}
+//	}
+//}

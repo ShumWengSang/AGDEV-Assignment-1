@@ -57,8 +57,10 @@ public:
 
 	float m_testX;
 	float m_testY;
-	float m_moveX;
-	float m_moveY;
+	float m_moveX,m_moveY;
+
+	Vector3D FrustumPosition;
+	Vector3D FrustumDirection;
 
 	TextureImage SkyBoxTextures[6];
 
@@ -81,9 +83,6 @@ public:
 
 	//A vector to hold the IDs of the parts to rotate.
 	std::vector<int> ArrayofIDs;
-
-	//Used to toggle whether you see with frustum or not
-	bool ToggleFrustum;
 
 	//DISTANCE FROM OBJECT TO CAMERA
 	int distance;

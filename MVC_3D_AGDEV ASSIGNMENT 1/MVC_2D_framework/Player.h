@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Math.h"
+#include "Frustum.h"
 class Player :
 	public Entity
 {
@@ -8,7 +9,6 @@ public:
 	Player();
 	~Player();
 	float u, u1, v, v1;
-
 
 	int MAXSPEED;
 
@@ -23,5 +23,11 @@ public:
 
 	void ApplyRotatePlayer(float angle, int, int, int);
 	void ApplyRotatePlayer(Vector3D);
+
+	void DebugDraw();
+
+	bool ToggleFrustum;
+
+	CFrustum * theFrustum;
 };
 

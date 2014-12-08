@@ -40,7 +40,9 @@ GLvoid MVC_View::ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Ini
 	gluPerspective(60.0f,(GLfloat)width/(GLfloat)height,0.1f,1000.0f);
 
 	//glOrtho(0, m_theModel->m_worldSizeX, m_theModel->m_worldSizeY, 0,-1,1);
-
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
+	glCullFace(GL_FRONT);
 
 	glMatrixMode(GL_MODELVIEW); // Select The Modelview Matrix
 	glLoadIdentity(); // ReSet The Modelview Matrix

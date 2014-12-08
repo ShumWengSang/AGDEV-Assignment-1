@@ -156,15 +156,26 @@ void MVC_Controller::ProcMouse()
 	if(m_theView->m_MouseInfo.m_LButtonDown)
 	{
 		//ROTATE THE CAMERA
-		m_theModel->ObjectAngle += 10 * theTimer->GetDelta();
+		m_theModel->ObjectAngle += 20 * theTimer->GetDelta();
+		if (m_theModel->ObjectAngle <= 90)
+		{
+			m_theModel->ObjectAngle = 0;
+		}
 		Vector3D oldDir = m_theModel->theCamera.GetDirection();
 		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
 		Vector3D newDir(cosf(Angle),0,(sinf(Angle)));
-		m_theModel->theCamera.SetDirection(-newDir.m_x, newDir.m_y, -newDir.m_z);
+		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, -newDir.m_z);
 
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(-10 * theTimer->GetDelta(),0, 1, 0);
-		m_theModel->thePlayerData.SetDir(newDir.m_x,newDir.m_y,-newDir.m_z);
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(20 * theTimer->GetDelta(),0, 1, 0);
+		newDir *= -1;
+		m_theModel->thePlayerData.SetDir( -newDir.m_x,newDir.m_y, newDir.m_z);
 		//m_theModel->thePlayerData.SetDir(newDir);
+		if (m_theModel->thePlayerData.ToggleFrustum)
+		{
+			m_theModel->theFrustum->Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
+		}
+		
+		//std::cout << " Camera Direction: " << newDir.m_x << " , " << newDir.m_y << " , " << -newDir.m_z << " Player Data Direction: " << m_theModel->thePlayerData.GetDir().m_x << " , " << m_theModel->thePlayerData.GetDir().m_x << " , " << m_theModel->thePlayerData.GetDir().m_x << std::endl;
 	}
 	else if(m_theView->m_MouseInfo.m_LButtonUp)
 	{
@@ -202,45 +213,61 @@ void MVC_Controller::ProcKeyboard()
 	if (temp[ProcKeys('d')])
 	{
 		Vector3D temp = m_theModel->thePlayerData.GetPos();
-		m_theModel->thePlayerData.MoveMeSideways(false, theTimer->GetDelta());
+		m_theModel->thePlayerData.MoveMeSideways(true, theTimer->GetDelta());
 		temp = temp - m_theModel->thePlayerData.GetPos();
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( -temp.m_x, temp.m_y, temp.m_z);
+		temp *= -1;
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( temp.m_x, temp.m_y, temp.m_z);
+
+
 	}
 	else if(temp[ProcKeys('a')])
 	{
 		Vector3D temp = m_theModel->thePlayerData.GetPos();
-		m_theModel->thePlayerData.MoveMeSideways(true, theTimer->GetDelta());
+		m_theModel->thePlayerData.MoveMeSideways(false, theTimer->GetDelta());
 		temp = temp - m_theModel->thePlayerData.GetPos();
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( -temp.m_x, temp.m_y, temp.m_z);
+		temp *= -1;
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( temp.m_x, temp.m_y, temp.m_z);
+
+
 	}
 	else
 	{
 		Vector3D temp = m_theModel->thePlayerData.GetPos();
 		m_theModel->thePlayerData.deceleratesideways(theTimer->GetDelta());
 		temp = temp - m_theModel->thePlayerData.GetPos();
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( -temp.m_x, temp.m_y, -temp.m_z);
+		temp *= -1;
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( temp.m_x, temp.m_y, temp.m_z);
+
+
 	}
 
 	if(temp[ProcKeys('w')])
 	{
 		Vector3D temp = m_theModel->thePlayerData.GetPos();
-		m_theModel->thePlayerData.MoveMeForward(false, theTimer->GetDelta());
+		m_theModel->thePlayerData.MoveMeForward(true, theTimer->GetDelta());
 		temp = temp - m_theModel->thePlayerData.GetPos();
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, -temp.m_z);
+		temp *= -1;
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
+
+
 	}
 	else if(temp[ProcKeys('s')])
 	{
 		Vector3D temp = m_theModel->thePlayerData.GetPos();
-		m_theModel->thePlayerData.MoveMeForward(true, theTimer->GetDelta());
+		m_theModel->thePlayerData.MoveMeForward(false, theTimer->GetDelta());
 		temp = temp - m_theModel->thePlayerData.GetPos();
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, -temp.m_z);
+		temp *= -1;
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate( temp.m_x, temp.m_y, temp.m_z);
+
+
 	}
 	else
 	{
 		Vector3D temp = m_theModel->thePlayerData.GetPos();
 		m_theModel->thePlayerData.deceleratestraight(theTimer->GetDelta());
 		temp = temp - m_theModel->thePlayerData.GetPos();
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, -temp.m_z);
+		temp *= -1;
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
 	}
 
 	//if (temp[ProcKeys('d')])
@@ -317,7 +344,7 @@ void MVC_Controller::ProcKeyboard()
 	}
 	if (temp[VK_SPACE])
 	{
-		m_theModel->ToggleFrustum = !m_theModel->ToggleFrustum;
+		m_theModel->thePlayerData.ToggleFrustum = !m_theModel->thePlayerData.ToggleFrustum;
 		temp[VK_SPACE] = false;
 	}
 }

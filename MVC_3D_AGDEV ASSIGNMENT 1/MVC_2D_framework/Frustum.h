@@ -41,7 +41,9 @@ public:
 	CFrustum(void);
 	~CFrustum(void);
 	// Update the frustum
-	void Update(void);
+	void Update();
+	// Draw the frustum
+	void Update(Vector3D newPos, Vector3D  newDir);
 	// Draw the frustum
 	void Draw(void);
 	// Perform containment check for a position with respect to the Frustum

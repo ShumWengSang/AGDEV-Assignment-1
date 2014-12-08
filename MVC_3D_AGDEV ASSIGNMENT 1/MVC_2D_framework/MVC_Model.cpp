@@ -27,9 +27,9 @@ theFrustum(NULL)
 	distance = 10;
 	theFrustum = new CFrustum();
 	thirdpersoncamera = new ThirdPersonCamera();
-	ToggleFrustum = false;
-	ObjectAngle = 90;
+	ObjectAngle = 270;
 	PlayerID = 0;
+	thePlayerData.theFrustum = theFrustum;
 }
 
 MVC_Model::~MVC_Model(void)
@@ -163,7 +163,6 @@ bool MVC_Model::InitPhase2(void)
 	CTransform * theTransform = new CTransform(thePlayerData.GetPos(), Vector3D(1, 1, 1));
 	thePlayer->SetNode(theTransform, newModel);
 	thePlayer->SetColor(1, 0, 1);
-
 	PlayerID = theRoot->AddChild(thePlayer);
 
 
@@ -175,17 +174,12 @@ bool MVC_Model::InitPhase2(void)
 void MVC_Model::Update(void)
 {
 	m_timer->UpdateTime();
-	thirdpersoncamera->Update();
+	//thirdpersoncamera->Update();
 	
 	if (m_timer->TestFramerate())
 	{
 		m_testX += m_moveX*m_timer->GetDelta();
 		m_testY += m_moveY*m_timer->GetDelta();
-	}
-
-	if (ToggleFrustum)
-	{
-		theFrustum->Update();
 	}
 
 	if (theRoot)
@@ -195,50 +189,16 @@ void MVC_Model::Update(void)
 			theRoot->GetNode(ArrayofIDs[i])->ApplyRotate(100 * m_timer->GetDelta(), 0, 1, 0);
 		}
 	}
+	//theFrustum->Update();
 }
 
 //Checking specific to the root.
 void MVC_Model::FrustumChecking()
 {
-	bool m_bContainmentCheck_NearTopLeft = theFrustum->ContainmentCheck(theRoot->GetNearTopLeft());
-	bool m_bContainmentCheck_NearBottomRight = theFrustum->ContainmentCheck(theRoot->GetNearTopRight());
-	bool m_bContainmentCheck_NearTopRight = theFrustum->ContainmentCheck(theRoot->GetNearBottomLeft());
-	bool m_bContainmentCheck_NearBottomLeft = theFrustum->ContainmentCheck(theRoot->GetNearBottomRight());
-
-	bool m_bContainmentCheck_FarTopLeft = theFrustum->ContainmentCheck(theRoot->GetFarTopLeft());
-	bool m_bContainmentCheck_FarBottomRight = theFrustum->ContainmentCheck(theRoot->GetFarTopRight());
-	bool m_bContainmentCheck_FarTopRight = theFrustum->ContainmentCheck(theRoot->GetFarBottomLeft());
-	bool m_bContainmentCheck_FarBottomLeft = theFrustum->ContainmentCheck(theRoot->GetFarBottomRight());
-
-	if (!(m_bContainmentCheck_NearTopLeft || m_bContainmentCheck_NearTopRight
-		|| m_bContainmentCheck_NearBottomLeft || m_bContainmentCheck_NearBottomRight
-		|| m_bContainmentCheck_FarTopLeft || m_bContainmentCheck_FarTopRight
-		|| m_bContainmentCheck_FarBottomLeft || m_bContainmentCheck_FarBottomRight))
+	for (int i = 0; i < theRoot->GetNumOfChild(); i++)
 	{
-		//The scene graph is not inside the frustum
-		theRoot->SetColor(0, 0, 0);
-
-	}
-	else
-	{
-		if (m_bContainmentCheck_NearTopLeft && m_bContainmentCheck_NearTopRight
-			&& m_bContainmentCheck_NearBottomLeft && m_bContainmentCheck_NearBottomRight
-			&& m_bContainmentCheck_FarTopLeft && m_bContainmentCheck_FarTopRight
-			&& m_bContainmentCheck_FarBottomLeft && m_bContainmentCheck_FarBottomRight)
-		{
-			// The scene graph is inside the frustum!
-			theRoot->SetColor(1.0f, 1.0f, 1.0f);
-		}
-		else
-		{
-			theRoot->SetColor(1, 0, 0);
-			//Scene graph halfway in.
-		}
-		for (int i = 0; i < theRoot->GetNumOfChild(); i++)
-		{
-			const int ID = theRoot->GetSceneNodeID() * 10 + i + 1;
-			FrustumChecking(theRoot->GetNode(ID), theRoot->GetSceneNodeID(),ID);
-		}
+		const int ID = theRoot->GetSceneNodeID() * 10 + i + 1;
+		FrustumChecking(theRoot->GetNode(ID), theRoot->GetSceneNodeID(), ID);
 	}
 }
 
@@ -292,10 +252,12 @@ void MVC_Model::FrustumChecking(CSceneNode * thisNode, const int ParentID, const
 			{
 				// The scene graph is inside the frustum!
 				//thisNode->SetColor(1.0f, 1.0f, 1.0f);
+				//thisNode->Draw();
 			}
 
 			else
 			{
+				//thisNode->Draw();
 				//thisNode->SetColor(1, 0, 0);
 				//Scene graph halfway in.
 			}
