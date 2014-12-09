@@ -210,23 +210,23 @@ void MVC_Controller::ProcKeyboard()
 		m_theModel->m_moveX=0;
 		m_theModel->m_moveY=0;
 	}
-	//if (temp[ProcKeys('d')])
-	//{
-	//	m_theModel->thirdpersoncamera->StrafeCamera(10 * theTimer->GetDelta());
-	//}
-	//if(temp[ProcKeys('a')])
-	//{
-	//	m_theModel->thirdpersoncamera->StrafeCamera(-10 * theTimer->GetDelta());
-	//}
+	if (temp[ProcKeys('d')])
+	{
+		m_theModel->thirdpersoncamera->StrafeCamera(10 * theTimer->GetDelta());
+	}
+	if(temp[ProcKeys('a')])
+	{
+		m_theModel->thirdpersoncamera->StrafeCamera(-10 * theTimer->GetDelta());
+	}
 
-	//if(temp[ProcKeys('w')])
-	//{
-	//	m_theModel->thirdpersoncamera->MoveCamera(5 * theTimer->GetDelta());
-	//}
-	//if(temp[ProcKeys('s')])
-	//{
-	//	m_theModel->thirdpersoncamera->MoveCamera(-5 * theTimer->GetDelta());
-	//}
+	if(temp[ProcKeys('w')])
+	{
+		m_theModel->thirdpersoncamera->MoveCamera(5 * theTimer->GetDelta());
+	}
+	if(temp[ProcKeys('s')])
+	{
+		m_theModel->thirdpersoncamera->MoveCamera(-5 * theTimer->GetDelta());
+	}
 
 	if (temp[ProcKeys('d')])
 	{

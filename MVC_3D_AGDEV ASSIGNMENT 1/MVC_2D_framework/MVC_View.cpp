@@ -71,9 +71,9 @@ BOOL MVC_View::Draw(void)
 	glLoadIdentity(); // ReSet The Current Modelview Matrix
 	glColor3f(1,1,1);
 
-	m_theModel->theCamera.Update();
+	//m_theModel->theCamera.Update();
 
-	//m_theModel->thirdpersoncamera->UpdateLookAt();
+	m_theModel->thirdpersoncamera->UpdateLookAt();
 	DrawScene();
 	glTranslatef(m_theModel->thirdpersoncamera->m_vView.m_x , -2, m_theModel->thirdpersoncamera->m_vView.m_z);
 	DrawObject();

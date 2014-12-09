@@ -9,7 +9,7 @@ public:
 
 	int m_x, m_y;
 	int m_last_x, m_last_y;
-	int m_Tempx, m_Tempx2;
+	float m_Tempx, m_Tempx2;
 	float m_FinalTemp;
 	bool m_LButtonDown,m_RButtonDown,m_MButtonDown;
 	bool m_LButtonUp,m_RButtonUp,m_MButtonUp;
