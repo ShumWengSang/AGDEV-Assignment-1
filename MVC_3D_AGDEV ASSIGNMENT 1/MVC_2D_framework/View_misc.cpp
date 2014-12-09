@@ -318,36 +318,14 @@ LRESULT CALLBACK MVC_View::MsgProc( HWND hWnd, // Handle For This Window
 
 	case WM_KEYDOWN: // Is A Key Being Held Down?
 		{
-			//if(wParam>=0x41&&wParam<0x5A)
-			//{
-			//	buffer= 97+(wParam-0x41);
-			//	keys[buffer] = TRUE; // If So, Mark It As TRUE
-			//	return 1; // Jump Back
-			//}
-			//else if(wParam>=0x30&&wParam<0x39)
-			//{
-			//	return 48+(wParam-0x30);
-			//	keys[buffer] = TRUE; // If So, Mark It As TRUE
-			//	return 1; // Jump Back
-			//}
+
 			m_keys[wParam] = TRUE; // If So, Mark It As TRUE
 			return 1; // Jump Back
 		}
 
 	case WM_KEYUP: // Has A Key Been Released?
 		{
-			//if(wParam>=0x41&&wParam<0x5A)
-			//{
-			//	buffer= 97+(wParam-0x41);
-			//	keys[buffer] = FALSE; // If So, Mark It As TRUE	
-			//	return 1; // Jump Back
-			//}
-			//else if(wParam>=0x30&&wParam<0x39)
-			//{
-			//	return 48+(wParam-0x30);
-			//	keys[buffer] = FALSE; // If So, Mark It As TRUE
-			//	return 1; // Jump Back
-			//}
+
 			m_keys[wParam] = FALSE; // If So, Mark It As FALSE
 			return 1; // Jump Back
 		}
@@ -365,19 +343,12 @@ LRESULT CALLBACK MVC_View::MsgProc( HWND hWnd, // Handle For This Window
 
 		//	m_MouseInfo.m_last_x = diffX;
 			//m_MouseInfo.m_last_y = diffY;
-
+			m_theModel->Camera2.calculations(diffX, diffY);
 
 			//Make sure the mouse doesn't go out of the window.
 			RECT WindowRect;
 			GetWindowRect(hWnd, &WindowRect);
-			//if (SetCursorPos(m_iWindows_Width / 2, m_iWindows_Height / 2) == 0)
-			//{
-			//	return 0;
-			//}
-			//SetCursorPos(m_iWindows_Width / 2, m_iWindows_Height / 2);
-			//ClipCursor(&WindowRect);
-			//SetCursorPos(m_theModel->m_worldSizeX, m_theModel->m_worldSizeY);
-			//SetCursorPos(m_iWindows_Width, m_iWindows_Height);
+			ClipCursor(&WindowRect);
 			return 1; // Jump Back
 		}
 	case WM_LBUTTONDOWN:

@@ -25,7 +25,7 @@ thirdpersoncamera()
 	x = 0; y = 0; z = 0;
 	distance = 10;
 	thirdpersoncamera = new ThirdPersonCamera();
-	ObjectAngle = 270;
+	ObjectAngle = 0;
 	PlayerID = 0;
 	thePlayerData.theFrustum = &theFrustum;
 }

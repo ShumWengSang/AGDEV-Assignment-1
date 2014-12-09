@@ -93,9 +93,6 @@
     <ClCompile Include="Mis_ModelVectorCallers.cpp">
       <Filter>Source Files\Scene Graph</Filter>
     </ClCompile>
-    <ClCompile Include="CodeDump.cpp">
-      <Filter>Source Files\Scene Graph</Filter>
-    </ClCompile>
     <ClCompile Include="MazeGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -110,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Math.cpp">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CodeDump.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

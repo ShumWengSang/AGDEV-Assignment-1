@@ -71,17 +71,10 @@ BOOL MVC_View::Draw(void)
 	glLoadIdentity(); // ReSet The Current Modelview Matrix
 	glColor3f(1,1,1);
 
-	//m_theModel->theCamera.Update();
-	//Vector3D theDir((float)cos(Math::degreesToRadians(m_theModel->ObjectAngle)), 0, (float)sin(Math::degreesToRadians(m_theModel->ObjectAngle)));
-	//m_theModel->theCamera.Update(Vector3D(m_theModel->x, m_theModel->y, m_theModel->z), theDir); 
 	m_theModel->theCamera.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir(), m_theModel->ObjectAngle);
 	m_theModel->thePlayerData.DebugDraw();
-	//m_theModel->thirdpersoncamera->UpdateLookAt();
+
 	DrawScene();
-
-	//std::cout << "FPS: " << MVCTime::GetInstance()->GetFPS() << std::endl;
-
-
 
 	glColor3f(1,1,1);
 	SwapBuffers(m_hDC); // Swap Buffers (Double Buffering)
@@ -98,10 +91,6 @@ int MVC_View::InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glDepthFunc(GL_LEQUAL); // The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
 	BuildFont();
-	//glEnable(GL_CULL_FACE);
-	//glFrontFace(GL_CCW);
-	//glCullFace(GL_FRONT);
-	//glDepthRange((double)5, 2);
 
 	return TRUE; // Initialization Went OK
 }
@@ -109,8 +98,8 @@ int MVC_View::InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 void MVC_View::DrawObject()
 {
 	glPushMatrix();
-	glTranslatef(m_theModel->x, m_theModel->y, m_theModel->z);
-	glRotatef(m_theModel->ObjectAngle, 0.0f, 1.0f, 0.0f); // Rotate The Triangle On The Y axis ( NEW )
+	glTranslatef(m_theModel->theCamera.GetPosition().m_x, m_theModel->theCamera.GetPosition().m_y, m_theModel->theCamera.GetPosition().m_z);
+	glRotatef(Math::VectorToAngle(m_theModel->theCamera.GetDirection()), 0.0f, 1.0f, 0.0f); // Rotate The Triangle On The Y axis ( NEW )
 	glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
 	// Top face (y = 1.0f)
 	// Define vertices in counter-clockwise (CCW) order with normal pointing out
@@ -161,10 +150,9 @@ void MVC_View::DrawObject()
 void MVC_View::DrawScene()
 {
 	glPushMatrix();
-	//m_theModel->theBox.Draw();
+	m_theModel->theBox.Draw();
 
 	Draw3DSGrid();
-
 
 	if (m_theModel->thePlayerData.ToggleFrustum)
 	{
@@ -180,8 +168,14 @@ void MVC_View::DrawScene()
 	m_theModel->theCamera.SetHUD(true);
 	m_theModel->theHUD.Draw();
 	Printw(10, 50, "FPS: %.2f", MVCTime::GetInstance()->GetFPS());
+	Printw(10, 100, "Camera Pos: %f %f %f", m_theModel->theCamera.GetPosition().m_x, m_theModel->theCamera.GetPosition().m_y, m_theModel->theCamera.GetPosition().m_z);
+	Printw(10, 150, "Player Data Pos: %f %f %f", m_theModel->thePlayerData.GetPos().m_x, m_theModel->thePlayerData.GetPos().m_y, m_theModel->thePlayerData.GetPos().m_z);
+	Printw(10, 200, "Player Direction %f %f %f , Angle : %f", m_theModel->thePlayerData.GetDir().m_x, m_theModel->thePlayerData.GetDir().m_y, m_theModel->thePlayerData.GetDir().m_z, Math::VectorToAngle(m_theModel->thePlayerData.GetDir()));
+	Printw(10, 250, "Camera Direction %f %f %f , Angle : %f", m_theModel->theCamera.GetDirection().m_x, m_theModel->theCamera.GetDirection().m_y, m_theModel->theCamera.GetDirection().m_z, Math::VectorToAngle(m_theModel->theCamera.GetDirection()));
+	Printw(10, 300, "Distance with Data: %f", (m_theModel->thePlayerData.GetPos() - m_theModel->theCamera.GetPosition()).GetMagnitude());
 	m_theModel->theCamera.SetHUD(false);
 	glPopMatrix();
+
 }
 
 void MVC_View::Draw3DSGrid()

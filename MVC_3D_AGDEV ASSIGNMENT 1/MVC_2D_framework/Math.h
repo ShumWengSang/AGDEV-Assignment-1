@@ -28,6 +28,7 @@
 #ifndef MATHLIB_H
 #define MATHLIB_H
 
+#include "vector3D.h"
 #include <cmath>
 
 //-----------------------------------------------------------------------------
@@ -57,6 +58,12 @@ public:
 	static float radiansToDegrees(float radians)
 	{
 		return (radians * 180.0f) / PI2;
+	}
+
+
+	static float VectorToAngle(Vector3D vector)
+	{
+		return atan2(vector.m_y, vector.m_x);
 	}
 };
 

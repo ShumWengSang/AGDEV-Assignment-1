@@ -23,8 +23,6 @@ void CFrustum::Update( Vector3D newPos,Vector3D newDir)
 {
 
 	fPosition = newPos;
-	newDir.m_z = -newDir.m_z;
-	newDir.m_x = -newDir.m_x;
 	fDirection = newDir;
 
 	Update();

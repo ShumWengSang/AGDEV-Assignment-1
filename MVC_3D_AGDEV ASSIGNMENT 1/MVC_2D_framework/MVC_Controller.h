@@ -47,6 +47,9 @@ protected:
 	void ProcKeyboard();
 	void ProcMouse();
 
+	//Boolean used to control the timer on rotation.
+	bool ControlRotationTime;
+
 
 };
 

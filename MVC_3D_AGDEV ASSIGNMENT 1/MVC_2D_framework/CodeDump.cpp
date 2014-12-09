@@ -101,3 +101,14 @@
 //		}
 //	}
 //}
+
+//glPushMatrix();
+//glColor3f(1, 1, 1);
+//glLineWidth(2.5);
+//glBegin(GL_LINES);
+//glVertex3f(m_theModel->theCamera.GetPosition().m_x, m_theModel->theCamera.GetPosition().m_y, m_theModel->theCamera.GetPosition().m_z);
+//glVertex3f(m_theModel->theCamera.GetPosition().m_x + (m_theModel->theCamera.GetDirection().m_x * 10), m_theModel->theCamera.GetPosition().m_y + (m_theModel->theCamera.GetDirection().m_y * 10), m_theModel->theCamera.GetPosition().m_z + (m_theModel->theCamera.GetDirection().m_z * 10));
+//glEnd();
+//DrawObject();
+//glLineWidth(1);
+//glPopMatrix();

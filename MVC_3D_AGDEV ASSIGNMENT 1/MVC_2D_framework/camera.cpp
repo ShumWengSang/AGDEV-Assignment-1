@@ -73,10 +73,10 @@ void Camera::Update(Vector3D theTarget, Vector3D theTargetDir, float angle) {
 	Vector3D Temp1, Temp2;
 
 
-	Temp1 = theTarget - (Forward.NormalizedVector3D() * Distance) + Up.NormalizedVector3D() * 4 + Along * 1;
+	Temp1 = theTarget - (Forward.NormalizedVector3D() * Distance) + Up.NormalizedVector3D() * 4 + Along * 0;
 	SetPosition(Temp1);
 
-	Temp2 = theTarget + (Forward.NormalizedVector3D() * Distance) + Up.NormalizedVector3D() * 4 + Along * 1;
+	Temp2 = theTarget + (theTargetDir.NormalizedVector3D() * Distance) + Up.NormalizedVector3D() * 4 + Along * 0;
 
 	gluLookAt(Position.m_x, Position.m_y, Position.m_z,
 		Temp2.m_x, Temp2.m_y, Temp2.m_z,

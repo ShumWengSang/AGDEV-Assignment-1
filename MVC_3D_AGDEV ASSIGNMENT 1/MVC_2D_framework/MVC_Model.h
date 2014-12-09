@@ -75,6 +75,8 @@ public:
 	Player thePlayerData;
 
 	Camera theCamera;
+	Camera Camera2;
+
 	HUD theHUD;
 	SkyBox theBox;
 

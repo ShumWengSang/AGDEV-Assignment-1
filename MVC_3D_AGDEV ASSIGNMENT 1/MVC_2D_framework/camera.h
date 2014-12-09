@@ -66,6 +66,7 @@ public:
 
 	bool onground;
 	float yvel, jump, gravity;
+	float Distance;
 private:
 	// Maximum movement speed
 	float MAXSPEED_MOVE;
@@ -73,7 +74,6 @@ private:
 	//VARIABLES FOR ACCELERATION AND DECELERATION
 	float u, u1, v, v1;
 
-	float Distance;
 	Vector3D CalculateDistance(Vector3D theFirstPosition);
 	
 };

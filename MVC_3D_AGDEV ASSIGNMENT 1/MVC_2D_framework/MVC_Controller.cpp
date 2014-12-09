@@ -31,6 +31,9 @@ MVC_Controller::MVC_Controller(MVC_Model* theModel, MVC_View* theView)
 	m_theModel = theModel;
 	m_theView = theView;
 	theTimer = MVCTime::GetInstance();
+	theTimer->PushNewTime(1);
+	theTimer->SetLimit(0, 500);
+	ControlRotationTime = true;
 }
 
 MVC_Controller::~MVC_Controller(void)
@@ -123,7 +126,15 @@ BOOL MVC_Controller::RunMainLoop(void)
 // Process input from I/O devices
 bool MVC_Controller::ProcessInput(void)
 {
-	SetCursorPos(m_theView->m_iWindows_Width / 2, m_theView->m_iWindows_Height / 2);
+	if (theTimer->TestTime(0,true))
+	{
+		//Every 0.5 seconds, set the cursor back to normal position.
+		//Due to restarting the timer when mouse is moved, it isn't really checking every 0.5 seconds.
+		SetCursorPos(m_theView->m_iWindows_Width / 2, m_theView->m_iWindows_Height / 2);
+		theTimer->ResetTime(0);
+		ControlRotationTime = true;
+	}
+	
 	// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
 	if (m_theView->IsQuitGame())				// Was ESC Pressed?
 	{
@@ -150,68 +161,77 @@ bool MVC_Controller::ProcessInput(void)
 void MVC_Controller::ProcMouse()
 {
 	//m_theModel->theCamera.calculations(m_theView->m_MouseInfo.m_last_x, m_theView->m_MouseInfo.m_last_y);
-
+	//m_theModel->Camera2.calculations(m_theView->m_MouseInfo.m_last_x, m_theView->m_MouseInfo.m_last_y);
 	int w;
 	int h;
 	m_theView->GetSize(&w,&h);
 
+	//ROTATING CAMERA
+	//SINCE SetCursor (in controller in process input) sets the cursor back to the middle every 0.5 seconds
+	//We don't have to worry about where the cursor is all the time.
+	//If left side, rotate that way. If right side, rotate that way.
 	if (m_theView->m_MouseInfo.m_x < (m_theView->m_iWindows_Height/2))
 	{
-		//ROTATE THE CAMERA
-		m_theModel->ObjectAngle += 40 * theTimer->GetDelta();
-		Vector3D oldDir = m_theModel->theCamera.GetDirection();
-		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
-		Vector3D newDir(cosf(Angle), 0, (sinf(Angle)));
-		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, -newDir.m_z);
-
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(40 * theTimer->GetDelta(), 0, 1, 0);
-		newDir *= -1;
-		m_theModel->thePlayerData.SetDir(-newDir.m_x, newDir.m_y, newDir.m_z);
-		if (m_theModel->thePlayerData.ToggleFrustum)
-		{
-			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
-		}
-	}
-	else if (m_theView->m_MouseInfo.m_x > (m_theView->m_iWindows_Width/2))
-	{
-		//ROTATE THE CAMERA
+		//First use a placeholder to hold the rotation.
 		m_theModel->ObjectAngle -= 40 * theTimer->GetDelta();
-		std::cout << " Angle: " << m_theModel->ObjectAngle << std::endl;
-		//if (m_theModel->ObjectAngle <= -270)
-		//{
-		//	m_theModel->ObjectAngle = 0;
-		//}
-		Vector3D oldDir = m_theModel->theCamera.GetDirection();
+		//Change into Radian, so that we can change into a vector.
 		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
 		Vector3D newDir(cosf(Angle), 0, (sinf(Angle)));
-		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, -newDir.m_z);
 
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(-40 * theTimer->GetDelta(), 0, 1, 0);
-		newDir *= -1;
-		m_theModel->thePlayerData.SetDir(-newDir.m_x, newDir.m_y, newDir.m_z);
-		//m_theModel->thePlayerData.SetDir(newDir);
+		//Now we have the vector, set it as the player's new direction vector.
+		m_theModel->thePlayerData.SetDir(newDir.m_x, newDir.m_y, newDir.m_z);
+		//Set as the camera new direction vector. Player and camera direction are now the same.
+		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, newDir.m_z);
+
+		//Now apply the rotation to the Player in the scene graph. Since -40 is the APPLIED rotation,
+		//We apply 40 to rotate him in the opposite way.
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(40 * theTimer->GetDelta(), 0, 1, 0);
+
 		if (m_theModel->thePlayerData.ToggleFrustum)
 		{
-			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
+			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir());
+		}
+		//Timer to reset, so that we check if the player is moving his mouse 
+		//in the direction for 0.5 seconds.
+		if (ControlRotationTime)
+		{
+			ControlRotationTime = false;
+			theTimer->ResetTime(0);
+		}
+
+	}
+	if (m_theView->m_MouseInfo.m_x > (m_theView->m_iWindows_Width/2))
+	{
+		//A placeholder to hold rotation
+		m_theModel->ObjectAngle += 40 * theTimer->GetDelta();
+
+		//Change into radians, so that we can change into a vector.
+		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
+		Vector3D newDir(cosf(Angle), 0, (sinf(Angle)));
+
+		//Now set player and camera direction to the same vector that we just got.
+		m_theModel->thePlayerData.SetDir(newDir.m_x, newDir.m_y, newDir.m_z);
+		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, newDir.m_z);
+
+		//Apply rotation to player in scene graph
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(-40 * theTimer->GetDelta(), 0, 1, 0);
+
+		if (m_theModel->thePlayerData.ToggleFrustum)
+		{
+			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir());
+		}
+		//Timer to reset, so that we check if the player is moving his mouse 
+		//in the direction for 0.5 seconds.
+		if (ControlRotationTime)
+		{
+			ControlRotationTime = false;
+			theTimer->ResetTime(0);
 		}
 	}
 
 	if(m_theView->m_MouseInfo.m_LButtonDown)
 	{
-		//ROTATE THE CAMERA
-		m_theModel->ObjectAngle += 20 * theTimer->GetDelta();
-		Vector3D oldDir = m_theModel->theCamera.GetDirection();
-		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
-		Vector3D newDir(cosf(Angle),0,(sinf(Angle)));
-		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, -newDir.m_z);
 
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(20 * theTimer->GetDelta(),0, 1, 0);
-		newDir *= -1;
-		m_theModel->thePlayerData.SetDir( -newDir.m_x,newDir.m_y, newDir.m_z);
-		if (m_theModel->thePlayerData.ToggleFrustum)
-		{
-			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
-		}
 	}
 	else if(m_theView->m_MouseInfo.m_LButtonUp)
 	{
@@ -222,26 +242,6 @@ void MVC_Controller::ProcMouse()
 	if(m_theView->m_MouseInfo.m_RButtonDown)
 	{
 
-		//ROTATE THE CAMERA
-		m_theModel->ObjectAngle -= 20 * theTimer->GetDelta();
-		std::cout << " Angle: " << m_theModel->ObjectAngle << std::endl;
-		//if (m_theModel->ObjectAngle <= -270)
-		//{
-		//	m_theModel->ObjectAngle = 0;
-		//}
-		Vector3D oldDir = m_theModel->theCamera.GetDirection();
-		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
-		Vector3D newDir(cosf(Angle), 0, (sinf(Angle)));
-		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, -newDir.m_z);
-
-		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(-20 * theTimer->GetDelta(), 0, 1, 0);
-		newDir *= -1;
-		m_theModel->thePlayerData.SetDir(-newDir.m_x, newDir.m_y, newDir.m_z);
-		//m_theModel->thePlayerData.SetDir(newDir);
-		if (m_theModel->thePlayerData.ToggleFrustum)
-		{
-			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
-		}
 	}
 	else if(m_theView->m_MouseInfo.m_RButtonUp)
 	{
@@ -323,53 +323,6 @@ void MVC_Controller::ProcKeyboard()
 		temp = temp - m_theModel->thePlayerData.GetPos();
 		temp *= -1;
 		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
-	}
-
-	//if (temp[ProcKeys('d')])
-	//{
-	//	m_theModel->theCamera.moveMeSideway(true, 5 * theTimer->GetDelta());
-	//}
-	//else if (temp[ProcKeys('a')])
-	//{
-	//	m_theModel->theCamera.moveMeSideway(false, 5 * theTimer->GetDelta());
-	//}
-	//else
-	//{
-	//	m_theModel->theCamera.deceleratesideways(theTimer->GetDelta());
-	//}
-
-	//if (temp[ProcKeys('w')])
-	//{
-	//	m_theModel->theCamera.moveMeForward(true, 5 * theTimer->GetDelta());
-	//}
-	//else if (temp[ProcKeys('s')])
-	//{
-	//	m_theModel->theCamera.moveMeForward(false, 5 * theTimer->GetDelta());
-	//}
-	//else
-	//{
-	//	m_theModel->theCamera.deceleratestraight(theTimer->GetDelta());
-	//}
-
-	if (temp[38])
-	{
-		m_theModel->z += 1;
-		//up
-	}
-	if (temp[40])
-	{
-		m_theModel->z -= 1;
-		//down
-	}
-	if (temp[39])
-	{
-		m_theModel->ObjectAngle += 1;
-		//right
-	}
-	if (temp[37])
-	{
-		m_theModel->ObjectAngle -= 1;
-		//left
 	}
 
 	//DEBUG

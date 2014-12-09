@@ -169,12 +169,11 @@ void Player::DebugDraw()
 	glLineWidth(100);
 
 	glTranslatef(m_Position.m_x , m_Position.m_y, m_Position.m_z);
-	glVertex3f(0, 0, -5);
-	glVertex3f(0, 0, 5);
 
 	glPushMatrix();
-	glVertex3f(m_Direction.m_x, m_Direction.m_y, m_Direction.m_z);
-	glVertex3f(m_Direction.m_x * 10, m_Direction.m_y * 10, m_Direction.m_z * 10);
+	glVertex3f(m_Position.m_x, m_Position.m_y, m_Position.m_z);
+	Vector3D newPos(m_Position + m_Direction * 10);
+	glVertex3f(m_Position.m_x + (m_Direction.m_x * 10), m_Position.m_y + (m_Direction.m_y * 10), m_Position.m_z + (m_Direction.m_z * 10));
 	glPopMatrix();
 
 
