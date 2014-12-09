@@ -269,14 +269,14 @@ void CModel::DrawCube(void)
 	glEnd();
 
 	// Render the top quad
-	//if (theObj)
-	//glBindTexture(GL_TEXTURE_2D, theObj->theTexture.texID);
-	//glBegin(GL_QUADS);
-	//glTexCoord2f(0, 1); glVertex3f(vTopLeft.m_x, vTopLeft.m_y, vTopLeft.m_z);
-	//glTexCoord2f(0, 0); glVertex3f(vTopLeft.m_x, vTopLeft.m_y, vBottomRight.m_z);
-	//glTexCoord2f(1, 0); glVertex3f(vBottomRight.m_x, vTopLeft.m_y, vBottomRight.m_z);
-	//glTexCoord2f(1, 1); glVertex3f(vBottomRight.m_x, vTopLeft.m_y, vTopLeft.m_z);
-	//glEnd();
+	if (theObj)
+	glBindTexture(GL_TEXTURE_2D, theObj->theTexture.texID);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 1); glVertex3f(vTopLeft.m_x, vTopLeft.m_y, vTopLeft.m_z);
+	glTexCoord2f(0, 0); glVertex3f(vTopLeft.m_x, vTopLeft.m_y, vBottomRight.m_z);
+	glTexCoord2f(1, 0); glVertex3f(vBottomRight.m_x, vTopLeft.m_y, vBottomRight.m_z);
+	glTexCoord2f(1, 1); glVertex3f(vBottomRight.m_x, vTopLeft.m_y, vTopLeft.m_z);
+	glEnd();
 
 	// Render the bottom quad
 	if (theObj)

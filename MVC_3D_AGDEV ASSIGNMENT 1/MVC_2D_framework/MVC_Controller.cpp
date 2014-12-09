@@ -188,7 +188,7 @@ void MVC_Controller::ProcMouse()
 
 		//ROTATE THE CAMERA
 		m_theModel->ObjectAngle -= 20 * theTimer->GetDelta();
-		if (m_theModel->ObjectAngle <= 90)
+		if (m_theModel->ObjectAngle <= -90)
 		{
 			m_theModel->ObjectAngle = 0;
 		}
