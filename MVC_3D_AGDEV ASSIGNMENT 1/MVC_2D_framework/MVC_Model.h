@@ -65,7 +65,7 @@ public:
 	TextureImage SkyBoxTextures[6];
 
 	MVCTime* m_timer;
-	CFrustum* theFrustum;
+	CFrustum theFrustum;
 	ThirdPersonCamera* thirdpersoncamera;
 	CSceneNode *theRoot;
 

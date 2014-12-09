@@ -40,9 +40,6 @@ GLvoid MVC_View::ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Ini
 	gluPerspective(60.0f,(GLfloat)width/(GLfloat)height,0.1f,1000.0f);
 
 	//glOrtho(0, m_theModel->m_worldSizeX, m_theModel->m_worldSizeY, 0,-1,1);
-	//glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CCW);
-	glCullFace(GL_FRONT);
 
 	glMatrixMode(GL_MODELVIEW); // Select The Modelview Matrix
 	glLoadIdentity(); // ReSet The Modelview Matrix
@@ -373,9 +370,14 @@ LRESULT CALLBACK MVC_View::MsgProc( HWND hWnd, // Handle For This Window
 			//Make sure the mouse doesn't go out of the window.
 			RECT WindowRect;
 			GetWindowRect(hWnd, &WindowRect);
-			ClipCursor(&WindowRect);
-			
-
+			//if (SetCursorPos(m_iWindows_Width / 2, m_iWindows_Height / 2) == 0)
+			//{
+			//	return 0;
+			//}
+			//SetCursorPos(m_iWindows_Width / 2, m_iWindows_Height / 2);
+			//ClipCursor(&WindowRect);
+			//SetCursorPos(m_theModel->m_worldSizeX, m_theModel->m_worldSizeY);
+			//SetCursorPos(m_iWindows_Width, m_iWindows_Height);
 			return 1; // Jump Back
 		}
 	case WM_LBUTTONDOWN:

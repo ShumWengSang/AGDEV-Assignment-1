@@ -18,27 +18,20 @@
 //extern bool LoadTGA(TextureImage *texture, char *filename);
 
 MVC_Model::MVC_Model(void) :
-thirdpersoncamera(),
-theFrustum(NULL)
+thirdpersoncamera()
 {
 	Rotate = 0;
 	m_timer=MVCTime::GetInstance();
 	x = 0; y = 0; z = 0;
 	distance = 10;
-	theFrustum = new CFrustum();
 	thirdpersoncamera = new ThirdPersonCamera();
 	ObjectAngle = 270;
 	PlayerID = 0;
-	thePlayerData.theFrustum = theFrustum;
+	thePlayerData.theFrustum = &theFrustum;
 }
 
 MVC_Model::~MVC_Model(void)
 {
-	if (theFrustum != NULL)
-	{
-		delete theFrustum;
-		theFrustum = NULL;
-	}
 	if (thirdpersoncamera != NULL)
 	{
 		delete thirdpersoncamera;
@@ -202,35 +195,42 @@ void MVC_Model::FrustumChecking()
 	}
 }
 
-//Not a fully soft-coded and recursive method. Will change if got time.
-
 void MVC_Model::FrustumChecking(CSceneNode * thisNode, const int ParentID, const int thisID)
 {
 	Vector3D NearTopLeft, NearTopRight, NearBottomLeft, NearBottomRight;
 	Vector3D FarTopLeft, FarTopRight, FarBottomLeft, FarBottomRight;
 
-	if (
-		(theRoot->GetNode(ParentID)->GetNearTopLeft(thisID, NearTopLeft))
-		&& (theRoot->GetNode(ParentID)->GetNearTopRight(thisID, NearTopRight))
-		&& (theRoot->GetNode(ParentID)->GetNearBottomLeft(thisID, NearBottomLeft))
-		&& (theRoot->GetNode(ParentID)->GetNearBottomRight(thisID, NearBottomRight))
+	//if (
+	//	(theRoot->GetNode(ParentID)->GetNearTopLeft(thisID, NearTopLeft))
+	//	&& (theRoot->GetNode(ParentID)->GetNearTopRight(thisID, NearTopRight))
+	//	&& (theRoot->GetNode(ParentID)->GetNearBottomLeft(thisID, NearBottomLeft))
+	//	&& (theRoot->GetNode(ParentID)->GetNearBottomRight(thisID, NearBottomRight))
 
-		&& (theRoot->GetNode(ParentID)->GetFarTopLeft(thisID, FarTopLeft))
-		&& (theRoot->GetNode(ParentID)->GetFarTopRight(thisID, FarTopRight))
-		&& (theRoot->GetNode(ParentID)->GetFarBottomLeft(thisID, FarBottomLeft))
-		&& (theRoot->GetNode(ParentID)->GetFarBottomRight(thisID, FarBottomRight))
-		)
+	//	&& (theRoot->GetNode(ParentID)->GetFarTopLeft(thisID, FarTopLeft))
+	//	&& (theRoot->GetNode(ParentID)->GetFarTopRight(thisID, FarTopRight))
+	//	&& (theRoot->GetNode(ParentID)->GetFarBottomLeft(thisID, FarBottomLeft))
+	//	&& (theRoot->GetNode(ParentID)->GetFarBottomRight(thisID, FarBottomRight))
+	//	)
+	NearTopLeft = thisNode ->GetNearTopLeft();
+	NearTopRight = thisNode->GetNearTopRight();
+	NearBottomLeft = thisNode->GetNearBottomLeft();
+	NearBottomRight = thisNode->GetNearBottomRight();
+
+	FarTopLeft = thisNode->GetFarTopLeft();
+	FarTopRight = thisNode->GetFarTopRight();
+	FarBottomLeft = thisNode->GetFarBottomLeft();
+	FarBottomRight = thisNode->GetFarBottomRight();
 	{
 
-		bool m_bCheckNearTopLeft = theFrustum->ContainmentCheck(NearTopLeft);
-		bool m_bCheckNearTopRight = theFrustum->ContainmentCheck(NearTopRight);
-		bool m_bCheckNearBottomLeft = theFrustum->ContainmentCheck(NearBottomLeft);
-		bool m_bCheckNearBottomRight = theFrustum->ContainmentCheck(NearBottomRight);
+		bool m_bCheckNearTopLeft = theFrustum.ContainmentCheck(NearTopLeft);
+		bool m_bCheckNearTopRight = theFrustum.ContainmentCheck(NearTopRight);
+		bool m_bCheckNearBottomLeft = theFrustum.ContainmentCheck(NearBottomLeft);
+		bool m_bCheckNearBottomRight = theFrustum.ContainmentCheck(NearBottomRight);
 
-		bool m_bCheckFarTopLeft = theFrustum->ContainmentCheck(FarTopLeft);
-		bool m_bCheckFarTopRight = theFrustum->ContainmentCheck(FarTopRight);
-		bool m_bCheckFarBottomLeft = theFrustum->ContainmentCheck(FarBottomLeft);
-		bool m_bCheckFarBottomRight = theFrustum->ContainmentCheck(FarBottomRight);
+		bool m_bCheckFarTopLeft = theFrustum.ContainmentCheck(FarTopLeft);
+		bool m_bCheckFarTopRight = theFrustum.ContainmentCheck(FarTopRight);
+		bool m_bCheckFarBottomLeft = theFrustum.ContainmentCheck(FarBottomLeft);
+		bool m_bCheckFarBottomRight = theFrustum.ContainmentCheck(FarBottomRight);
 
 
 		if (!(m_bCheckNearTopLeft || m_bCheckNearTopRight

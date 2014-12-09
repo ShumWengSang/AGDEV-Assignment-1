@@ -53,7 +53,7 @@ bool MVC_Controller::Init(void)
 // Get the status of the stop game boolean flag
 BOOL MVC_Controller::RunMainLoop(void)
 {
-
+	//SetCursorPos(m_theView->m_iWindows_Width / 2, m_theView->m_iWindows_Height / 2);
 	MSG msg; // Windows Message Structure
 	BOOL done=FALSE; // Bool Variable To Exit Loop
 		// Ask The User Which Screen Mode They Prefer
@@ -123,6 +123,7 @@ BOOL MVC_Controller::RunMainLoop(void)
 // Process input from I/O devices
 bool MVC_Controller::ProcessInput(void)
 {
+	SetCursorPos(m_theView->m_iWindows_Width / 2, m_theView->m_iWindows_Height / 2);
 	// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
 	if (m_theView->IsQuitGame())				// Was ESC Pressed?
 	{
@@ -153,14 +154,52 @@ void MVC_Controller::ProcMouse()
 	int w;
 	int h;
 	m_theView->GetSize(&w,&h);
+
+	if (m_theView->m_MouseInfo.m_x < (m_theView->m_iWindows_Height/2))
+	{
+		//ROTATE THE CAMERA
+		m_theModel->ObjectAngle += 40 * theTimer->GetDelta();
+		Vector3D oldDir = m_theModel->theCamera.GetDirection();
+		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
+		Vector3D newDir(cosf(Angle), 0, (sinf(Angle)));
+		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, -newDir.m_z);
+
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(40 * theTimer->GetDelta(), 0, 1, 0);
+		newDir *= -1;
+		m_theModel->thePlayerData.SetDir(-newDir.m_x, newDir.m_y, newDir.m_z);
+		if (m_theModel->thePlayerData.ToggleFrustum)
+		{
+			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
+		}
+	}
+	else if (m_theView->m_MouseInfo.m_x > (m_theView->m_iWindows_Width/2))
+	{
+		//ROTATE THE CAMERA
+		m_theModel->ObjectAngle -= 40 * theTimer->GetDelta();
+		std::cout << " Angle: " << m_theModel->ObjectAngle << std::endl;
+		//if (m_theModel->ObjectAngle <= -270)
+		//{
+		//	m_theModel->ObjectAngle = 0;
+		//}
+		Vector3D oldDir = m_theModel->theCamera.GetDirection();
+		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
+		Vector3D newDir(cosf(Angle), 0, (sinf(Angle)));
+		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, -newDir.m_z);
+
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(-40 * theTimer->GetDelta(), 0, 1, 0);
+		newDir *= -1;
+		m_theModel->thePlayerData.SetDir(-newDir.m_x, newDir.m_y, newDir.m_z);
+		//m_theModel->thePlayerData.SetDir(newDir);
+		if (m_theModel->thePlayerData.ToggleFrustum)
+		{
+			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
+		}
+	}
+
 	if(m_theView->m_MouseInfo.m_LButtonDown)
 	{
 		//ROTATE THE CAMERA
 		m_theModel->ObjectAngle += 20 * theTimer->GetDelta();
-		if (m_theModel->ObjectAngle <= 90)
-		{
-			m_theModel->ObjectAngle = 0;
-		}
 		Vector3D oldDir = m_theModel->theCamera.GetDirection();
 		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
 		Vector3D newDir(cosf(Angle),0,(sinf(Angle)));
@@ -169,13 +208,10 @@ void MVC_Controller::ProcMouse()
 		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(20 * theTimer->GetDelta(),0, 1, 0);
 		newDir *= -1;
 		m_theModel->thePlayerData.SetDir( -newDir.m_x,newDir.m_y, newDir.m_z);
-		//m_theModel->thePlayerData.SetDir(newDir);
 		if (m_theModel->thePlayerData.ToggleFrustum)
 		{
-			m_theModel->theFrustum->Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
+			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
 		}
-		
-		//std::cout << " Camera Direction: " << newDir.m_x << " , " << newDir.m_y << " , " << -newDir.m_z << " Player Data Direction: " << m_theModel->thePlayerData.GetDir().m_x << " , " << m_theModel->thePlayerData.GetDir().m_x << " , " << m_theModel->thePlayerData.GetDir().m_x << std::endl;
 	}
 	else if(m_theView->m_MouseInfo.m_LButtonUp)
 	{
@@ -188,10 +224,11 @@ void MVC_Controller::ProcMouse()
 
 		//ROTATE THE CAMERA
 		m_theModel->ObjectAngle -= 20 * theTimer->GetDelta();
-		if (m_theModel->ObjectAngle <= -90)
-		{
-			m_theModel->ObjectAngle = 0;
-		}
+		std::cout << " Angle: " << m_theModel->ObjectAngle << std::endl;
+		//if (m_theModel->ObjectAngle <= -270)
+		//{
+		//	m_theModel->ObjectAngle = 0;
+		//}
 		Vector3D oldDir = m_theModel->theCamera.GetDirection();
 		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
 		Vector3D newDir(cosf(Angle), 0, (sinf(Angle)));
@@ -203,7 +240,7 @@ void MVC_Controller::ProcMouse()
 		//m_theModel->thePlayerData.SetDir(newDir);
 		if (m_theModel->thePlayerData.ToggleFrustum)
 		{
-			m_theModel->theFrustum->Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
+			m_theModel->theFrustum.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
 		}
 	}
 	else if(m_theView->m_MouseInfo.m_RButtonUp)

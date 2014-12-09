@@ -78,10 +78,7 @@ BOOL MVC_View::Draw(void)
 	m_theModel->thePlayerData.DebugDraw();
 	//m_theModel->thirdpersoncamera->UpdateLookAt();
 	DrawScene();
-	//glTranslatef(m_theModel->thirdpersoncamera->m_vView.m_x , -2, m_theModel->thirdpersoncamera->m_vView.m_z);
-	DrawObject();
 
-	Printw(30,10,"FPS: %.2f",MVCTime::GetInstance()->GetFPS());
 	//std::cout << "FPS: " << MVCTime::GetInstance()->GetFPS() << std::endl;
 
 
@@ -101,7 +98,11 @@ int MVC_View::InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	glDepthFunc(GL_LEQUAL); // The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
 	BuildFont();
-	
+	//glEnable(GL_CULL_FACE);
+	//glFrontFace(GL_CCW);
+	//glCullFace(GL_FRONT);
+	//glDepthRange((double)5, 2);
+
 	return TRUE; // Initialization Went OK
 }
 
@@ -160,7 +161,7 @@ void MVC_View::DrawObject()
 void MVC_View::DrawScene()
 {
 	glPushMatrix();
-	m_theModel->theBox.Draw();
+	//m_theModel->theBox.Draw();
 
 	Draw3DSGrid();
 
@@ -169,7 +170,7 @@ void MVC_View::DrawScene()
 	{
 
 		m_theModel->FrustumChecking();
-		m_theModel->theFrustum->Draw();
+		m_theModel->theFrustum.Draw();
 	}
 	else
 	{
@@ -178,6 +179,7 @@ void MVC_View::DrawScene()
 
 	m_theModel->theCamera.SetHUD(true);
 	m_theModel->theHUD.Draw();
+	Printw(10, 50, "FPS: %.2f", MVCTime::GetInstance()->GetFPS());
 	m_theModel->theCamera.SetHUD(false);
 	glPopMatrix();
 }

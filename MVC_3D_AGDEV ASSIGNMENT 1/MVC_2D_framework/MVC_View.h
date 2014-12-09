@@ -52,7 +52,7 @@ private:
 	bool m_bActive; // Window Active Flag Set To TRUE By Default
 	bool m_bFullScreen; // Fullscreen Flag Set To Fullscreen Mode By Default
 	bool m_keys[256]; // Array Used For The Keyboard Routine
-	int m_iWindows_Width, m_iWindows_Height;
+
 
 	void BuildFont(void);
 	void KillFont(void);
@@ -60,6 +60,8 @@ private:
 	virtual LRESULT CALLBACK MsgProc(HWND, UINT, WPARAM, LPARAM); // Declaration For WndProc
 	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM); // Declaration For WndProc
 public:
+
+	int m_iWindows_Width, m_iWindows_Height;
 	void GetDefaultRes(int& height,int& width);
 	// Check if the player wants to quit the game
 	bool IsQuitGame(void);
