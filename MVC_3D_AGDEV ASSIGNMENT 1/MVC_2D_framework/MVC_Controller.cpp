@@ -186,7 +186,25 @@ void MVC_Controller::ProcMouse()
 	if(m_theView->m_MouseInfo.m_RButtonDown)
 	{
 
-		m_theView->m_MouseInfo.m_RButtonDown=false;
+		//ROTATE THE CAMERA
+		m_theModel->ObjectAngle -= 20 * theTimer->GetDelta();
+		if (m_theModel->ObjectAngle <= 90)
+		{
+			m_theModel->ObjectAngle = 0;
+		}
+		Vector3D oldDir = m_theModel->theCamera.GetDirection();
+		float Angle = Math::degreesToRadians(m_theModel->ObjectAngle);
+		Vector3D newDir(cosf(Angle), 0, (sinf(Angle)));
+		m_theModel->theCamera.SetDirection(newDir.m_x, newDir.m_y, -newDir.m_z);
+
+		m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(-20 * theTimer->GetDelta(), 0, 1, 0);
+		newDir *= -1;
+		m_theModel->thePlayerData.SetDir(-newDir.m_x, newDir.m_y, newDir.m_z);
+		//m_theModel->thePlayerData.SetDir(newDir);
+		if (m_theModel->thePlayerData.ToggleFrustum)
+		{
+			m_theModel->theFrustum->Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir() * -1);
+		}
 	}
 	else if(m_theView->m_MouseInfo.m_RButtonUp)
 	{

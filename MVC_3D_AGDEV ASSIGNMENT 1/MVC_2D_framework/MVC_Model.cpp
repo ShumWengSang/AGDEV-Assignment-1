@@ -186,7 +186,7 @@ void MVC_Model::Update(void)
 	{
 		for (int i = 0; i < ArrayofIDs.size(); i++)
 		{
-			theRoot->GetNode(ArrayofIDs[i])->ApplyRotate(100 * m_timer->GetDelta(), 0, 1, 0);
+			//theRoot->GetNode(ArrayofIDs[i])->ApplyRotate(100 * m_timer->GetDelta(), 0, 1, 0);
 		}
 	}
 	//theFrustum->Update();
