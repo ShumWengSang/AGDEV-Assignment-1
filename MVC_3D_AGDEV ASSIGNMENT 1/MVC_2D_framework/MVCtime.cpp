@@ -65,6 +65,11 @@ void MVCTime::UpdateTime()
 		//reSet frame count
 		m_frameCount=0;
 	}
+
+	if (m_dtInterval>m_fpsLimit - 5)
+	{
+		m_resetDt = true;
+	}
 }
 
 MVCTime::~MVCTime()

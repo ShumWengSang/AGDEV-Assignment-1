@@ -84,6 +84,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="CodeDump.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Exit.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Math.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="basicShape.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Exit.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Math.h" />

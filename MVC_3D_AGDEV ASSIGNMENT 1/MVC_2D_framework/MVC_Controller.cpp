@@ -32,7 +32,7 @@ MVC_Controller::MVC_Controller(MVC_Model* theModel, MVC_View* theView)
 	m_theView = theView;
 	theTimer = MVCTime::GetInstance();
 	theTimer->PushNewTime(1);
-	theTimer->SetLimit(0, 100);
+	theTimer->SetLimit(0, 200);
 	ControlRotationTime = true;
 	v1 = 0; u1 = 0;
 }
@@ -176,12 +176,12 @@ void MVC_Controller::ProcMouse()
 		if (m_theView->m_MouseInfo.m_x < (m_theView->m_iWindows_Height / 2))
 		{
 			//m_theModel->ObjectAngle += -40 * theTimer->GetDelta();
-			RotateCamera(-50);
+			RotateCamera(-80);
 
 		}
 		else if (m_theView->m_MouseInfo.m_x > (m_theView->m_iWindows_Width / 2))
 		{
-			RotateCamera(50);
+			RotateCamera(80);
 		}
 
 	}
@@ -228,9 +228,9 @@ void MVC_Controller::ProcKeyboard()
 			m_theModel->thePlayerData.MoveMeSideways(true, theTimer->GetDelta());
 			temp = temp - m_theModel->thePlayerData.GetPos();
 			temp *= -1;
-			m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
-			m_theModel->theRoot->GetNode(m_theModel->PlayerParts[0])->ApplyRotate(300 * theTimer->GetDelta(), 1, 0, 0);
-			m_theModel->theRoot->GetNode(m_theModel->PlayerParts[1])->ApplyRotate(300 * theTimer->GetDelta(), 1, 0, 0);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerParts[0])->ApplyRotate(300 * theTimer->GetDelta(), 1, 0, 0);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerParts[1])->ApplyRotate(300 * theTimer->GetDelta(), 1, 0, 0);
 		}
 		else if (temp[ProcKeys('a')])
 		{
@@ -238,9 +238,9 @@ void MVC_Controller::ProcKeyboard()
 			m_theModel->thePlayerData.MoveMeSideways(false, theTimer->GetDelta());
 			temp = temp - m_theModel->thePlayerData.GetPos();
 			temp *= -1;
-			m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
-			m_theModel->theRoot->GetNode(m_theModel->PlayerParts[0])->ApplyRotate(-300 * theTimer->GetDelta(), 1, 0, 0);
-			m_theModel->theRoot->GetNode(m_theModel->PlayerParts[1])->ApplyRotate(-300 * theTimer->GetDelta(), 1, 0, 0);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerParts[0])->ApplyRotate(-300 * theTimer->GetDelta(), 1, 0, 0);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerParts[1])->ApplyRotate(-300 * theTimer->GetDelta(), 1, 0, 0);
 
 		}
 		else
@@ -249,7 +249,7 @@ void MVC_Controller::ProcKeyboard()
 			m_theModel->thePlayerData.deceleratesideways(theTimer->GetDelta());
 			temp = temp - m_theModel->thePlayerData.GetPos();
 			temp *= -1;
-			m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
 
 
 		}
@@ -260,9 +260,9 @@ void MVC_Controller::ProcKeyboard()
 			m_theModel->thePlayerData.MoveMeForward(true, theTimer->GetDelta());
 			temp = temp - m_theModel->thePlayerData.GetPos();
 			temp *= -1;
-			m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
-			m_theModel->theRoot->GetNode(m_theModel->PlayerParts[0])->ApplyRotate(-300 * theTimer->GetDelta(),0, 0, 1);
-			m_theModel->theRoot->GetNode(m_theModel->PlayerParts[1])->ApplyRotate(-300 * theTimer->GetDelta(), 0, 0, 1);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerParts[0])->ApplyRotate(-300 * theTimer->GetDelta(),0, 0, 1);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerParts[1])->ApplyRotate(-300 * theTimer->GetDelta(), 0, 0, 1);
 
 		}
 		else if (temp[ProcKeys('s')])
@@ -271,9 +271,9 @@ void MVC_Controller::ProcKeyboard()
 			m_theModel->thePlayerData.MoveMeForward(false, theTimer->GetDelta());
 			temp = temp - m_theModel->thePlayerData.GetPos();
 			temp *= -1;
-			m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
-			m_theModel->theRoot->GetNode(m_theModel->PlayerParts[0])->ApplyRotate(300 * theTimer->GetDelta(),0, 0, 1);
-			m_theModel->theRoot->GetNode(m_theModel->PlayerParts[1])->ApplyRotate(300 * theTimer->GetDelta(), 0, 0,1);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerParts[0])->ApplyRotate(300 * theTimer->GetDelta(),0, 0, 1);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerParts[1])->ApplyRotate(300 * theTimer->GetDelta(), 0, 0,1);
 
 		}
 		else
@@ -282,7 +282,7 @@ void MVC_Controller::ProcKeyboard()
 			m_theModel->thePlayerData.deceleratestraight(theTimer->GetDelta());
 			temp = temp - m_theModel->thePlayerData.GetPos();
 			temp *= -1;
-			m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
+			m_theModel->theRoot.GetNode(m_theModel->PlayerID)->ApplyTranslate(temp.m_x, temp.m_y, temp.m_z);
 		}
 
 	}
@@ -342,11 +342,11 @@ void MVC_Controller::ProcKeyboard()
 	}
 	if (temp[VK_F3])
 	{
-		m_theModel->theRoot->ApplyTranslate( 0.01f, 0.0f, 0.0f );
+		m_theModel->theRoot.ApplyTranslate( 0.01f, 0.0f, 0.0f );
 	}
 	if (temp[VK_F4])
 	{
-		m_theModel->theRoot->ApplyTranslate(-0.01f, 0.0f, 0.0f);
+		m_theModel->theRoot.ApplyTranslate(-0.01f, 0.0f, 0.0f);
 	}
 	if (temp[VK_ADD])
 	{
@@ -382,7 +382,7 @@ void MVC_Controller::RotateCamera(float AngletoChange)
 	//Now apply the rotation to the Player in the scene graph. Since -40 is the APPLIED rotation,
 	//We apply 40 to rotate him in the opposite way.
 
-	m_theModel->theRoot->GetNode(m_theModel->PlayerID)->ApplyRotate(-AngletoChange * theTimer->GetDelta(), 0, 1, 0);
+	m_theModel->theRoot.GetNode(m_theModel->PlayerID)->ApplyRotate(-AngletoChange * theTimer->GetDelta(), 0, 1, 0);
 
 	if (m_theModel->thePlayerData.ToggleFrustum)
 	{

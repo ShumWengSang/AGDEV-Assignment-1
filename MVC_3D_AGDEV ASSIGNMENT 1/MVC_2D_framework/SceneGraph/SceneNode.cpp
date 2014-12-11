@@ -14,6 +14,7 @@ CSceneNode::CSceneNode(const int sceneNodeID)
 {
 	CSceneNode();
 	SetSceneNodeID( sceneNodeID );
+	//theChildren = new std::vector<CNode*>();
 }
 
 
@@ -90,7 +91,14 @@ int CSceneNode::AddChild(CTransform* aNewTransform, CModel* aNewModel)
 {
 	CSceneNode* aNewNode = new CSceneNode();
 	aNewNode->SetNode( aNewTransform, aNewModel );
-	aNewNode->SetSceneNodeID( sceneNodeID*10 + (theChildren.size()+1) );
+	//if ((sceneNodeID * 10 + theChildren.size() + 1) % 10 == 0)
+	//{
+		//aNewNode->SetSceneNodeID(sceneNodeID * 10 + (theChildren.size() + 2));
+	//}
+	//else
+	//{
+		aNewNode->SetSceneNodeID(sceneNodeID * 10 + (theChildren.size() + 1));
+	//}
 	theChildren.push_back( aNewNode );
 
 	return aNewNode->GetSceneNodeID();
@@ -118,20 +126,69 @@ int CSceneNode::GetSceneNodeID(void)
 	return sceneNodeID;
 }
 
-CSceneNode* CSceneNode::GetNode(const int sceneNodeID)
+CSceneNode* CSceneNode::GetNode(const int sceneNodeID, const int depth)
 {
+
 	if (this->sceneNodeID == sceneNodeID)
 		return this;
 
+	//int DigitCounter = 1;
+	//int ThisID = sceneNodeID;
+	//int ID = sceneNodeID;
+
+	//if ((ThisID > 10))
+	//{
+	//	while (true)
+	//	{
+	//		
+	//		if (ThisID < 10)
+	//		{
+	//			break;
+	//		}
+	//		ThisID /= 10;
+	//		DigitCounter++;
+	//	}
+	//}
+	//int DepthCounter = DigitCounter - depth;
+
+	//while (DigitCounter > DepthCounter)
+	//{
+	//	int theInt = 0;
+	//	for (int theInte = 0; theInte != DigitCounter; theInte++)
+	//	{
+	//		if (theInt == 0)
+	//		{
+	//			theInt = 1;
+	//		}
+	//		else
+	//		{
+	//			theInt *= 10;
+	//		}
+	//	}
+
+	//	ID %= theInt;
+	//	DigitCounter--;
+	//}
+	//while (ID > 10)
+	//{
+	//	ID /= 10;
+	//}
+
+
+
 	CSceneNode* theTarget = NULL;
+
+
+
 	if (theChildren.size() != 0)
 	{
+		//ID--;
 		CSceneNode* aChild = NULL;
-		for (unsigned i=0; i<theChildren.size(); i++)
+		for (unsigned i = 0; i<theChildren.size(); i++)
 		{
 			aChild = (CSceneNode*)theChildren[i];
 
-			theTarget = ((CSceneNode*)aChild)->GetNode( sceneNodeID );
+			theTarget = ((CSceneNode*)aChild)->GetNode(sceneNodeID);
 			if (theTarget != NULL)
 				break;
 		}

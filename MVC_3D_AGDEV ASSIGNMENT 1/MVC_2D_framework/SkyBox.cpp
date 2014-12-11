@@ -13,7 +13,7 @@ SkyBox::~SkyBox()
 void SkyBox::Init()
 {
 	Top = 100;
-	Bottom = -100;
+	Bottom = -50;
 	Left = 100;
 	Right = -100;
 	Near = -100;

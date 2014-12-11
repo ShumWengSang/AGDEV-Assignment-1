@@ -29,6 +29,7 @@ thirdpersoncamera()
 	PlayerID = 0;
 	thePlayerData.theFrustum = &theFrustum;
 	ChooseCamera = 0;
+	theExits = NULL;
 }
 
 MVC_Model::~MVC_Model(void)
@@ -38,6 +39,8 @@ MVC_Model::~MVC_Model(void)
 		delete thirdpersoncamera;
 		thirdpersoncamera = NULL;
 	}
+	delete[] theExits;
+	theExits = NULL;
 }
 
 bool MVC_Model::Init(float fpsLimit)
@@ -56,20 +59,41 @@ bool MVC_Model::InitPhase2(void)
 	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping ( NEW )
 	
 
-	if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/bleached_front.tga"))				// Load The Font Texture
+	theExits = new Exit [theMaze.PossibleExits.size()];
+
+
+	if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/front.tga"))				// Load The Font Texture
 		return false;	// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[1], "SkyBox/bleached_back.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[1], "SkyBox/back.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[2], "SkyBox/bleached_left.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[2], "SkyBox/left.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[3], "SkyBox/bleached_right.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[3], "SkyBox/right.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[4], "SkyBox/bleached_top.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[4], "SkyBox/top.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
-	if (!LoadTGA(&SkyBoxTextures[5], "SkyBox/red_down.tga"))				// Load The Font Texture
+	if (!LoadTGA(&SkyBoxTextures[5], "SkyBox/bottom.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
 
-	if (!LoadTGA(&theImageDebugger, "button.tga"))				// Load The Font Texture
+	if (!LoadTGA(&ExitTexture[0], "exit.tga"))				// Load The Font Texture
+		return false;	// If Loading Failed, Return False
+
+	//////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					TEXTURE FOR EXIT
+	for (int i = 1; i < 6; i++)
+	{
+		ExitTexture[i] = ExitTexture[0];
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			theExits[i].textureID[j] = ExitTexture[j].texID;
+		}
+	}
+	///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+	if (!LoadTGA(&theImageDebugger, "SteelWall.tga"))				// Load The Font Texture
 		return false;										// If Loading Failed, Return False
 
 
@@ -77,17 +101,15 @@ bool MVC_Model::InitPhase2(void)
 
 
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		theBox.textureID[i] = SkyBoxTextures[i].texID;//Set the TEX ID into the SkyBox itself
 	}
-	// Scene Graph
-	theRoot = new CSceneNode();
 
 	CModel* newModel = new CModel();
 	newModel->SetColor(0.0, 0.0, 1.0);
 	newModel->states = WhatToDraw::Nothing;
-	std::cout << theRoot->SetNode(new CTransform(0, 0, 0), newModel) << endl;
+	std::cout << theRoot.SetNode(new CTransform(0, 0, 0), newModel) << endl;
 
 
 	//Find the ratio between skybox width and height and maze width and height.
@@ -111,7 +133,7 @@ bool MVC_Model::InitPhase2(void)
 			{
 				newModel = new CModel();
 				newModel->InitObj();
-				newModel->SetColor(1.0, 1.0, 0.0);
+				newModel->SetColor(1.0, 1.0, 1.0);
 				newModel->theObj->theTexture = theImageDebugger;
 
 				CTransform * theTransform = new CTransform((float)(MazeWidth - WIDTH / 2) * ratiox, 0, (float)(MazeHeight - HEIGHT / 2)* ratioy);
@@ -135,23 +157,26 @@ bool MVC_Model::InitPhase2(void)
 				//This is the wall, so draw a cube here.
 
 
-				std::cout << theRoot->AddChild(theTransform, newModel) << endl;
+				std::cout << theRoot.AddChild(theTransform, newModel) << endl;
 				
+				//if (counter % 10 == 0)
+				//{
+				//	counter++;
+				//}
+				newModel = new CModel();
+				CSceneNode * temp = theRoot.GetNode(10 + 1 * counter );
+				std::cout << temp->AddChild(new CTransform(0, 2, 0), newModel) << endl;
 
 				newModel = new CModel();
-				newModel->SetColor(1.0, 0.0, 1.0);
-				std::cout << theRoot->GetNode(10 + 1 * counter)->AddChild(new CTransform(0, 2, 0), newModel) << endl;
-
-				newModel = new CModel();
-				newModel->SetColor(0.0, 1.0, 1.0);
-				ArrayofIDs.push_back(theRoot->GetNode(100 + 1 + 10 * counter)->AddChild(new CTransform(0, 2, 0), newModel));
+				temp = theRoot.GetNode(100 + 1 + 10 * counter);
+				//theRoot.GetNode(100 + 1 + 10 * counter)
+				ArrayofIDs.push_back(temp->AddChild(new CTransform(Vector3D(0,2,0),Vector3D(1,3,1)), newModel));
+				//ArrayofIDs.push_back(temp->AddChild(new CTransform(0, 2, 0), newModel));
 				counter++;
 				theCounter++;
 			}
 		}
 	}
-	cout << "theCounter "<< theCounter << endl;
-	//theRoot->ApplyTranslate(ratiox / 2, 0, ratioy/2 );
 
 	//Set up the Player
 	thePlayer = new CSceneNode();
@@ -159,8 +184,10 @@ bool MVC_Model::InitPhase2(void)
 	thePlayerData.SetPos((theMaze.x - WIDTH / 2) * ratiox, 2, (theMaze.z - HEIGHT / 2)* ratioy);
 	CTransform * theTransform = new CTransform(thePlayerData.GetPos(), Vector3D(1, 1, 1));
 	thePlayer->SetNode(theTransform, newModel);
-	thePlayer->SetColor(1, 0, 1);
-	PlayerID = theRoot->AddChild(thePlayer);
+	thePlayer->SetColor(1, 1, 1);
+	newModel->InitObj();
+	LoadTGA(&newModel->theObj->theTexture, "portal.tga");
+	PlayerID = theRoot.AddChild(thePlayer);
 
 	//LeftSphere
 	newModel = new CModel();
@@ -168,7 +195,7 @@ bool MVC_Model::InitPhase2(void)
 	newModel->SetColor(1.0, 0.0, 1.0);
 	newModel->states = WhatToDraw::Sphere;
 	LoadTGA(&newModel->theObj->theTexture,"wheel.tga");
-	PlayerParts[0] = theRoot->GetNode(PlayerID)->AddChild(new CTransform(0, 0, 2), newModel);
+	PlayerParts[0] = theRoot.GetNode(PlayerID)->AddChild(new CTransform(0, 0, 2), newModel);
 
 	//Right Sphere
 	newModel = new CModel();
@@ -176,11 +203,16 @@ bool MVC_Model::InitPhase2(void)
 	newModel->SetColor(1.0, 0.0, 1.0);
 	newModel->states = WhatToDraw::Sphere;
 	LoadTGA(&newModel->theObj->theTexture, "wheel.tga");
-	PlayerParts[1] = theRoot->GetNode(PlayerID)->AddChild(new CTransform(0, 0, -2), newModel);
+	PlayerParts[1] = theRoot.GetNode(PlayerID)->AddChild(new CTransform(0, 0, -2), newModel);
 
-
+	for (int i = 0; i < theMaze.PossibleExits.size(); i++)
+	{
+		theExits[i].SetPos((theMaze.PossibleExits[i].x - WIDTH/2) * ratiox, 0 ,(theMaze.PossibleExits[i].y - HEIGHT / 2)* ratioy);
+	}
 	//delete newModel;
 //	delete theTransform;
+
+
 
 	return true;
 }
@@ -196,25 +228,17 @@ void MVC_Model::Update(void)
 		m_testY += m_moveY*m_timer->GetDelta();
 	}
 
-	if (theRoot)
-	{
-		for (int i = 0; i < ArrayofIDs.size(); i++)
-		{
-			//theRoot->GetNode(ArrayofIDs[i])->ApplyRotate(100 * m_timer->GetDelta(), 0, 1, 0);
-		}
-	}
-
-	CheckCollision();
-	//theFrustum->Update();
+	if(m_timer->TestFramerate())
+		CheckCollision();
 }
 
 //Checking specific to the root.
 void MVC_Model::FrustumChecking()
 {
-	for (int i = 0; i < theRoot->GetNumOfChild(); i++)
+	for (int i = 0; i < theRoot.GetNumOfChild(); i++)
 	{
-		const int ID = theRoot->GetSceneNodeID() * 10 + i + 1;
-		FrustumChecking(theRoot->GetNode(ID), theRoot->GetSceneNodeID(), ID);
+		const int ID = theRoot.GetSceneNodeID() * 10 + i + 1;
+		FrustumChecking(theRoot.GetNode(ID), theRoot.GetSceneNodeID(), ID);
 	}
 }
 
@@ -223,17 +247,6 @@ void MVC_Model::FrustumChecking(CSceneNode * thisNode, const int ParentID, const
 	Vector3D NearTopLeft, NearTopRight, NearBottomLeft, NearBottomRight;
 	Vector3D FarTopLeft, FarTopRight, FarBottomLeft, FarBottomRight;
 
-	//if (
-	//	(theRoot->GetNode(ParentID)->GetNearTopLeft(thisID, NearTopLeft))
-	//	&& (theRoot->GetNode(ParentID)->GetNearTopRight(thisID, NearTopRight))
-	//	&& (theRoot->GetNode(ParentID)->GetNearBottomLeft(thisID, NearBottomLeft))
-	//	&& (theRoot->GetNode(ParentID)->GetNearBottomRight(thisID, NearBottomRight))
-
-	//	&& (theRoot->GetNode(ParentID)->GetFarTopLeft(thisID, FarTopLeft))
-	//	&& (theRoot->GetNode(ParentID)->GetFarTopRight(thisID, FarTopRight))
-	//	&& (theRoot->GetNode(ParentID)->GetFarBottomLeft(thisID, FarBottomLeft))
-	//	&& (theRoot->GetNode(ParentID)->GetFarBottomRight(thisID, FarBottomRight))
-	//	)
 	NearTopLeft = thisNode ->GetNearTopLeft();
 	NearTopRight = thisNode->GetNearTopRight();
 	NearBottomLeft = thisNode->GetNearBottomLeft();
@@ -298,11 +311,11 @@ void MVC_Model::FrustumChecking(CSceneNode * thisNode, const int ParentID, const
 //against the world. All other collision  settings will only add to processing memory.
 void MVC_Model::CheckCollision()
 {
-	for (int i = 0; i < theRoot->GetNumOfChild(); i++)
+	for (int i = 0; i < theRoot.GetNumOfChild(); i++)
 	{
-		const int ID = theRoot->GetSceneNodeID() * 10 + i + 1;
+		const int ID = theRoot.GetSceneNodeID() * 10 + i + 1;
 		if (ID != PlayerID)
-			CheckCollision(theRoot->GetNode(PlayerID), theRoot->GetNode(ID));
+			CheckCollision(theRoot.GetNode(PlayerID), theRoot.GetNode(ID));
 	}
 }
 
@@ -340,7 +353,7 @@ void MVC_Model::CheckCollision(CSceneNode * otherNode, CSceneNode * thisNode)
 		}
 	}
 
-	for (int i = 0; i < theRoot->GetNode(PlayerID)->GetNumOfChild(); i++)
+	for (int i = 0; i < theRoot.GetNode(PlayerID)->GetNumOfChild(); i++)
 	{
 		const int childID = PlayerID * 10 + i + 1;
 		otherNode->GetNearTopRight(childID,OtherVectors[0]);
@@ -354,7 +367,7 @@ void MVC_Model::CheckCollision(CSceneNode * otherNode, CSceneNode * thisNode)
 				|| IsPointInside(OtherVectors[j], NearBottomLeft, FarTopRight))
 			{
 				cout << "COLLIDED " << "Child: "<< childID << " Collide: "<< j << endl;
-				theRoot->GetNode(childID)->SetColor(1, 1, 1);
+				theRoot.GetNode(childID)->SetColor(1, 1, 1);
 			}
 		}
 	}
@@ -396,4 +409,34 @@ bool MVC_Model::IsPointInside(Vector3D thePoint, Vector3D Min, Vector3D Max)
 		return true;
 	}
 	return false;
+}
+
+void MVC_Model::PlayerAgainstExit(int PlayerID, Entity Exit[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+
+		Vector3D NearTopRight (-1,1,-1);
+		Vector3D FarBottomLeft(1, -1, 1);
+		Vector3D FarTopRight(1, 1, -1);
+		Vector3D NearBottomLeft(-1, -1, 1);
+
+		CSceneNode * thePlayer = theRoot.GetNode(PlayerID);
+
+		Vector3D OtherVectors[4];
+		//Check Collision with the root.
+		OtherVectors[0] = thePlayer->GetNearTopRight();
+		OtherVectors[1] = thePlayer->GetFarBottomLeft();
+		OtherVectors[2] = thePlayer->GetNearBottomLeft();
+		OtherVectors[3] = thePlayer->GetFarTopRight();
+
+		for (int j = 0; j < 4; j++)
+		{
+			if (IsPointInside(OtherVectors[j], FarTopRight, NearBottomLeft)
+				|| IsPointInside(OtherVectors[j], NearBottomLeft, FarTopRight))
+			{
+				cout << "COLLIDED WITH EXIT" << endl;
+			}
+		}
+	}
 }

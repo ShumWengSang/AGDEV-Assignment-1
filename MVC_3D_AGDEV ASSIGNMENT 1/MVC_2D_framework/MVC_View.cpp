@@ -158,6 +158,11 @@ void MVC_View::DrawScene()
 
 	Draw3DSGrid();
 
+	for (int i = 0; i < m_theModel->theMaze.PossibleExits.size(); i++)
+	{
+		m_theModel->theExits[i].Draw();
+	}
+
 	if (m_theModel->thePlayerData.ToggleFrustum)
 	{
 
@@ -166,8 +171,10 @@ void MVC_View::DrawScene()
 	}
 	else
 	{
-		m_theModel->theRoot->Draw();
+		m_theModel->theRoot.Draw();
 	}
+
+
 
 	m_theModel->theCamera.SetHUD(true);
 	m_theModel->theHUD.Draw();
@@ -190,7 +197,7 @@ void MVC_View::Draw3DSGrid()
 
 	// Turn the lines GREEN
 	glColor3ub(0, 255, 0);
-
+	glLineWidth(5);
 	// Draw a 1x1 grid along the X and Z axis'
 	for (float i = -m_theModel->theBox.Width; i <= m_theModel->theBox.Width; i += 1)
 	{
@@ -208,4 +215,5 @@ void MVC_View::Draw3DSGrid()
 		// Stop drawing lines
 		glEnd();
 	}
+	glLineWidth(1);
 }

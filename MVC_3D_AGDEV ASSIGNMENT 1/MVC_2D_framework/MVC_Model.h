@@ -39,6 +39,8 @@
 
 #include "Math.h"
 
+#include "Exit.h"
+
 class MVCTime;
 
 class MVC_Model
@@ -63,11 +65,14 @@ public:
 	Vector3D FrustumDirection;
 
 	TextureImage SkyBoxTextures[6];
+	TextureImage ExitTexture[6];
+
+	Exit * theExits;
 
 	MVCTime* m_timer;
 	CFrustum theFrustum;
 	ThirdPersonCamera* thirdpersoncamera;
-	CSceneNode *theRoot;
+	CSceneNode theRoot;
 
 	CSceneNode * thePlayer;
 	int PlayerID;
@@ -86,6 +91,9 @@ public:
 	void CheckCollision();
 	void CheckCollision(CSceneNode * otherNode, CSceneNode * thisNode);
 	bool IsPointInside(Vector3D, Vector3D, Vector3D);
+
+	//A function just for checking the exits against the player in the scene graph
+	void PlayerAgainstExit(int PlayerID, Entity Exit[], int size);
 
 	//A vector to hold the IDs of the parts to rotate.
 	std::vector<int> ArrayofIDs;

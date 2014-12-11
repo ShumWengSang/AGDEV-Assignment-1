@@ -56,7 +56,7 @@ public:
 
 	// Get methods
 	int GetSceneNodeID(void);
-	CSceneNode* GetNode(const int sceneNodeID);
+	CSceneNode* GetNode(const int sceneNodeID, const int depth = 1);
 
 	// Apply transformation to this Node and its children
 	void ApplyTranslate( const float dx, const float dy, const float dz );
