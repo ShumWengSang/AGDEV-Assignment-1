@@ -61,8 +61,6 @@ bool MVC_Model::InitPhase2(void)
 
 	theExits = new Exit [theMaze.PossibleExits.size()];
 
-	if (!LoadTGA(&theImageDebugger, "steel.tga"))				// Load The Font Texture
-		return false;										// If Loading Failed, Return False
 
 	if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/front.tga"))				// Load The Font Texture
 		return false;	// If Loading Failed, Return False
@@ -95,7 +93,9 @@ bool MVC_Model::InitPhase2(void)
 	}
 	///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-
+	
+	if (!LoadTGA(&theImageDebugger, "steel.tga"))				// Load The Font Texture
+		return false;										// If Loading Failed, Return False
 
 	glDisable(GL_TEXTURE_2D);								
 
