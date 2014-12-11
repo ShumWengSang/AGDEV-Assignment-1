@@ -61,6 +61,8 @@ bool MVC_Model::InitPhase2(void)
 
 	theExits = new Exit [theMaze.PossibleExits.size()];
 
+	if (!LoadTGA(&theImageDebugger, "steel.tga"))				// Load The Font Texture
+		return false;										// If Loading Failed, Return False
 
 	if (!LoadTGA(&SkyBoxTextures[0], "SkyBox/front.tga"))				// Load The Font Texture
 		return false;	// If Loading Failed, Return False
@@ -93,11 +95,9 @@ bool MVC_Model::InitPhase2(void)
 	}
 	///////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-	if (!LoadTGA(&theImageDebugger, "SteelWall.tga"))				// Load The Font Texture
-		return false;										// If Loading Failed, Return False
 
 
-	glDisable(GL_TEXTURE_2D);								// Disable Texture Mapping ( NEW )
+	glDisable(GL_TEXTURE_2D);								
 
 
 
@@ -228,8 +228,11 @@ void MVC_Model::Update(void)
 		m_testY += m_moveY*m_timer->GetDelta();
 	}
 
-	if(m_timer->TestFramerate())
+	if (m_timer->TestFramerate())
+	{
+		PlayerAgainstExit(PlayerID, theExits, theMaze.PossibleExits.size());
 		CheckCollision();
+	}
 }
 
 //Checking specific to the root.
@@ -420,6 +423,11 @@ void MVC_Model::PlayerAgainstExit(int PlayerID, Entity Exit[], int size)
 		Vector3D FarBottomLeft(1, -1, 1);
 		Vector3D FarTopRight(1, 1, -1);
 		Vector3D NearBottomLeft(-1, -1, 1);
+
+		NearTopRight += Exit[i].GetPos();
+		FarBottomLeft += Exit[i].GetPos();
+		FarTopRight += Exit[i].GetPos();
+		NearBottomLeft += Exit[i].GetPos();
 
 		CSceneNode * thePlayer = theRoot.GetNode(PlayerID);
 

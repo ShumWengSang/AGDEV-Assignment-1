@@ -173,7 +173,7 @@ void Player::DebugDraw()
 	// Render the front quad
 	//if (theObj)
 		//glBindTexture(GL_TEXTURE_2D, theObj->theTexture.texID);
-	glBegin(GL_LINES);
+/*	glBegin(GL_LINES);
 	glLineWidth(100);
 
 	glTranslatef(m_Position.m_x , m_Position.m_y, m_Position.m_z);
@@ -187,7 +187,7 @@ void Player::DebugDraw()
 
 
 	glEnd();
-	glPopMatrix();
+	glPopMatrix();*/
 
 	glDisable(GL_TEXTURE_2D);
 }
