@@ -83,6 +83,10 @@ public:
 	void FrustumChecking();
 	void FrustumChecking(CSceneNode* thisNode, const int ParentID, const int thisID);
 
+	void CheckCollision();
+	void CheckCollision(CSceneNode * otherNode, CSceneNode * thisNode);
+	bool IsPointInside(Vector3D, Vector3D, Vector3D);
+
 	//A vector to hold the IDs of the parts to rotate.
 	std::vector<int> ArrayofIDs;
 
@@ -98,6 +102,11 @@ public:
 
 	//Rotate the object
 	float ObjectAngle;
+
+	//Choose camera debug purposes
+	int ChooseCamera;
+
+	int PlayerParts[4];
 private: 
 };
 

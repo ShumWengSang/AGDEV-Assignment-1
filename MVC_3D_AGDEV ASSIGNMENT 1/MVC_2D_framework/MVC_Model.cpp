@@ -28,6 +28,7 @@ thirdpersoncamera()
 	ObjectAngle = 0;
 	PlayerID = 0;
 	thePlayerData.theFrustum = &theFrustum;
+	ChooseCamera = 0;
 }
 
 MVC_Model::~MVC_Model(void)
@@ -43,8 +44,6 @@ bool MVC_Model::Init(float fpsLimit)
 {
 	m_timer->Init(true,int(fpsLimit));
 	m_moveX=m_moveY=0;
-
-	theMaze.Draw();
 
 	return true;
 }
@@ -95,7 +94,9 @@ bool MVC_Model::InitPhase2(void)
 	//We need this to fully fill our skybox with the maze.
 	float ratiox = theBox.Width / WIDTH;
 	float ratioy = theBox.Height / HEIGHT;
-
+	//DEBUG
+	int theCounter = 0;
+	//DEBUG
 	int counter = 1;
 	for (int MazeWidth = -0; MazeWidth < WIDTH; MazeWidth++)
 	{
@@ -145,9 +146,12 @@ bool MVC_Model::InitPhase2(void)
 				newModel->SetColor(0.0, 1.0, 1.0);
 				ArrayofIDs.push_back(theRoot->GetNode(100 + 1 + 10 * counter)->AddChild(new CTransform(0, 2, 0), newModel));
 				counter++;
+				theCounter++;
 			}
 		}
 	}
+	cout << "theCounter "<< theCounter << endl;
+	//theRoot->ApplyTranslate(ratiox / 2, 0, ratioy/2 );
 
 	//Set up the Player
 	thePlayer = new CSceneNode();
@@ -158,7 +162,25 @@ bool MVC_Model::InitPhase2(void)
 	thePlayer->SetColor(1, 0, 1);
 	PlayerID = theRoot->AddChild(thePlayer);
 
+	//LeftSphere
+	newModel = new CModel();
+	newModel->InitObj();
+	newModel->SetColor(1.0, 0.0, 1.0);
+	newModel->states = WhatToDraw::Sphere;
+	LoadTGA(&newModel->theObj->theTexture,"wheel.tga");
+	PlayerParts[0] = theRoot->GetNode(PlayerID)->AddChild(new CTransform(0, 0, 2), newModel);
 
+	//Right Sphere
+	newModel = new CModel();
+	newModel->InitObj();
+	newModel->SetColor(1.0, 0.0, 1.0);
+	newModel->states = WhatToDraw::Sphere;
+	LoadTGA(&newModel->theObj->theTexture, "wheel.tga");
+	PlayerParts[1] = theRoot->GetNode(PlayerID)->AddChild(new CTransform(0, 0, -2), newModel);
+
+
+	//delete newModel;
+//	delete theTransform;
 
 	return true;
 }
@@ -167,7 +189,6 @@ bool MVC_Model::InitPhase2(void)
 void MVC_Model::Update(void)
 {
 	m_timer->UpdateTime();
-	//thirdpersoncamera->Update();
 	
 	if (m_timer->TestFramerate())
 	{
@@ -182,6 +203,8 @@ void MVC_Model::Update(void)
 			//theRoot->GetNode(ArrayofIDs[i])->ApplyRotate(100 * m_timer->GetDelta(), 0, 1, 0);
 		}
 	}
+
+	CheckCollision();
 	//theFrustum->Update();
 }
 
@@ -268,4 +291,109 @@ void MVC_Model::FrustumChecking(CSceneNode * thisNode, const int ParentID, const
 			}
 		}
 	}
+}
+
+
+//Check Collision. Since only the player is moving, we only need to check the player
+//against the world. All other collision  settings will only add to processing memory.
+void MVC_Model::CheckCollision()
+{
+	for (int i = 0; i < theRoot->GetNumOfChild(); i++)
+	{
+		const int ID = theRoot->GetSceneNodeID() * 10 + i + 1;
+		if (ID != PlayerID)
+			CheckCollision(theRoot->GetNode(PlayerID), theRoot->GetNode(ID));
+	}
+}
+
+void MVC_Model::CheckCollision(CSceneNode * otherNode, CSceneNode * thisNode)
+{
+	//We only need to check 4 sides, since we don't move along the Y axis.
+	//(x,z) to (-x,z)
+	//(x,z) to (x,-z)
+	//(-x,z) to (-x,-z)
+	//(x,-z) to (-x,-z)
+	Vector3D NearTopRight;
+	Vector3D FarBottomLeft;
+	Vector3D FarTopRight;
+	Vector3D NearBottomLeft;
+
+	Vector3D OtherVectors[4];
+
+	NearTopRight = thisNode->GetNearTopRight();
+	FarBottomLeft = thisNode->GetFarBottomLeft();
+	NearBottomLeft = thisNode->GetNearBottomLeft();
+	FarTopRight = thisNode->GetFarTopRight();
+
+	//Check Collision with the root.
+	OtherVectors[0] = otherNode->GetNearTopRight();
+	OtherVectors[1] = otherNode->GetFarBottomLeft();
+	OtherVectors[2] = otherNode->GetNearBottomLeft();
+	OtherVectors[3] = otherNode->GetFarTopRight();
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (IsPointInside(OtherVectors[i], FarTopRight, NearBottomLeft)
+			|| IsPointInside(OtherVectors[i], NearBottomLeft, FarTopRight))
+		{
+			cout << "COLLIDED" << i << endl;
+		}
+	}
+
+	for (int i = 0; i < theRoot->GetNode(PlayerID)->GetNumOfChild(); i++)
+	{
+		const int childID = PlayerID * 10 + i + 1;
+		otherNode->GetNearTopRight(childID,OtherVectors[0]);
+		otherNode->GetFarBottomLeft(childID, OtherVectors[1]);
+		otherNode->GetNearBottomLeft(childID, OtherVectors[2]);
+		otherNode->GetFarTopRight(childID, OtherVectors[3]);
+
+		for (int j = 0; j < 4; j++)
+		{
+			if (IsPointInside(OtherVectors[j], FarTopRight, NearBottomLeft)
+				|| IsPointInside(OtherVectors[j], NearBottomLeft, FarTopRight))
+			{
+				cout << "COLLIDED " << "Child: "<< childID << " Collide: "<< j << endl;
+				theRoot->GetNode(childID)->SetColor(1, 1, 1);
+			}
+		}
+	}
+
+	//TEST
+	//OtherVectors[0] = otherNode->GetNearTopRight();
+	//OtherVectors[1] = otherNode->GetFarBottomLeft();
+	//OtherVectors[2] = otherNode->GetNearBottomLeft();
+	//OtherVectors[3] = otherNode->GetFarTopRight();
+
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	if (IsPointInside(OtherVectors[i], FarTopRight, NearBottomLeft)
+	//		|| IsPointInside(OtherVectors[i], NearBottomLeft, FarTopRight))
+	//	{
+	//		cout << "COLLIDED" << i << endl;
+	//	}
+	//}
+
+	//OtherVectors[0] = otherNode->GetNearTopLeft();
+	//OtherVectors[1] = otherNode->GetNearTopRight();
+	//OtherVectors[2] = otherNode->GetNearBottomLeft();
+	//OtherVectors[3] = otherNode->GetNearBottomRight();
+
+	//OtherVectors[4] = otherNode->GetFarTopLeft();
+	//OtherVectors[5] = otherNode->GetFarTopRight();
+	//OtherVectors[6] = otherNode->GetFarBottomLeft();
+	//OtherVectors[7] = otherNode->GetFarBottomRight();
+	//
+
+	
+}
+
+bool MVC_Model::IsPointInside(Vector3D thePoint, Vector3D Min, Vector3D Max)
+{
+	if (thePoint.m_x > Min.m_x && thePoint.m_x < Max.m_x &&
+		thePoint.m_z > Min.m_z && thePoint.m_z < Max.m_z)
+	{
+		return true;
+	}
+	return false;
 }

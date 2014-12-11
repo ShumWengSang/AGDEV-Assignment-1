@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
-#define HEIGHT 10
-#define WIDTH 10
+#define HEIGHT 21
+#define WIDTH 21
 
 //////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 							MAZE GENERATOR

@@ -17,8 +17,10 @@ Camera::Camera(void)
 	jump = 0;
 	gravity = -0.5;
 	Distance = 6;
-
+	u2 = 0; v2 = 0;
 	Reset();
+
+
 
 }
 
@@ -38,7 +40,7 @@ Camera::Camera(CAM_TYPE ct)
 	jump = 0;
 	gravity = -0.5;
 	Distance = 6;
-
+	u2 = 0; v2 = 0;
 	Reset();
 }
 
@@ -73,7 +75,7 @@ void Camera::Update(Vector3D theTarget, Vector3D theTargetDir, float angle) {
 	Vector3D Temp1, Temp2;
 
 
-	Temp1 = theTarget - (Forward.NormalizedVector3D() * Distance) + Up.NormalizedVector3D() * 4 + Along * 0;
+	Temp1 = theTarget - (Forward.NormalizedVector3D() * Distance) + Up.NormalizedVector3D() * 7 + Along * 0;
 	SetPosition(Temp1);
 
 	Temp2 = theTarget + (theTargetDir.NormalizedVector3D() * Distance) + Up.NormalizedVector3D() * 4 + Along * 0;
@@ -366,3 +368,9 @@ void Camera::RotateAroundPoint(Vector3D vCenter, float angle, float x, float y, 
 
 	//Forward.Set(( vCenter - Position).NormalizedVector3D());
 }
+
+void Camera::ThirdPersonRotation(float& angle)
+{
+	angle -= 40;
+}
+

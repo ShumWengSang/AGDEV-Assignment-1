@@ -21,7 +21,6 @@ private:
 	Vector3D Forward;
 	float Angle;
 	
-
 public:
 	Camera(void);
 	Camera(CAM_TYPE ct);
@@ -67,6 +66,10 @@ public:
 	bool onground;
 	float yvel, jump, gravity;
 	float Distance;
+
+	void ThirdPersonRotation(float& angle);
+	void Rotateme(bool mode, float timeDiff, float &angle);
+
 private:
 	// Maximum movement speed
 	float MAXSPEED_MOVE;
@@ -75,6 +78,7 @@ private:
 	float u, u1, v, v1;
 
 	Vector3D CalculateDistance(Vector3D theFirstPosition);
+	float u2, v2;
 	
 };
 

@@ -3,7 +3,7 @@
 
 Player::Player()
 {
-	MAXSPEED = 10;
+	MAXSPEED = 0.5;
 	u = 0; v = 0; u1 = 0; v1 = 0;
 	m_Position.Set(0, 2, 0);
 	ToggleFrustum = false;
@@ -29,7 +29,7 @@ void Player::Walk(GLfloat delta, bool mode)
 	m_Position.Set(m_Position.m_x + m_Direction.m_x * delta, m_Position.m_y + m_Direction.m_y * delta, m_Position.m_z + m_Direction.m_z * delta);
 	if (ToggleFrustum)
 	{
-		theFrustum->Update(GetPos(), GetDir() * -1);
+		theFrustum->Update(GetPos(), GetDir());
 	}
 }
 void Player::Strafe(GLfloat delta, bool mode)
@@ -49,7 +49,7 @@ void Player::Strafe(GLfloat delta, bool mode)
 		m_Position.m_z + Along.m_z * delta);
 	if (ToggleFrustum)
 	{
-		theFrustum->Update(GetPos(), GetDir() * -1);
+		theFrustum->Update(GetPos(), GetDir());
 	}
 }
 
@@ -57,6 +57,8 @@ void Player::MoveMeForward(bool mode, float timeDiff)
 {
 	if (mode)
 	{
+		if (v < 0)
+			v = 0;
 		u = v;
 		v = u + 1.f * timeDiff;
 
@@ -65,6 +67,8 @@ void Player::MoveMeForward(bool mode, float timeDiff)
 	}
 	else
 	{
+		if (v > 0)
+			v = 0;
 		u = v;
 		v = u - 1.f  * timeDiff;
 
@@ -75,12 +79,16 @@ void Player::MoveMeSideways(bool mode, float timeDiff)
 {
 	if (mode)
 	{
+		if (v1 < 0)
+			v1 = 0;
 		u1 = v1;
 		v1 = u1 + 1.f * timeDiff;
 		Strafe(v1, true);
 	}
 	else
 	{
+		if (v1 > 0)
+			v1 = 0;
 		u1 = v1;
 		v1 = u1 - 1.f * timeDiff;
 		Strafe(v1, false);

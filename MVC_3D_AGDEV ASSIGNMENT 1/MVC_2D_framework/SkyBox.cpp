@@ -12,12 +12,12 @@ SkyBox::~SkyBox()
 
 void SkyBox::Init()
 {
-	Top = 50;
-	Bottom = -50;
-	Left = 50;
-	Right = -50;
-	Near = -50;
-	Far = 50;
+	Top = 100;
+	Bottom = -100;
+	Left = 100;
+	Right = -100;
+	Near = -100;
+	Far = 100;
 	Width = Left - Right;
 	Height = Top - Bottom;
 }

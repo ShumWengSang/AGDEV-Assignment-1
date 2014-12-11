@@ -343,7 +343,8 @@ LRESULT CALLBACK MVC_View::MsgProc( HWND hWnd, // Handle For This Window
 
 		//	m_MouseInfo.m_last_x = diffX;
 			//m_MouseInfo.m_last_y = diffY;
-			m_theModel->Camera2.calculations(diffX, diffY);
+			if (m_theModel->ChooseCamera == 1)
+				m_theModel->Camera2.calculations(diffX, diffY);
 
 			//Make sure the mouse doesn't go out of the window.
 			RECT WindowRect;

@@ -71,7 +71,11 @@ BOOL MVC_View::Draw(void)
 	glLoadIdentity(); // ReSet The Current Modelview Matrix
 	glColor3f(1,1,1);
 
-	m_theModel->theCamera.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir(), m_theModel->ObjectAngle);
+	if (m_theModel->ChooseCamera == 0)
+		m_theModel->theCamera.Update(m_theModel->thePlayerData.GetPos(), m_theModel->thePlayerData.GetDir(), m_theModel->ObjectAngle);
+	else
+		m_theModel->Camera2.Update();
+
 	m_theModel->thePlayerData.DebugDraw();
 
 	DrawScene();
@@ -188,18 +192,18 @@ void MVC_View::Draw3DSGrid()
 	glColor3ub(0, 255, 0);
 
 	// Draw a 1x1 grid along the X and Z axis'
-	for (float i = -50; i <= 50; i += 1)
+	for (float i = -m_theModel->theBox.Width; i <= m_theModel->theBox.Width; i += 1)
 	{
 		// Start drawing some lines
 		glBegin(GL_LINES);
 
 		// Do the horizontal lines (along the X)
-		glVertex3f(-50, 0, i);
-		glVertex3f(50, 0, i);
+		glVertex3f(-100, 0, i);
+		glVertex3f(100, 0, i);
 
 		// Do the vertical lines (along the Z)
-		glVertex3f(i, 0, -50);
-		glVertex3f(i, 0, 50);
+		glVertex3f(i, 0, -100);
+		glVertex3f(i, 0, 100);
 
 		// Stop drawing lines
 		glEnd();

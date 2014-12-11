@@ -50,6 +50,8 @@ protected:
 	//Boolean used to control the timer on rotation.
 	bool ControlRotationTime;
 
+	void RotateCamera(float AngletoChange);
+	float v1, u1;
 
 };
 

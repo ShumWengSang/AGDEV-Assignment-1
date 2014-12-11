@@ -26,6 +26,7 @@ enum WhatToDraw
 {
 	Model,
 	Cube,
+	Sphere,
 	Nothing
 };
 

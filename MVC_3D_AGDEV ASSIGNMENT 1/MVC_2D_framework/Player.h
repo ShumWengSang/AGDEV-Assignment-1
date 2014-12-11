@@ -10,7 +10,7 @@ public:
 	~Player();
 	float u, u1, v, v1;
 
-	int MAXSPEED;
+	float MAXSPEED;
 
 	void MoveMeForward(bool , float );
 	void MoveMeSideways(bool, float);
