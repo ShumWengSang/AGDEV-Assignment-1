@@ -84,7 +84,7 @@ bool MVC_Model::InitPhase2(void)
 	{
 		ExitTexture[i] = ExitTexture[0];
 	}
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < theMaze.PossibleExits.size(); i++)
 	{
 		for (int j = 0; j < 6; j++)
 		{
